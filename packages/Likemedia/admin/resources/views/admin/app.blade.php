@@ -18,17 +18,17 @@
         <link rel="stylesheet" href="{{ asset('/soledy/admin/css/custom.css?'.uniqid()) }}">
         {{-- <link rel="stylesheet" href="{{ asset('/soledy/admin/css/jquery-ui.css') }}"> --}}
         {{-- <link rel="stylesheet" href="{{ asset('/soledy/admin/css/style.css?'.uniqid()) }}"> --}}
-        <link rel="stylesheet" href="{{ asset('/soledy/admin/css/vendor.css?'.uniqid()) }}">
-        <link rel="stylesheet" href="{{ asset('/soledy/admin/css/app-green.css?'.uniqid()) }}">
-        <link rel="stylesheet" href="{{ asset('/soledy/admin/css/datepicker.css?'.uniqid()) }}">
+        <link rel="stylesheet" href="{{ asset('/admin/css/vendor.css?'.uniqid()) }}">
+        <link rel="stylesheet" href="{{ asset('/admin/css/app-green.css?'.uniqid()) }}">
+        <link rel="stylesheet" href="{{ asset('/admin/css/datepicker.css?'.uniqid()) }}">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.1/css/lightbox.css">
 
         <script src="/{{ $lang->lang }}/js/lang.js?{{ uniqid('', true) }}"></script>
         <script src="//ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-        <script src="{{asset('/soledy/admin/js/ckeditor/ckeditor.js')}}"></script>
+        <script src="{{asset('/admin/js/ckeditor/ckeditor.js')}}"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.1/js/lightbox-plus-jquery.js"></script>
-        {{-- <script src="{{asset('/soledy/admin/js/jquery.nestable.js')}}"></script> --}}
+        {{-- <script src="{{asset('/admin/js/jquery.nestable.js')}}"></script> --}}
     </head>
     {{-- {{dd('iuyt')}} --}}
     <body>
