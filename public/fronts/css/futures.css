@@ -1,0 +1,71 @@
+.scroll-stop{
+    height: 100vh;
+    overflow: hidden;
+}
+.sniper-load-inner {
+    position: fixed;
+    width: 100%;
+    height: 100vh;
+    top: 30px;
+    left: 0;
+    background-color: #fff;
+    z-index: 9;
+    scroll-snap-type: none;
+    overflow-y: hidden !important;
+    -webkit-scrollbar: none;
+}
+.sniper-load .loader {
+    position: absolute;
+    top: calc(50% - 30px);
+    left: 50%;
+    margin-left: -5em;
+    margin-top: -5em;
+}
+.loader,
+.loader:after {
+    border-radius: 50%;
+    width: 10em;
+    height: 10em;
+}
+.loader {
+    margin: 60px auto;
+    font-size: 6px;
+    position: relative;
+    text-indent: -9999em;
+    border-top: 1.1em solid rgba(237, 220, 213, 0.2);
+    border-right: 1.1em solid rgba(237, 220, 213, 0.2);
+    border-bottom: 1.1em solid rgba(237, 220, 213, 0.2);
+    border-left: 1.1em solid #eddcd5;
+    -webkit-transform: translateZ(0);
+    -ms-transform: translateZ(0);
+    transform: translateZ(0);
+    -webkit-animation: load8 0.9s infinite linear;
+    animation: load8 0.9s infinite linear;
+}
+@-webkit-keyframes load8 {
+    0% {
+        -webkit-transform: rotate(0);
+        transform: rotate(0);
+    }
+    100% {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
+@keyframes load8 {
+    0% {
+        -webkit-transform: rotate(0);
+        transform: rotate(0);
+    }
+    100% {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
+.addToWish {
+    display: none !important;
+}
+.oneProductContent:after,
+.oneProductContent:before {
+    display: none;
+}
