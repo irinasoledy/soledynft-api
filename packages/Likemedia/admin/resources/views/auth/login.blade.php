@@ -9,8 +9,8 @@
 
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
     <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans:400,600">
-    <link rel="stylesheet" href="https://ap.soledy.com/admin/css/vendor.css">
-    <link rel="stylesheet" href="https://ap.soledy.com/admin/css/app-green.css">
+    <link rel="stylesheet" href="/admin/css/vendor.css">
+    <link rel="stylesheet" href="/admin/css/app-green.css">
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>

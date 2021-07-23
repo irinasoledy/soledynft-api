@@ -1,3 +1,7 @@
+<a href="{{ url('/back') }}">Admin Panel</a>
+
+{{dd()}}
+
 @extends('../front.app')
 @section('content')
 @include('front.partials.header')
