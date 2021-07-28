@@ -42,6 +42,8 @@ class RouteServiceProvider extends ServiceProvider
 
         $this->mapAjaxRoutes($router);
 
+        $this->mapApiRoutes($router);
+
     }
 
     /**
@@ -92,6 +94,23 @@ class RouteServiceProvider extends ServiceProvider
             'namespace' => $this->namespace, 'middleware' => 'web',
         ], function ($router) {
             require base_path('routes/ajax.php');
+        });
+    }
+
+    /**
+     * Define the "ajax" routes for the application.
+     *
+     * These routes all receive session state, CSRF protection, etc.
+     *
+     * @param  \Illuminate\Routing\Router  $router
+     * @return void
+     */
+    protected function mapApiRoutes(Router $router)
+    {
+        $router->group([
+            'namespace' => $this->namespace, 'middleware' => 'web',
+        ], function ($router) {
+            require base_path('routes/api.php');
         });
     }
 }
