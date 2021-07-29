@@ -14,10 +14,10 @@
         <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.1/jquery.rateyo.min.css">
 
-        <link rel="stylesheet" href="{{ asset('/soledy/admin/css/normalize.min.css') }}">
-        <link rel="stylesheet" href="{{ asset('/soledy/admin/css/custom.css?'.uniqid()) }}">
-        {{-- <link rel="stylesheet" href="{{ asset('/soledy/admin/css/jquery-ui.css') }}"> --}}
-        {{-- <link rel="stylesheet" href="{{ asset('/soledy/admin/css/style.css?'.uniqid()) }}"> --}}
+        <link rel="stylesheet" href="{{ asset('/admin/css/normalize.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('/admin/css/custom.css?'.uniqid()) }}">
+        {{-- <link rel="stylesheet" href="{{ asset('/admin/css/jquery-ui.css') }}"> --}}
+        {{-- <link rel="stylesheet" href="{{ asset('/admin/css/style.css?'.uniqid()) }}"> --}}
         <link rel="stylesheet" href="{{ asset('/admin/css/vendor.css?'.uniqid()) }}">
         <link rel="stylesheet" href="{{ asset('/admin/css/app-green.css?'.uniqid()) }}">
         <link rel="stylesheet" href="{{ asset('/admin/css/datepicker.css?'.uniqid()) }}">
@@ -49,11 +49,11 @@
             </div>
         </div>
 
-        <script src="{{asset('/soledy/admin/js/jquery-ui.js')}}"></script>
-        <script src="{{asset('/soledy/admin/js/jquery.tablednd_0_5.js')}}"></script>
-        <script src="{{asset('/soledy/admin/js/custom.js?'.date('Y-m-sssss'))}}"></script>
-        {{-- <script src="{{asset('/soledy/admin/js/toastr.js')}}"></script> --}}
-        {{-- <script src="{{asset('/soledy/admin/js/jquery.mjs.nestedSortable.js')}}"></script> --}}
-        {{-- <script src="{{asset('/soledy/admin/js/validation.js')}}"></script> --}}
+        <script src="{{asset('/admin/js/jquery-ui.js')}}"></script>
+        <script src="{{asset('/admin/js/jquery.tablednd_0_5.js')}}"></script>
+        <script src="{{asset('/admin/js/custom.js?'.date('Y-m-sssss'))}}"></script>
+        {{-- <script src="{{asset('/admin/js/toastr.js')}}"></script> --}}
+        {{-- <script src="{{asset('/admin/js/jquery.mjs.nestedSortable.js')}}"></script> --}}
+        {{-- <script src="{{asset('/admin/js/validation.js')}}"></script> --}}
     </body>
 </html>

@@ -23,6 +23,7 @@ class ProductsController extends ApiController
                             'translation',
                             'children.translation',
                             'products.translation',
+                            'products.mainImage',
                         ])
                         ->where('parent_id', 0)
                         ->orderby('position', 'asc')
@@ -39,7 +40,12 @@ class ProductsController extends ApiController
             return $this->respondError("Language is not found", 500);
         }
 
-        $collection = Collection::with([ 'translation', 'sets.translation',])
+        $collection = Collection::with(
+                        [
+                            'translation',
+                            'sets.translation',
+                            'sets.mainPhoto',
+                        ])
                         ->orderby('position', 'asc')
                         ->get();
 

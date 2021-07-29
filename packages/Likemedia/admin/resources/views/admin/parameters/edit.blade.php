@@ -85,7 +85,7 @@
 
 </div>
 </div>
-<script src="{{asset('/soledy/fronts/js/app.js?'.date('Y-m-sssss'))}}"></script>
+<script src="{{asset('/fronts/js/app.js?'.date('Y-m-sssss'))}}"></script>
 
 @stop
 @section('footer')

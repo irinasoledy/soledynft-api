@@ -11,6 +11,6 @@
         </div>
     </div>
 
-    <script src="{{asset('/soledy/admin/js/app_admin.js?'.uniqid())}}"></script>
-    <link rel="stylesheet" href="{{ asset('/soledy/admin/css/auto-upload.css') }}">
+    <script src="{{asset('/admin/js/app_admin.js?'.uniqid())}}"></script>
+    <link rel="stylesheet" href="{{ asset('/admin/css/auto-upload.css') }}">
 @stop
