@@ -16,17 +16,26 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::group(['prefix' => 'api'], function()
+Route::group(['prefix' => 'api', 'middleware' => 'cors'], function()
 {
     Route::get('categories', 'API\ProductsController@getCategories');
+    Route::get('category', 'API\ProductsController@getCategory');
+    Route::get('product', 'API\ProductsController@getProduct');
+
+    Route::get('products/new', 'API\ProductsController@getNewProducts');
+    Route::get('products/outlet', 'API\ProductsController@getOutletProducts');
+
+
     Route::get('collections', 'API\ProductsController@getCollections');
+    Route::get('collection', 'API\ProductsController@getCollection');
+
     Route::get('promotions', 'API\ProductsController@getPromotions');
 });
+
 
 Route::group(['prefix' => 'api/v2', 'middleware' => 'cors'], function()
 {
     Route::get('categories', 'Api\ProductsController@getCategories');
-
 
     Route::get('data', 'Api\ServiceController@initData');
 

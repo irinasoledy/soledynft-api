@@ -65,6 +65,7 @@ class Kernel extends HttpKernel
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'auth_front' => \App\Http\Middleware\FrontAuthenticate::class,
-        'sitemap' => \App\Http\Middleware\Sitemap::class
+        'sitemap' => \App\Http\Middleware\Sitemap::class,
+        'cors' => \App\Http\Middleware\Cors::class,
     ];
 }
