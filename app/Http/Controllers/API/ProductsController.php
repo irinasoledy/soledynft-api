@@ -39,6 +39,7 @@ class ProductsController extends ApiController
     {
         try {
             $this->swithLang($request->get('lang'));
+            $this->swithCurrency($request->get('currency'));
         } catch (\Exception $e) {
             return $this->respondError("Language is not found", 500);
         }
@@ -50,6 +51,7 @@ class ProductsController extends ApiController
                             'products.translation',
                             'products.mainImage',
                             'products.mainPrice',
+                            'products.personalPrice',
                         ])
                         ->where('alias', $request->get('alias'))
                         ->first();
@@ -61,6 +63,7 @@ class ProductsController extends ApiController
     {
         try {
             $this->swithLang($request->get('lang'));
+            $this->swithCurrency($request->get('currency'));
         } catch (\Exception $e) {
             return $this->respondError("Language is not found", 500);
         }
@@ -90,6 +93,7 @@ class ProductsController extends ApiController
     {
         try {
             $this->swithLang($request->get('lang'));
+            $this->swithCurrency($request->get('currency'));
         } catch (\Exception $e) {
             return $this->respondError("Language is not found", 500);
         }
@@ -122,6 +126,7 @@ class ProductsController extends ApiController
     {
         try {
             $this->swithLang($request->get('lang'));
+            $this->swithCurrency($request->get('currency'));
         } catch (\Exception $e) {
             return $this->respondError("Language is not found", 500);
         }
@@ -163,6 +168,7 @@ class ProductsController extends ApiController
     {
         try {
             $this->swithLang($request->get('lang'));
+            $this->swithCurrency($request->get('currency'));
         } catch (\Exception $e) {
             return $this->respondError("Language is not found", 500);
         }

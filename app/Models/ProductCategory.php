@@ -66,7 +66,7 @@ class ProductCategory extends Model
     }
 
     public function products() {
-        return $this->hasMany(Product::class, 'category_id', 'id')->where('active', 1)->where(self::$site, 1)->where(self::$warehouseName, 1)->orderBy('position', 'asc');
+        return $this->hasMany(Product::class, 'category_id', 'id')->where('active', 1)->orderBy('position', 'asc');
     }
 
     public function parent()

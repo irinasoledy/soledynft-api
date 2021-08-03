@@ -1,0 +1,22 @@
+<?php
+namespace App\Http\Controllers\API;
+
+use Illuminate\Http\Request;
+
+use App\Models\Lang;
+use App\Models\Currency;
+use App\Models\Country;
+
+
+class SettingsController extends ApiController
+{
+
+    public function getSettings()
+    {
+        $data['langs'] = Lang::where('active', 1)->get();
+        $data['countries'] = Country::where('active', 1)->orderBy('main', 'desc')->get();
+        $data['currencies'] = Currency::where('active', 1)->orderBy('type', 'desc')->get();
+
+        return $this->respond($data);
+    }
+}

@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\RealWorld\Paginate\Paginate;
 use App\RealWorld\Transformers\Transformer;
 use App\Models\Lang;
+use App\Models\Currency;
 use App\Base as Model;
 
 class ApiController extends Controller
@@ -22,6 +23,16 @@ class ApiController extends Controller
         Model::$lang = $findLang->id;
     }
 
+    public function swithCurrency($currency)
+    {
+        $findCurrency = Currency::where('id', $currency)->first();
+
+        if (is_null($findCurrency)) {
+            throw new \Exception("Currency is not find", 1);
+        }
+
+        Model::$currency = $findCurrency->id;
+    }
 
     /** \App\RealWorld\Transformers\Transformer
      *

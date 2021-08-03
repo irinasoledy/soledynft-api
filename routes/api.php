@@ -18,13 +18,15 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::group(['prefix' => 'api', 'middleware' => 'cors'], function()
 {
+    Route::get('settings', 'API\SettingsController@getSettings');
+    Route::get('set/settings', 'API\SettingsController@setSettings'); //to change
+
     Route::get('categories', 'API\ProductsController@getCategories');
     Route::get('category', 'API\ProductsController@getCategory');
     Route::get('product', 'API\ProductsController@getProduct');
 
     Route::get('products/new', 'API\ProductsController@getNewProducts');
     Route::get('products/outlet', 'API\ProductsController@getOutletProducts');
-
 
     Route::get('collections', 'API\ProductsController@getCollections');
     Route::get('collection', 'API\ProductsController@getCollection');
