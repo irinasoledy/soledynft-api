@@ -16,10 +16,17 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::group(['prefix' => 'api', 'middleware' => 'cors'], function()
+Route::post('/api/cart', function() {
+    dd('super');
+})->middleware('cors');
+
+Route::post('/en/api/cart', function() {
+    dd('super');
+})->middleware('cors');
+
+Route::group(['prefix' => 'api'], function()
 {
     Route::get('settings', 'API\SettingsController@getSettings');
-    Route::get('set/settings', 'API\SettingsController@setSettings'); //to change
 
     Route::get('categories', 'API\ProductsController@getCategories');
     Route::get('category', 'API\ProductsController@getCategory');
@@ -28,10 +35,21 @@ Route::group(['prefix' => 'api', 'middleware' => 'cors'], function()
     Route::get('products/new', 'API\ProductsController@getNewProducts');
     Route::get('products/outlet', 'API\ProductsController@getOutletProducts');
 
+    Route::get('products/sort', 'API\ProductsController@getSortedProducts');
+    Route::get('products/filter', 'API\ProductsController@getFiltredProducts');
+    Route::get('products/default-filter', 'API\ProductsController@getDefaultFilter');
+
+
     Route::get('collections', 'API\ProductsController@getCollections');
     Route::get('collection', 'API\ProductsController@getCollection');
 
     Route::get('promotions', 'API\ProductsController@getPromotions');
+
+    Route::get('set/cart', 'API\CheckoutController@setCart'); // Remake to post
+
+    Route::get('cart', 'API\CheckoutController@getCart');
+    // Route::post('cart', 'API\CheckoutController@setCart');
+
 });
 
 

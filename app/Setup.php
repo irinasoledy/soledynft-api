@@ -49,9 +49,9 @@ class Setup
         }else{
             $this->setGeoData();
         }
-
+if ($this->request->method() == 'GET') {
         $this->setLang($request);
-
+}
         if(\Request::segment(1) == 'back'){
             View::share('menu', Module::where('parent_id', 0)->orderBy('position')->get());
         }
@@ -59,39 +59,42 @@ class Setup
 
     public function init()
     {
-        $this->reinitForce();
-
-        View::share("site", self::$site);
-        View::share("device", self::$device);
-
-        View::share("lang", self::$lang);
-        View::share("langs", self::$langs);
-
-        View::share("country", self::$country);
-        View::share("countries", self::$countries);
-
-        View::share("mainCurrency", self::$mainCurrency);
-        View::share("currency", self::$currency);
-        View::share("currencies", self::$currencies);
-        View::share("warehouse", self::$warehouse);
-
-        View::share("seoData", self::$seoData);
-        View::share('unloggedUser', self::$unloggedUser);
-
-        View::share('productList', json_encode([]));
-        View::share('list', json_encode([]));
-
-        Model::$lang = self::$lang->id;
-        Model::$site = self::$site;
-        Model::$currency = self::$currency->id;
-        Model::$mainCurrency = self::$mainCurrency->id;
-        Model::$warehouse = self::$warehouse->id;
-        Model::$warehouseName = self::$warehouse->name;
-
         if ($this->request->method() == 'GET') {
-            $this->shareCarts();
-            $this->shareMenus();
+            $this->reinitForce();
+
+            View::share("site", self::$site);
+            View::share("device", self::$device);
+
+            View::share("lang", self::$lang);
+            View::share("langs", self::$langs);
+
+            View::share("country", self::$country);
+            View::share("countries", self::$countries);
+
+            View::share("mainCurrency", self::$mainCurrency);
+            View::share("currency", self::$currency);
+            View::share("currencies", self::$currencies);
+            View::share("warehouse", self::$warehouse);
+
+            View::share("seoData", self::$seoData);
+            View::share('unloggedUser', self::$unloggedUser);
+
+            View::share('productList', json_encode([]));
+            View::share('list', json_encode([]));
+
+            Model::$lang = self::$lang->id;
+            Model::$site = self::$site;
+            Model::$currency = self::$currency->id;
+            Model::$mainCurrency = self::$mainCurrency->id;
+            Model::$warehouse = self::$warehouse->id;
+            Model::$warehouseName = self::$warehouse->name;
+
+            if ($this->request->method() == 'GET') {
+                $this->shareCarts();
+                $this->shareMenus();
+            }
         }
+
     }
 
     public function reinitForce()
