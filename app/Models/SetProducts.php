@@ -8,7 +8,7 @@ class SetProducts extends Model
 {
     protected $table = 'set_product';
 
-    protected $fillable = [ 'set_id', 'product_id', 'subproduct_id', 'src', 'position', 'gift'];
+    protected $fillable = [ 'set_id', 'product_id', 'subproduct_id', 'src', 'position', 'gift', 'display'];
 
     public function set()
     {

@@ -7,6 +7,7 @@ use App\Models\Promotion;
 use App\Models\Traduction;
 use App\Models\Product;
 use App\Models\TraductionTranslation;
+use App\Models\Lang;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Session;
@@ -15,6 +16,17 @@ use Illuminate\Support\Facades\File;
 
 class PromotionsController extends Controller
 {
+    public $lang = [];
+    public $langs = [];
+
+    public function __construct()
+    {
+        $this->lang = Lang::where('default', 1)->first();
+        $this->langs = Lang::get();
+
+        // $this->discountSetPrices();
+    }
+
     public function index()
     {
         $promotions = Promotion::with('translation')->orderBy('position', 'asc')->get();
@@ -120,8 +132,11 @@ class PromotionsController extends Controller
             $request->img_mobile->move('images/promotions', $img_mobile);
         }
 
+        // dd($this->lang->lang);
+        // dd(str_slug(request('title_'.$this->lang->lang)));
+
         $promotion = Promotion::findOrFail($id);
-        $promotion->alias = str_slug(request('title_'.$this->lang));
+        $promotion->alias = str_slug(request('title_'.$this->lang->lang));
         $promotion->active = 1;
         $promotion->homewear = $homewear;
         $promotion->bijoux = $bijoux;

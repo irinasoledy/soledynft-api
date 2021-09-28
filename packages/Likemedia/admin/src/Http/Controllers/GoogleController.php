@@ -33,6 +33,7 @@ use App\Models\Set;
 use App\Models\SetProducts;
 use App\Models\PromotionProduct;
 use App\Models\PromotionSet;
+use App\Models\Brand;
 use GuzzleHttp\Client;
 use Revolution\Google\Sheets\Facades\Sheets;
 use Edujugon\GoogleAds\GoogleAds;
@@ -466,6 +467,14 @@ class GoogleController extends Controller
         return view('admin::admin.google.transData', compact('translationGroups'));
     }
 
+    public function getBrands()
+    {
+        ini_set('memory_limit', '-1');
+        ini_set('max_execution_time', 900);
+        $brands = Brand::get();
+        return view('admin::admin.google.brands', compact('brands'));
+    }
+
     public function setSiteType($siteType)
     {
         $data['homewear'] = 0;
@@ -479,16 +488,16 @@ class GoogleController extends Controller
 
     public function uploadProducts()
     {
-        // dd("iyt");
-
         $data = 'Products';
         $view = view('admin::admin.google.progressBar', compact('data'));
         echo $view->render();
 
         $sheets = Sheets::spreadsheet(config('sheets.post_spreadsheet_id'))
-        // ->sheetById(config('sheets.post_sheet_id'))
-                       ->sheetById(1628359400)
+                        // ->sheetList();
+                        // ->sheetById(config('sheets.post_sheet_id'))
+                       ->sheetById(814561493)
                        ->all();
+
 
         $sheets = $this->parseSheet($sheets);
         $productsID = [];
@@ -507,7 +516,11 @@ class GoogleController extends Controller
                         'code'          => $item['code_prod'],
                         'homewear'      => $siteType['homewear'],
                         'bijoux'        => $siteType['bijoux'],
-                        'active'        => $item['Active']
+                        'active'        => $item['Active'],
+                        'brand_id'      => $item['Brand'],
+                        'w_b'           => $item['W&B'],
+                        'amazon'        => $item['Amazon'],
+                        'ozon'          => $item['Ozon'],
                     ]);
 
                     foreach ($this->langs as $key => $oneLang) {
@@ -515,6 +528,7 @@ class GoogleController extends Controller
                             'lang_id'   => $oneLang->id,
                             'name'      => $item['prodName_'.$oneLang->lang],
                             'atributes' => $item['Attributes_'.$oneLang->lang],
+                            'info' => $item['care_sizing_'.$oneLang->lang],
                         ]);
                     }
 
@@ -527,7 +541,11 @@ class GoogleController extends Controller
                         'code'          => $item['code_prod'],
                         'homewear'      => $siteType['homewear'],
                         'bijoux'        => $siteType['bijoux'],
-                        'active'        => $item['Active']
+                        'active'        => $item['Active'],
+                        'brand_id'      => $item['Brand'],
+                        'w_b'           => $item['W&B'],
+                        'amazon'        => $item['Amazon'],
+                        'ozon'          => $item['Ozon'],
                     ]);
 
                     $checkProduct->translations()->delete();
@@ -537,6 +555,7 @@ class GoogleController extends Controller
                             'lang_id'   => $oneLang->id,
                             'name'      => $item['prodName_'.$oneLang->lang],
                             'atributes' => $item['Attributes_'.$oneLang->lang],
+                            'info'      => $item['care_sizing_'.$oneLang->lang],
                         ]);
                     }
                 }
@@ -597,7 +616,7 @@ class GoogleController extends Controller
         echo $view->render();
 
         $sheets = Sheets::spreadsheet(config('sheets.post_spreadsheet_id'))
-                       ->sheetById(299332176)
+                       ->sheetById(1982527158)
                        ->all();
 
         $sheets = $this->parseSheet($sheets);
@@ -651,10 +670,8 @@ class GoogleController extends Controller
                     }
                 }
             }
-
-                }
             }
-        // }
+        }
     }
 
     public function uploadPrices()
@@ -664,7 +681,7 @@ class GoogleController extends Controller
         echo $view->render();
 
         $sheets = Sheets::spreadsheet(config('sheets.post_spreadsheet_id'))
-                       ->sheetById(210554612)
+                       ->sheetById(847550923)
                        ->all();
 
         $sheets = $this->parseSheet($sheets);
@@ -673,10 +690,10 @@ class GoogleController extends Controller
             $product = Product::where('id', $items['Prod_ID'])->first();
 
             if (!is_null($product)) {
-                // $product->update([
-                //     'discount' => $items['Discount'],
-                //     'promotion_id' => $items['Promo'],
-                // ]);
+                $product->update([
+                    // 'discount' => $items['Discount'],
+                    'promotion_id' => $items['Promo'],
+                ]);
                 $this->setProductPrices($product, $items);
             }
         }
@@ -717,7 +734,7 @@ class GoogleController extends Controller
                 ]);
             }
 
-            $autoupload->generateDillerPrices($product->id);
+            // $autoupload->generateDillerPrices($product->id);
         }
 
         // foreach ($currencies as $key => $currency) {
@@ -752,7 +769,7 @@ class GoogleController extends Controller
         echo $view->render();
 
         $sheets = Sheets::spreadsheet(config('sheets.post_spreadsheet_id'))
-                       ->sheetById(345426659)
+                       ->sheetById(1423852957)
                        ->all();
 
         $sheets = $this->parseSheet($sheets);
@@ -795,7 +812,7 @@ class GoogleController extends Controller
         echo $view->render();
 
         $sheets = Sheets::spreadsheet(config('sheets.post_spreadsheet_id'))
-                       ->sheetById(1804743994)
+                       ->sheetById(1813434674)
                        ->all();
 
         $sheets = $this->parseSheetWithLangs($sheets);
@@ -862,7 +879,7 @@ class GoogleController extends Controller
         echo $view->render();
 
         $sheets = Sheets::spreadsheet(config('sheets.post_spreadsheet_id'))
-                       ->sheetById(1326065449)
+                       ->sheetById(1149332430)
                        ->all();
 
         $sheets = $this->parseSheetWithLangs($sheets);
@@ -907,7 +924,6 @@ class GoogleController extends Controller
                         }
                     }
                 }else{
-                    dd('ufdc');
                     $newSet = Set::create([
                         'collection_id' => $findCollection->id,
                         'code' => $sheet['SetCode'],
@@ -951,7 +967,7 @@ class GoogleController extends Controller
         echo $view->render();
 
         $sheets = Sheets::spreadsheet(config('sheets.post_spreadsheet_id'))
-                       ->sheetById(90022211)
+                       ->sheetById(1124216809)
                        ->all();
 
         $sheets = $this->parseSheetWithLangs($sheets);
@@ -979,6 +995,7 @@ class GoogleController extends Controller
                                 'product_id' => $findProduct->id,
                                 'subproduct_id' => 1,
                                 'gift' => $gift,
+                                'display' => $sheet['DisplayInSet']
                             ]);
                         }else{
                             $findRelation->update([
@@ -986,6 +1003,7 @@ class GoogleController extends Controller
                                 'product_id' => $findProduct->id,
                                 'subproduct_id' => 1,
                                 'gift' => $gift,
+                                'display' => $sheet['DisplayInSet']
                             ]);
                         }
                         $this->generateSetPrice($findSet);
@@ -999,12 +1017,14 @@ class GoogleController extends Controller
                                 'set_id' => $findSet->id,
                                 'product_id' => $findProduct->id,
                                 'gift' => $gift,
+                                'display' => $sheet['DisplayInSet']
                             ]);
                         }else{
                             $findRelation->update([
                                 'set_id' => $findSet->id,
                                 'product_id' => $findProduct->id,
                                 'gift' => $gift,
+                                'display' => $sheet['DisplayInSet']
                             ]);
                         }
                         $this->generateSetPrice($findSet);
@@ -1182,8 +1202,8 @@ class GoogleController extends Controller
         echo $view->render();
 
 
-        $sheets = Sheets::spreadsheet(config('sheets.post_spreadsheet_id'))
-                       ->sheetById(1283622758)
+        $sheets = Sheets::spreadsheet('1ogSHPxuhE4bcEaUJuYdHJIYIxqqujMSKSDO5gzgh00A')
+                       ->sheetById(688223975)
                        ->all();
 
         $sheets = $this->parseSheetWithLangs($sheets);
@@ -1225,7 +1245,7 @@ class GoogleController extends Controller
         $handeledImages = [];
 
         $sheets = Sheets::spreadsheet(config('sheets.post_spreadsheet_id'))
-                       ->sheetById(233030744)
+                       ->sheetById(2040195145)
                        ->all();
 
         $sheets = $this->parseSheet($sheets);
@@ -1354,7 +1374,7 @@ class GoogleController extends Controller
 
         $sheets = Sheets::spreadsheet(config('sheets.post_spreadsheet_id'))
                         // ->sheetList();
-                       ->sheetById(903481932)
+                       ->sheetById(2040195145)
                        ->all();
         $sheets = $this->parseSheet($sheets);
 

@@ -12,21 +12,34 @@ use Illuminate\Http\Request;
 |
 */
 
+// header('Access-Control-Allow-Origin: http://localhost:3002');
+
+
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('/api/cart', function() {
-    dd('super');
-})->middleware('cors');
 
-Route::post('/en/api/cart', function() {
-    dd('super');
-})->middleware('cors');
+
+Route::patch('/api/cart', 'API\CheckoutController@changeQtyCart')->middleware('cors');
+Route::delete('/api/cart', 'API\CheckoutController@deleteCart')->middleware('cors');
+Route::delete('/api/carts', 'API\CheckoutController@deleteAllCarts')->middleware('cors');
+Route::post('/api/cart', 'API\CheckoutController@setCart');
+
+
+
+Route::post('/en/api/cart', 'API\CheckoutController@setCart');
+Route::patch('/en/api/cart', 'API\CheckoutController@changeQtyCart');
+Route::delete('/en/api/cart', 'API\CheckoutController@deleteCart');
+Route::delete('/en/api/carts', 'API\CheckoutController@deleteAllCarts');
+
 
 Route::group(['prefix' => 'api'], function()
 {
     Route::get('settings', 'API\SettingsController@getSettings');
+    Route::get('translations', 'API\SettingsController@getTranslations');
+    Route::get('banners', 'API\SettingsController@getBanners');
+    Route::get('static-pages', 'API\SettingsController@getStaticPages');
 
     Route::get('categories', 'API\ProductsController@getCategories');
     Route::get('category', 'API\ProductsController@getCategory');
@@ -34,6 +47,7 @@ Route::group(['prefix' => 'api'], function()
 
     Route::get('products/new', 'API\ProductsController@getNewProducts');
     Route::get('products/outlet', 'API\ProductsController@getOutletProducts');
+    Route::get('products/all', 'API\ProductsController@getAllProducts');
 
     Route::get('products/sort', 'API\ProductsController@getSortedProducts');
     Route::get('products/filter', 'API\ProductsController@getFiltredProducts');
@@ -48,8 +62,9 @@ Route::group(['prefix' => 'api'], function()
     Route::get('set/cart', 'API\CheckoutController@setCart'); // Remake to post
 
     Route::get('cart', 'API\CheckoutController@getCart');
-    // Route::post('cart', 'API\CheckoutController@setCart');
 
+    Route::get('designers', 'API\ProductsController@getDesigners');
+    Route::get('designer', 'API\ProductsController@getDesigner');
 });
 
 
@@ -59,7 +74,7 @@ Route::group(['prefix' => 'api/v2', 'middleware' => 'cors'], function()
 
     Route::get('data', 'Api\ServiceController@initData');
 
-    Route::get('translations', 'Api\TranslationsController@all');
+    Route::get('translations', 'API\TranslationsController@all');
 
     Route::get('promotions', 'Api\PromotionController@get');
 

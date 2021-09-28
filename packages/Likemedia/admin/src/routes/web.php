@@ -33,6 +33,7 @@ Route::group(['middleware' => ['web']], function ()
         Route::get('/google-api/upload-parameters', 'GoogleController@uploadParameters');
         Route::get('/google-api/get-subproducts-id', 'GoogleController@getSubproductsId');
         Route::get('/google-api/get-trans-data', 'GoogleController@getTransData');
+        Route::get('/google-api/get-brands', 'GoogleController@getBrands');
 
         Route::get('/google-api/upload-prices', 'GoogleController@uploadPrices');
         Route::get('/google-api/upload-stocks', 'GoogleController@uploadStocks');

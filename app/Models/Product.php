@@ -9,6 +9,7 @@ class Product extends Model
     protected $fillable = [
                 'category_id',
                 'promotion_id',
+                'brand_id',
                 'alias',
                 'position',
                 'succesion',
@@ -27,7 +28,10 @@ class Product extends Model
                 'bijoux',
                 'active',
                 'frisbo',
-                'swagger'
+                'swagger',
+                'w_b',
+                'amazon',
+                'ozon',
             ];
 
     protected $appends = ['color', 'type'];
@@ -146,6 +150,11 @@ class Product extends Model
     public function category()
     {
         return $this->hasOne(ProductCategory::class, 'id', 'category_id');
+    }
+
+    public function brand()
+    {
+        return $this->hasOne(Brand::class, 'id', 'brand_id');
     }
 
     public function brands()

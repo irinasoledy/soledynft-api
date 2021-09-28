@@ -77,6 +77,7 @@
                                 <hr>
                             </div>
                         </div>
+
                         <div class="col-md-3">
                             <hr>
                             <div class="form-group text-center">
@@ -87,6 +88,7 @@
                             </div>
                             <hr>
                         </div>
+
                         <div class="col-md-3">
                             <hr>
                             <div class="form-group text-center">
@@ -98,6 +100,7 @@
                             <hr>
                         </div>
                     </div>
+
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="">Name (native)</label>
@@ -115,10 +118,13 @@
                             <label for="">Currency</label>
                             <select class="form-control" name="currency">
                                 @foreach ($currencies as $key => $currency)
-                                    <option value="{{ $currency->id }}" {{ $country->currency_id == $currency->id ? 'selected' : ''}}>{{ $currency->translation->name }}</option>
+                                    <option value="{{ $currency->id }}" {{ $country->currency_id == $currency->id ? 'selected' : ''}}>{{ @$currency->translation->name }}</option>
                                 @endforeach
                             </select>
                         </div>
+
+                        {{-- {{ dd('bfg') }} --}}
+
                         <div class="form-group">
                             <label for="">Warehouse</label>
                             <select class="form-control" name="warehouse">
@@ -162,6 +168,7 @@
 
                                     </div>
                                 </div>
+
                             @endforeach
                         </div>
                         <div class="col-md-6">

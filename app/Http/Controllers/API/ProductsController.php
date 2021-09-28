@@ -6,6 +6,10 @@ use App\Models\Collection;
 use App\Models\Promotion;
 use App\Models\Product;
 use App\Models\ProductPrice;
+use App\Models\ParameterValueProduct;
+use App\Models\ParameterValue;
+use App\Models\ProductSimilar;
+use App\Models\Brand;
 use Illuminate\Http\Request;
 
 
@@ -27,6 +31,7 @@ class ProductsController extends ApiController
                             'products.translation',
                             'products.mainImage',
                         ])
+                        ->where('active', 1)
                         ->where('parent_id', 0)
                         ->orderby('position', 'asc')
                         ->get();
@@ -52,6 +57,10 @@ class ProductsController extends ApiController
                             'products.mainImage',
                             'products.mainPrice',
                             'products.personalPrice',
+                            'params.property.translation',
+                            'params.property.transData',
+                            'params.property.parameterValues.translation',
+                            'params.property.parameterValues.transData',
                         ])
                         ->where('alias', $request->get('alias'))
                         ->first();
@@ -68,10 +77,11 @@ class ProductsController extends ApiController
             return $this->respondError("Language is not found", 500);
         }
 
-        $product = Product::with(
+        $data['product'] = Product::with(
                         [
                             'category.properties.property.parameterValues.translation',
                             'category.translation',
+                            'brand.translation',
                             'images',
                             'mainImage',
                             'setImage',
@@ -86,7 +96,53 @@ class ProductsController extends ApiController
                         ->where('alias', $request->get('alias'))
                         ->first();
 
-        return $this->respond($product);
+        $data['similars'] = $this->getSlidersProducts($data['product']);
+
+        return $this->respond($data);
+    }
+
+    private function getSlidersProducts($product)
+    {
+        $someColorProdIds = [];
+        $category = $product->category;
+
+        $similarsArr = ProductSimilar::select('category_id')
+                                    ->where('product_id', $product->id)
+                                    ->pluck('category_id')->toArray();
+
+        if (!count($similarsArr)) $similarsArr[] = $category->id;
+
+        $colorId = ParameterValueProduct::select('parameter_value_id')
+                                    ->where('product_id', $product->id)
+                                    ->where('parameter_id', 2)
+                                    ->first();
+        if (!is_null($colorId)) {
+            if ($colorId->parameter_value_id !== 0) {
+                $someColorProdIds = ParameterValueProduct::select('product_id')
+                                                    ->where('parameter_value_id', $colorId->parameter_value_id)
+                                                    ->where('parameter_id', 2)
+                                                    ->pluck('product_id')->toArray();
+            }
+        }
+        $products = Product::with([
+                                'category.properties.property.parameterValues.translation',
+                                'category.translation',
+                                'images',
+                                'mainImage',
+                                'setImage',
+                                'mainPrice',
+                                'personalPrice',
+                                'subproducts.parameterValue.translation',
+                                'subproducts.parameter.translation',
+                                'subproducts.warehouse',
+                                'warehouse',
+                                'translation'
+                            ])
+                                    ->whereIn('category_id', $similarsArr)
+                                    ->where('id', '!=', $product->id)
+                                    ->where('active', 1)
+                                    ->get();
+        return $products;
     }
 
     public function getNewProducts(Request $request)
@@ -131,7 +187,7 @@ class ProductsController extends ApiController
             return $this->respondError("Language is not found", 500);
         }
 
-        $productsPrices = ProductPrice::where('currency_id', @$_COOKIE['currency_id'])->get();
+        $productsPrices = ProductPrice::where('currency_id', $request->get('currency'))->get();
         $prodIds = [];
 
         foreach ($productsPrices as $key => $productPrice) {
@@ -155,10 +211,42 @@ class ProductsController extends ApiController
                             'warehouse',
                             'translation',
                         ])
-                        ->where('active', 1)
+                        // ->where('active', 1)
                         ->whereIn('id', $prodIds)
                         ->orderBy('position', 'asc')
-                        ->limit(40)
+                        // ->limit(40)
+                        ->get();
+
+        return $this->respond($products);
+    }
+
+
+    public function getAllProducts(Request $request)
+    {
+        try {
+            $this->swithLang($request->get('lang'));
+            $this->swithCurrency($request->get('currency'));
+        } catch (\Exception $e) {
+            return $this->respondError("Language is not found", 500);
+        }
+
+        $products = Product::with(
+                        [
+                            'category.properties.property.parameterValues.translation',
+                            'category.translation',
+                            'images',
+                            'mainImage',
+                            'setImage',
+                            'mainPrice',
+                            'personalPrice',
+                            'subproducts.parameterValue.translation',
+                            'subproducts.parameter.translation',
+                            'subproducts.warehouse',
+                            'warehouse',
+                            'translation',
+                        ])
+                        ->where('active', 1)
+                        ->orderBy('position', 'asc')
                         ->get();
 
         return $this->respond($products);
@@ -213,6 +301,7 @@ class ProductsController extends ApiController
                             'sets.translation',
                             'sets.mainPhoto',
                         ])
+                        ->where('active', 1)
                         ->orderby('position', 'asc')
                         ->get();
 
@@ -223,13 +312,21 @@ class ProductsController extends ApiController
     {
         try {
             $this->swithLang($request->get('lang'));
+            $this->swithCurrency($request->get('currency'));
         } catch (\Exception $e) {
             return $this->respondError("Language is not found", 500);
         }
 
-        $promotions = Promotion::with(['translation'])
+        $promotions = Promotion::with([
+                                    'translation',
+                                    'products.translation',
+                                    'products.category',
+                                    'products.mainImage',
+                                    'products.mainPrice',
+                                    'products.personalPrice'
+                                ])
                                 ->where('active', 1)
-                                ->orderBy('id', 'desc')
+                                ->orderBy('position', 'asc')
                                 ->get();
 
         return $this->respond($promotions);
@@ -278,5 +375,189 @@ class ProductsController extends ApiController
         $data['pages'] = StaticPage::with(['translation'])->get();
 
         return $this->respond($data);
+    }
+
+    public function getSortedProducts(Request $request)
+    {
+        try {
+            $this->swithLang($request->get('lang'));
+            $this->swithCurrency($request->get('currency'));
+        } catch (\Exception $e) {
+            return $this->respondError("Language is not found", 500);
+        }
+
+        $sortDirection = 'desc';
+        if ($request->get('order') == 'priceAsc') {
+            $sortDirection = 'asc';
+        }
+
+        return Product::with([
+                            'category.properties.property.parameterValues.translation',
+                            'category.translation',
+                            'images',
+                            'mainImage',
+                            'setImage',
+                            'mainPrice',
+                            'personalPrice',
+                            'subproducts.parameterValue.translation',
+                            'subproducts.parameter.translation',
+                            'subproducts.warehouse',
+                            'warehouse',
+                            'translation',
+                        ])
+                        ->where('active', 1)
+                        ->where('category_id', $request->get('categoryId'))
+                        ->orderBy('actual_price', $sortDirection)
+                        ->get();
+    }
+
+    public function getFiltredProducts(Request $request)
+    {
+        try {
+            $this->swithLang($request->get('lang'));
+            $this->swithCurrency($request->get('currency'));
+        } catch (\Exception $e) {
+            return $this->respondError("Language is not found", 500);
+        }
+
+        $props = json_decode($request->get('properties'));
+
+        $parameters = [];
+        $propsProducts = [];
+        $dependable = 0;
+
+        foreach ($props as $key => $param) {
+            if ($param->name != $dependable) {
+                $parameters[$param->name][] = $param->value;
+            }
+        }
+
+        foreach ($parameters as $param => $values) {
+            $propIds = [];
+            foreach ($values as $key => $value) {
+                $row = ParameterValueProduct::select('product_id')
+                                ->where('parameter_value_id', $value)
+                                ->where('parameter_id', $param)
+                                ->when(count($propsProducts) > 0, function($query) use ($propsProducts){
+                                    return $query->whereIn('product_id', $propsProducts);
+                                })
+                                ->pluck('product_id')->toArray();
+
+                $propIds = array_merge($propIds, $row);
+            }
+            $propsProducts = $propIds;
+        }
+
+        if ((count($request->get('properties')) > 0) && (count($propsProducts) == 0)) $propsProducts = [0];
+
+        return Product::with([
+                            'category.properties.property.parameterValues.translation',
+                            'category.translation',
+                            'images',
+                            'mainImage',
+                            'setImage',
+                            'mainPrice',
+                            'personalPrice',
+                            'subproducts.parameterValue.translation',
+                            'subproducts.parameter.translation',
+                            'subproducts.warehouse',
+                            'warehouse',
+                            'translation',
+                        ])
+                        ->where('active', 1)
+                        ->orderBy('position', 'asc')
+                        ->where('category_id', $request->get('categoryId'))
+                        ->whereBetween('actual_price', [$request->get('minPrice'), $request->get('maxPrice')])
+                        ->when(count($propsProducts) > 0, function($query) use ($propsProducts){
+                            return $query->whereIn('id', $propsProducts);
+                        })
+                        ->get();
+
+    }
+
+    public function getDefaultFilter(Request $request)
+    {
+        try {
+            $this->swithLang($request->get('lang'));
+            $this->swithCurrency($request->get('currency'));
+        } catch (\Exception $e) {
+            return $this->respondError("Language is not found", 500);
+        }
+
+        $categoryChilds = ProductCategory::where('parent_id', $request->get('categoryId'))->pluck('id')->toArray();
+        $categoryChilds = array_merge($categoryChilds, [$request->get('categoryId')]);
+        $allProducts = Product::where('category_id', $request->get('categoryId'))->where('active', 1)->get(); // without pagination
+
+        $data['parameters'] = $this->_getParametersList($allProducts, $request->get('categoryId'));
+
+        $maxPrice = ProductPrice::where('currency_id', $this->currency->id)
+                                ->whereIn('product_id', $allProducts->pluck('id')->toArray())
+                                ->max('price');
+
+        $data['prices']['min'] = 0;
+        $data['prices']['max'] = $maxPrice;
+
+        return $data;
+    }
+
+    private function _getParametersList($allProducts, $categoryId)
+    {
+        $dependable = 0;
+        $parametersId = ParameterValueProduct::whereIn('product_id', array_filter($allProducts->pluck('id')->toArray()))->pluck('parameter_value_id')->toArray();
+        $dependableCategory = ProductCategory::where('id', $categoryId)->first();
+
+        if (!is_null($dependableCategory)) {
+            if (!is_null($dependableCategory->subproductParameter)) {
+                $dependable = $dependableCategory->subproductParameter->parameter_id;
+            }
+        }
+
+        $dependebleValues = ParameterValue::where('parameter_id', $dependable)->pluck('id')->toArray();
+
+        $parametersId = array_merge($parametersId, $dependebleValues);
+        return json_encode(array_filter($parametersId));
+    }
+
+    public function getDesigners(Request $request)
+    {
+        try {
+            $this->swithLang($request->get('lang'));
+            $this->swithCurrency($request->get('currency'));
+        } catch (\Exception $e) {
+            return $this->respondError("Language is not found", 500);
+        }
+
+        $brands = Brand::with(['translation'])->get();
+
+        return $this->respond($brands);
+    }
+
+    public function getDesigner(Request $request)
+    {
+        try {
+            $this->swithLang($request->get('lang'));
+            $this->swithCurrency($request->get('currency'));
+        } catch (\Exception $e) {
+            return $this->respondError("Language is not found", 500);
+        }
+
+        $brand = Brand::with([
+                'translation',
+                'products.category.properties.property.parameterValues.translation',
+                'products.category.translation',
+                'products.images',
+                'products.mainImage',
+                'products.setImage',
+                'products.mainPrice',
+                'products.personalPrice',
+                'products.subproducts.parameterValue.translation',
+                'products.subproducts.parameter.translation',
+                'products.subproducts.warehouse',
+                'products.warehouse',
+                'products.translation',
+            ])
+            ->where('alias', $request->get('alias'))->first();
+
+        return $this->respond($brand);
     }
 }

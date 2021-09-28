@@ -38,7 +38,7 @@
                                 {{ $key + 1 }}
                             </td>
                             <td>
-                                {{ @$currency->translation()->name }}
+                                {{-- {{ @$currency->translation()->name }} --}}
                             </td>
                             <td>
                                 {{ $currency->abbr }}
@@ -68,6 +68,7 @@
                                     ----
                                 @endif
                             </td>
+
                             <td class="text-center">
                                 <span class="badge badge-success">{{ count($currency->countries) }}</span>
                             </td>
@@ -76,6 +77,7 @@
                                     <i class="fa fa-edit"></i>
                                 </a>
                             </td>
+
                             <td class="text-center">
                                 @if ($currency->type == 0)
                                     <button type="button" class="btn-link" data-toggle="modal" data-target="#actions{{ $currency->id }}">
@@ -92,9 +94,16 @@
                                           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                           </button>
-                                          <h5 class="modal-title" id="exampleModalLabel">Actions {{ $currency->translation->name }}</h5>
+
+
+
+                                          <h5 class="modal-title" id="exampleModalLabel">Actions {{ @$currency->translation->name }}</h5>
+
+
 
                                       </div>
+
+
                                       <div class="modal-body">
                                           @if ($currency->countries()->count() > 0)
                                               This currency is associated with countries:
@@ -106,6 +115,7 @@
                                               . These countries will be associated with main currency.
                                           @endif
                                       </div>
+
                                       <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                                         <form action="{{ url('/back/currencies-deactivate/'.$currency->id) }}" method="post">
@@ -127,6 +137,7 @@
                             </td>
                         </tr>
                         @endforeach
+
                     </tbody>
                     <tfoot>
                         <tr>

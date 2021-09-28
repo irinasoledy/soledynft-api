@@ -21,7 +21,7 @@
 <div class="list-content">
     <div class="card">
         <div class="card-block">
-            <form class="form-reg" role="form" method="POST" action="{{ route('warehouses.store') }}" enctype="multipart/form-data">
+            <form class="form-reg" role="form" method="POST" action="{{ route('banners.store') }}" enctype="multipart/form-data">
                 {{ csrf_field() }}
                 <div class="row">
                     <div class="col-md-6">

@@ -29,7 +29,7 @@ class Promotion extends Model
 
     public function translation()
     {
-        return $this->hasOne(PromotionTranslation::class, 'promotion_id')->where('lang_id', self::$lang);
+        return $this->hasOne(PromotionTranslation::class, 'promotion_id', 'id')->where('lang_id', self::$lang);
     }
 
     // public function products()
@@ -42,9 +42,14 @@ class Promotion extends Model
         return $this->hasOne(PromotionTranslation::class, 'promotion_id')->where('lang_id', $lang)->first();
     }
 
+    // public function products()
+    // {
+    //     return $this->hasMany(PromotionProduct::class, 'promotion_id', 'id');
+    // }
+
     public function products()
     {
-        return $this->hasMany(PromotionProduct::class, 'promotion_id', 'id');
+        return $this->hasMany(Product::class, 'promotion_id', 'id');
     }
 
     public function sets()

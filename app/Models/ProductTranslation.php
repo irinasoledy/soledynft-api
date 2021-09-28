@@ -16,6 +16,7 @@ class ProductTranslation extends Model
                     'body',
                     'atributes',
                     'aditionall',
+                    'info',
                     'seo_title',
                     'seo_keywords',
                     'seo_description',

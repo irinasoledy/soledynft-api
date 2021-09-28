@@ -6,8 +6,8 @@
  * @author   Taylor Otwell <taylor@laravel.com>
  */
 
- header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS');
- header('Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token, X-CSRF-Token, x-requested-with');
+ // header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS');
+ // header('Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token, X-CSRF-Token, x-requested-with');
 
 
  if (!defined('JSON_INVALID_UTF8_SUBSTITUTE')) {

@@ -11,7 +11,7 @@
                 <div class="row">
                     <div class="col-md-7">
                         <i class="fa fa-ellipsis-v"></i>
-                        <span>{{ item.translation.name }}</span>
+                        <span v-if="item.translation">{{ item.translation.name }}</span>
                     </div>
                     <div class="col-md-5 text-right">
                         <a :href="'/back/products/category/' + item.id" v-if="item.products.length || !item.children.length"><i class="fa fa-eye"></i></a>

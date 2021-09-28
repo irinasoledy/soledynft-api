@@ -55,7 +55,7 @@
                         {{ $key + 1 }}
                     </td>
                     <td>
-                        {{ $promotion->translation()->first()->name ?? trans('variables.another_name') }}
+                        {{ $promotion->translation->name ?? trans('variables.another_name') }}
                     </td>
                     <td class="dragHandle" nowrap style="cursor: move;">
                         <a class="top-pos" href=""><i class="fa fa-arrow-up"></i></a>

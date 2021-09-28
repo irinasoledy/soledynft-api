@@ -7,10 +7,19 @@ use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Session;
 use App\Http\Controllers\Controller;
 use App\Models\Brand;
+use App\Models\Lang;
 
 
 class BrandsController extends Controller
 {
+    public $langs;
+
+    public function __construct()
+    {
+        $this->langs = Lang::get();
+        $this->lang = Lang::first();
+    }
+
     public function index()
     {
         $brands = Brand::orderBy('position', 'asc')->get();
@@ -45,14 +54,14 @@ class BrandsController extends Controller
             $picture = uniqid() . '-' . $request->picture->getClientOriginalName();
             $request->logo->move('images/brands', $picture);
         }
-
-        foreach ($this->langs as $lang){
-            $banner[$lang->lang] = '';
-            if ($request->file('image_'. $lang->lang)) {
-              $banner[$lang->lang] = uniqid() . '-' . $request->file('image_'. $lang->lang)->getClientOriginalName();
-              $request->file('image_'. $lang->lang)->move('images/brands', $banner[$lang->lang]);
-            }
-        }
+        //
+        // foreach ($this->langs as $lang){
+        //     $banner[$lang->lang] = '';
+        //     if ($request->file('image_'. $lang->lang)) {
+        //       $banner[$lang->lang] = uniqid() . '-' . $request->file('image_'. $lang->lang)->getClientOriginalName();
+        //       $request->file('image_'. $lang->lang)->move('images/brands', $banner[$lang->lang]);
+        //     }
+        // }
 
         $brand = new Brand();
         $brand->alias = str_slug(request('title_'.$this->lang));
@@ -62,12 +71,14 @@ class BrandsController extends Controller
         $brand->logo  = $logo;
         $brand->save();
 
-        foreach ($this->langs as $lang):
+
+        $langs = Lang::all();
+
+        foreach ($langs as $lang):
             $brand->translation()->create([
                 'lang_id' => $lang->id,
                 'name' => request('title_' . $lang->lang),
                 'description' => request('description_' . $lang->lang),
-                'banner' => $banner[$lang->lang],
                 'seo_text' => request('seo_text_' . $lang->lang),
                 'seo_title' => request('seo_title_' . $lang->lang),
                 'seo_descr' => request('seo_descr_' . $lang->lang),

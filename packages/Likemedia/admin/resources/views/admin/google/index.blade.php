@@ -42,6 +42,10 @@
             <label for="">Step 4</label>
             <a href="{{ url('/back/google-api/get-trans-data') }}" class="btn btn-primary btn-block" target="_blank">Get Trans data</a>
         </div>
+        <div class="col-md-2">
+            <label for="">Step 5</label>
+            <a href="{{ url('/back/google-api/get-brands') }}" class="btn btn-primary btn-block" target="_blank">Get Brands</a>
+        </div>
     </div>
     <hr> <hr>
     <div class="row">

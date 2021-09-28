@@ -70,7 +70,7 @@ class Set extends Model
 
     public function setProducts()
     {
-        return $this->hasMany(SetProducts::class, 'set_id', 'id')->orderBy('subproduct_id', 'asc');
+        return $this->hasMany(SetProducts::class, 'set_id', 'id')->orderBy('subproduct_id', 'asc')->where('display', 'y');
     }
     //
     // public function items()

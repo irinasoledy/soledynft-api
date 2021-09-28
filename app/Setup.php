@@ -49,9 +49,9 @@ class Setup
         }else{
             $this->setGeoData();
         }
-if ($this->request->method() == 'GET') {
-        $this->setLang($request);
-}
+        // if ($this->request->method() == 'GET') {
+            $this->setLang($request);
+        // }
         if(\Request::segment(1) == 'back'){
             View::share('menu', Module::where('parent_id', 0)->orderBy('position')->get());
         }
@@ -59,14 +59,15 @@ if ($this->request->method() == 'GET') {
 
     public function init()
     {
+        View::share("lang", self::$lang);
+        View::share("langs", self::$langs);
+        Model::$lang = self::$lang->id;
+
         if ($this->request->method() == 'GET') {
             $this->reinitForce();
 
             View::share("site", self::$site);
             View::share("device", self::$device);
-
-            View::share("lang", self::$lang);
-            View::share("langs", self::$langs);
 
             View::share("country", self::$country);
             View::share("countries", self::$countries);
@@ -82,7 +83,6 @@ if ($this->request->method() == 'GET') {
             View::share('productList', json_encode([]));
             View::share('list', json_encode([]));
 
-            Model::$lang = self::$lang->id;
             Model::$site = self::$site;
             Model::$currency = self::$currency->id;
             Model::$mainCurrency = self::$mainCurrency->id;

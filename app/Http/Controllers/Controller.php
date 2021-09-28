@@ -34,11 +34,15 @@ class Controller extends BaseController
         $this->lang = Setup::$lang;
         $this->siteType = Setup::$site;
         $this->device = Setup::$device;
-        $this->warehouse = Setup::$warehouse->name;
+        // $this->warehouse = Setup::$warehouse->name;
         $this->mainCurrency = Setup::$mainCurrency;
         $this->currency = Setup::$currency;
         $this->country = Setup::$country;
         $this->userId = Setup::$userId;
+
+
+        $this->lang = Lang::where('default', 1)->first();
+        $this->langs = Lang::get();
     }
 
     public function saveSettings(Request $request)
