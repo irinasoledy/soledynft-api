@@ -31,6 +31,7 @@ class CheckoutController extends Controller
             // "paydo"  => "PayDo",
             // "payop"  => "PayOp",
             // "paynet" => "Paynet",
+            // "paynet" => "Paynet",
         ];
     }
 
