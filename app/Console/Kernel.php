@@ -24,14 +24,14 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        \Artisan::call('check:stocks');
-        \Artisan::call('update:stocks');
-
-        $schedule->command('update:stocks')
-                 ->hourly();
-
-        $schedule->command('\App\Console\Commands\checkStocks')
-              ->hourly();
+//        \Artisan::call('check:stocks');
+//        \Artisan::call('update:stocks');
+//
+//        $schedule->command('update:stocks')
+//                 ->hourly();
+//
+//        $schedule->command('\App\Console\Commands\checkStocks')
+//              ->hourly();
     }
 
     /**
