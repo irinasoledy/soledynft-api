@@ -4,7 +4,6 @@ use Faker\Generator as Faker;
 
 $factory->define(Product::class, function (Faker $faker) {
     $categories = ProductCategory::lists('id');
-    // $categories = ProductCategory::lists('id');
     return [
         $product->category_id = $request->get('categoryId');
         $product->alias = str_slug(mb_convert_encoding($row[2], 'utf8', 'cp1251'));
