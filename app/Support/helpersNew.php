@@ -3,7 +3,7 @@
 function getPage($alias, $lang)
 {
     $page = DB::table('pages')
-        ->join('pages_translation', 'pages_translation.page_id', '=' ,'pages.id')
+        ->join('pages_translation', 'pages_translation.page_id', '=', 'pages.id')
         ->where('lang_id', $lang)
         ->where('alias', $alias)
         ->first();
@@ -11,7 +11,8 @@ function getPage($alias, $lang)
     return $page;
 }
 
-function chechSubproductVals($filter, $currentVal, $productId, $itemId){
+function chechSubproductVals($filter, $currentVal, $productId, $itemId)
+{
     $flag = false;
     $vals = [];
     if ($filter) {
@@ -26,18 +27,18 @@ function chechSubproductVals($filter, $currentVal, $productId, $itemId){
         ->where('product_id', $productId)
         ->get();
 
-        if (count($inactive) > 0) {
-            foreach ($inactive as $key => $inactiv) {
-                if (!in_array($itemId, $vals)) {
-                $comb = (array) json_decode($inactiv->combination);
-                    if (diffArray($vals, $comb) && in_array($itemId, $comb)) {
-                        return true;
-                    }
+    if (count($inactive) > 0) {
+        foreach ($inactive as $key => $inactiv) {
+            if (!in_array($itemId, $vals)) {
+                $comb = (array)json_decode($inactiv->combination);
+                if (diffArray($vals, $comb) && in_array($itemId, $comb)) {
+                    return true;
                 }
             }
         }
+    }
 
-        return false;
+    return false;
 }
 
 function chechSubproduct($productId, $itemId)
@@ -49,18 +50,18 @@ function chechSubproduct($productId, $itemId)
         ->where('product_id', $productId)
         ->get();
 
-        if (count($inactive) > 0) {
-            foreach ($inactive as $key => $inactiv) {
-                // if (!in_array($itemId, $vals)) {
-                $comb = (array) json_decode($inactiv->combination);
-                    if (in_array($itemId, $comb)) {
-                        return true;
-                    }
-                // }
+    if (count($inactive) > 0) {
+        foreach ($inactive as $key => $inactiv) {
+            // if (!in_array($itemId, $vals)) {
+            $comb = (array)json_decode($inactiv->combination);
+            if (in_array($itemId, $comb)) {
+                return true;
             }
+            // }
         }
+    }
 
-        return false;
+    return false;
 }
 
 function diffArray($vals, $combs)
@@ -90,23 +91,24 @@ function checkValue($currentValue, $value, $productId)
         ->pluck('combination_id')
         ->toArray();
 
-        if (count($inactive) > 0) {
-            foreach ($inactive as $key => $inactiv) {
-                $configuration = DB::table('subproduct_combinations')
-                    ->where('id', $inactiv)
-                    ->first();
+    if (count($inactive) > 0) {
+        foreach ($inactive as $key => $inactiv) {
+            $configuration = DB::table('subproduct_combinations')
+                ->where('id', $inactiv)
+                ->first();
 
-                    if (!is_null($configuration)) {
-                        $valuesList = $configuration->case_1 + $configuration->case_2 + $configuration->case_3;
-                        $existsList = $currentValue + $value;
-                        if ($valuesList == $existsList) {
-                            return true;
-                        }
-                    }
+            if (!is_null($configuration)) {
+                $valuesList = $configuration->case_1 + $configuration->case_2 + $configuration->case_3;
+                $existsList = $currentValue + $value;
+                if ($valuesList == $existsList) {
+                    return true;
+                }
             }
         }
-        return false;
+    }
+    return false;
 }
+
 /**
  * @param $category_id
  * @param $lang_id
@@ -114,18 +116,18 @@ function checkValue($currentValue, $value, $productId)
  */
 function checkAutometasCategoryEdit($category_id, $lang_id, $type, $meta_id)
 {
-  $checked = DB::table('autometa_categories')
-      ->join('autometas', 'autometa_categories.autometa_id', 'autometas.meta_id')
-      ->where('lang_id', $lang_id)
-      ->where('type', $type)
-      ->where('category_id', $category_id)
-      ->where('autometa_id', $meta_id)
-      ->get();
-  if(count($checked) > 0) {
-    return true;
-  }
+    $checked = DB::table('autometa_categories')
+        ->join('autometas', 'autometa_categories.autometa_id', 'autometas.meta_id')
+        ->where('lang_id', $lang_id)
+        ->where('type', $type)
+        ->where('category_id', $category_id)
+        ->where('autometa_id', $meta_id)
+        ->get();
+    if (count($checked) > 0) {
+        return true;
+    }
 
-  return false;
+    return false;
 }
 
 /**
@@ -133,16 +135,17 @@ function checkAutometasCategoryEdit($category_id, $lang_id, $type, $meta_id)
  */
 function genMetaId()
 {
-  $meta_id = rand(1, 1000);
-  $temp_id = DB::table('autometas')->where('meta_id', $meta_id)->get();
-  if(count($temp_id) > 0) {
-    genMetaId();
-  } else {
-    return $meta_id;
-  }
+    $meta_id = rand(1, 1000);
+    $temp_id = DB::table('autometas')->where('meta_id', $meta_id)->get();
+    if (count($temp_id) > 0) {
+        genMetaId();
+    } else {
+        return $meta_id;
+    }
 }
 
-function checkAutometasCategoryCreate($category_id, $lang_id, $type){
+function checkAutometasCategoryCreate($category_id, $lang_id, $type)
+{
     $row = DB::table('autometa_categories')
         ->join('autometas', 'autometa_categories.autometa_id', 'autometas.meta_id')
         ->where('lang_id', $lang_id)
@@ -174,10 +177,10 @@ function GetGallery($shot_code, $langId)
             ->limit(4)
             ->get();
 
-            return $row;
+        return $row;
     }
 
-        return false;
+    return false;
 }
 
 function GetGalleryById($id, $langId)
@@ -198,12 +201,11 @@ function GetGalleryById($id, $langId)
             ->limit(4)
             ->get();
 
-            return $row;
+        return $row;
     }
 
-        return false;
+    return false;
 }
-
 
 
 function getParamProdValue($parameterId, $productId)
@@ -238,12 +240,13 @@ function getParameterChechedItems($parameterId, $productId)
 }
 
 
-function getCategories($parent_id, $lang_id) {
-  $row = DB::table('product_categories')
-      ->join('product_categories_translation', 'product_categories_translation.product_category_id', '=', 'product_categories.id')
-      ->where('parent_id', $parent_id)
-      ->where('lang_id', $lang_id)
-      ->get();
+function getCategories($parent_id, $lang_id)
+{
+    $row = DB::table('product_categories')
+        ->join('product_categories_translation', 'product_categories_translation.product_category_id', '=', 'product_categories.id')
+        ->where('parent_id', $parent_id)
+        ->where('lang_id', $lang_id)
+        ->get();
     if (!empty($row)) {
         return $row;
     }
@@ -251,43 +254,46 @@ function getCategories($parent_id, $lang_id) {
 }
 
 
-function getProductImages($product_id, $lang_id) {
-  $row = DB::table('product_images')
-      ->join('product_images_translation', 'product_images.id', '=', 'product_images_translation.product_image_id')
-      ->where('lang_id', $lang_id)
-      ->where('product_id', $product_id)
-      ->get();
+function getProductImages($product_id, $lang_id)
+{
+    $row = DB::table('product_images')
+        ->join('product_images_translation', 'product_images.id', '=', 'product_images_translation.product_image_id')
+        ->where('lang_id', $lang_id)
+        ->where('product_id', $product_id)
+        ->get();
     if (!empty($row)) {
         return $row;
     }
     return false;
 }
 
-function getPromotionProducts($lang_id) {
-  $row = DB::table('products')
-      ->join('products_translation', 'products.id', '=', 'products_translation.product_id')
-      ->where('lang_id', $lang_id)
-      ->where('promotion_id', '!=', 0)
-      ->orderBy('products.created_at', 'desc')
-      ->select('products.*', 'products.alias as productAlias','products_translation.*')
-      ->paginate(12);
+function getPromotionProducts($lang_id)
+{
+    $row = DB::table('products')
+        ->join('products_translation', 'products.id', '=', 'products_translation.product_id')
+        ->where('lang_id', $lang_id)
+        ->where('promotion_id', '!=', 0)
+        ->orderBy('products.created_at', 'desc')
+        ->select('products.*', 'products.alias as productAlias', 'products_translation.*')
+        ->paginate(12);
     if (!empty($row)) {
         return $row;
     }
     return false;
 }
 
-function getRecomendedProducts($lang_id) {
-  $row = DB::table('products')
-      ->join('products_translation', 'products.id', '=', 'products_translation.product_id')
-      ->where('lang_id', $lang_id)
-      ->where('recomended', 1)
-      ->orderBy('products.created_at', 'desc')
-      ->limit(15)
-      ->select('products.*', 'products.alias as productAlias','products_translation.*')
-      ->get();
+function getRecomendedProducts($lang_id)
+{
+    $row = DB::table('products')
+        ->join('products_translation', 'products.id', '=', 'products_translation.product_id')
+        ->where('lang_id', $lang_id)
+        ->where('recomended', 1)
+        ->orderBy('products.created_at', 'desc')
+        ->limit(15)
+        ->select('products.*', 'products.alias as productAlias', 'products_translation.*')
+        ->get();
 
-     if (!empty($row)) {
+    if (!empty($row)) {
         return $row;
     }
     return false;
@@ -357,20 +363,19 @@ function getRecomendedProducts($lang_id) {
 //     return $hasParent;
 // }
 
-function getContactInfo($title) {
+function getContactInfo($title)
+{
     $contactModel = new App\Models\Contact();
     $row = $contactModel->where('title', $title)->first();
     return $row;
 }
 
-function YoutubeID($url) {
-    if(strlen($url) > 11)
-    {
-        if (preg_match('%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i', $url, $match))
-        {
+function YoutubeID($url)
+{
+    if (strlen($url) > 11) {
+        if (preg_match('%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i', $url, $match)) {
             return $match[1];
-        }
-        else
+        } else
             return false;
     }
 
@@ -379,11 +384,11 @@ function YoutubeID($url) {
 
 function pathWithoutLang($path, $langs)
 {
-    $pathWithBar = '|'.$path;
+    $pathWithBar = '|' . $path;
 
     if (!empty($langs)) {
         foreach ($langs as $key => $lang) {
-            if (strpos($pathWithBar, '|'.$lang->lang) !== false) {
+            if (strpos($pathWithBar, '|' . $lang->lang) !== false) {
                 return substr($path, 3);
             } else {
                 continue;
@@ -399,43 +404,45 @@ function getProducts()
     return $row;
 }
 
-function checkProductsSimilar($product_id, $category_id) {
-  $row = DB::table('similar_products')
+function checkProductsSimilar($product_id, $category_id)
+{
+    $row = DB::table('similar_products')
         ->where('product_id', $product_id)
         ->where('category_id', $category_id)
         ->first();
 
-  if(count($row) > 0) {
-    return true;
-  }
-  return false;
+    if (count($row) > 0) {
+        return true;
+    }
+    return false;
 }
 
-function isMobile() {
+function isMobile()
+{
     return preg_match("/(android|avantgo|blackberry|bolt|boost|cricket|docomo|fone|hiptop|mini|mobi|palm|phone|pie|tablet|up\.browser|up\.link|webos|wos)/i", $_SERVER["HTTP_USER_AGENT"]);
 }
 
 function getProductLink($categoryId)
 {
-  $subcat = DB::table('product_categories')
-      ->select('alias', 'parent_id')
-      ->where('id', $categoryId)
-      ->first();
+    $subcat = DB::table('product_categories')
+        ->select('alias', 'parent_id')
+        ->where('id', $categoryId)
+        ->first();
 
-  if(!is_null($subcat)) {
-      $cat = DB::table('product_categories')
-          ->select('alias')
-          ->where('id', $subcat->parent_id)
-          ->first();
+    if (!is_null($subcat)) {
+        $cat = DB::table('product_categories')
+            ->select('alias')
+            ->where('id', $subcat->parent_id)
+            ->first();
 
-      if(!is_null($cat)) {
-         return $cat->alias.'/'.$subcat->alias.'/';
-      }else{
-          return $subcat->alias.'/';
-      }
-  }
+        if (!is_null($cat)) {
+            return $cat->alias . '/' . $subcat->alias . '/';
+        } else {
+            return $subcat->alias . '/';
+        }
+    }
 
-  return false;
+    return false;
 }
 
 function getSubcats($categoryId, $langId)
@@ -485,7 +492,6 @@ function getParamCategory($param, $categ)
 //
 //     return null;
 // }
-
 
 
 // function SelectCollectionsTree($lang_id)

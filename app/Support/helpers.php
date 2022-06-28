@@ -1,8 +1,6 @@
 <?php
-// new functions
 
 require('helpersNew.php');
-
 
 function Banner($unikey, $device = 'desktop')
 {
@@ -12,14 +10,13 @@ function Banner($unikey, $device = 'desktop')
     if (!empty($banners)) {
         foreach ($banners as $key => $banner) {
             if ($key == $unikey) {
-                $ret = '/images/banners/'.$banner[$device];
+                $ret = '/images/banners/' . $banner[$device];
             }
         }
     }
 
     return $ret;
 }
-
 
 function getProductCompozition($productId, $parameterId)
 {
@@ -50,16 +47,19 @@ function getProductColor($productId, $parameterId)
     return null;
 }
 
-function getSettings(){
+function getSettings()
+{
     return json_decode(file_get_contents(storage_path('settings.json')), true);
 }
 
 
-function getCheckboxValues($productId, $paramterId){
+function getCheckboxValues($productId, $paramterId)
+{
     return \App\Models\ParameterValueProduct::where('product_id', $productId)->where('parameter_id', $paramterId)->get();
 }
 
-function daysBetween($dt1, $dt2) {
+function daysBetween($dt1, $dt2)
+{
     return date_diff(
         date_create($dt2),
         date_create($dt1)
@@ -106,7 +106,7 @@ function getDeliveryCountry($deliveryId, $countryId)
 
 function getLangsUrl($lang)
 {
-    $defaultLang =  DB::table('lang')->where('default', 1)->first();
+    $defaultLang = DB::table('lang')->where('default', 1)->first();
     $allLangs = DB::table('lang')->get();
 
     $urlLang = "";
@@ -121,20 +121,21 @@ function getLangsUrl($lang)
     $url = $urlLang;
 
     if (request()->segment(2)) {
-        $url = $urlLang.'/'.request()->segment(1).'/'.request()->segment(2);
-    }elseif (request()->segment(3)) {
-        $url = $urlLang.'/'.request()->segment(1).'/'.request()->segment(2).'/'.request()->segment(3);
-    }elseif (request()->segment(4)) {
-        $url = $urlLang.'/'.request()->segment(1).'/'.request()->segment(2).'/'.request()->segment(3).'/'.request()->segment(4);
+        $url = $urlLang . '/' . request()->segment(1) . '/' . request()->segment(2);
+    } elseif (request()->segment(3)) {
+        $url = $urlLang . '/' . request()->segment(1) . '/' . request()->segment(2) . '/' . request()->segment(3);
+    } elseif (request()->segment(4)) {
+        $url = $urlLang . '/' . request()->segment(1) . '/' . request()->segment(2) . '/' . request()->segment(3) . '/' . request()->segment(4);
     }
 
     return $url;
 }
 
 
-function isJson($string) {
-     json_decode($string);
-     return (json_last_error() == JSON_ERROR_NONE);
+function isJson($string)
+{
+    json_decode($string);
+    return (json_last_error() == JSON_ERROR_NONE);
 }
 
 
@@ -219,13 +220,13 @@ function SelectGoodsCatsTree($lang_id, $id, $curr_id = null, $level = 0)
 
 function hasSubmodule($id)
 {
-  $table = "modules";
+    $table = "modules";
 
-  $row = DB::table($table)
-      ->where('parent_id', $id)
-      ->get();
+    $row = DB::table($table)
+        ->where('parent_id', $id)
+        ->get();
 
-  return $row;
+    return $row;
 }
 
 function moduleItems($table)
@@ -309,7 +310,7 @@ function SelectMenusTree($lang_id, $id, $curr_id = null, $level = 0, $groupId)
                 </div>
                 %s
             </li>',
-                '<span>' . $entry->name .' - ' . $entry->url. '</span><div class="buttons">
+                '<span>' . $entry->name . ' - ' . $entry->url . '</span><div class="buttons">
 
                <a href="' . $edit . '"><i class="fa fa-pencil" aria-hidden="true"></i></a>
 
@@ -386,8 +387,8 @@ function SelectProductCategoriesTree($lang_id, $id, $curr_id = null, $level = 0)
                 </div>
                 %s
             </li>',
-                '<span>' . $entry->name .'  </span><div class="buttons">
-                '. $postsLink .'
+                '<span>' . $entry->name . '  </span><div class="buttons">
+                ' . $postsLink . '
                <a href="' . $edit . '"><i class="fa fa-pencil" aria-hidden="true"></i></a>
 
                <a class="btn-link modal-id" data-toggle="modal" data-target="' . $addNew . '" data-id="' . $entry->product_category_id . '" data-name="' . $entry->name . '">

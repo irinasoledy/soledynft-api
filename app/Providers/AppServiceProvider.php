@@ -37,7 +37,9 @@ class AppServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function register(){}
+    public function register()
+    {
+    }
 
 
     public function boot_(Request $request)
@@ -50,9 +52,9 @@ class AppServiceProvider extends ServiceProvider
 
         $userCountry = Country::where('active', 1)->where('main', 1)->first();
         $initWareHouse = @$_COOKIE['warehouse_id'];
-        $currency       = false;
+        $currency = false;
 
-        if (!@$_COOKIE['country_id'] && $request->method() == 'GET'){
+        if (!@$_COOKIE['country_id'] && $request->method() == 'GET') {
             try {
                 $details = @json_decode(file_get_contents("http://www.geoplugin.net/json.gp?ip={$ip}"));
 
@@ -61,7 +63,7 @@ class AppServiceProvider extends ServiceProvider
                 if (is_null($userCountry)) {
                     $userCountry = Country::where('active', 1)->where('main', 1)->first();
                     $notShippingCounrty = true;
-                }else{
+                } else {
                     $notShippingCounrty = false;
                 }
 
@@ -89,15 +91,15 @@ class AppServiceProvider extends ServiceProvider
             if (is_null($lang)) {
                 $lang = Lang::where('default', '1')->first();
             }
-        }else{
+        } else {
             $lang = Lang::where('lang', $userCountry->lang->lang ?? 'ro')->first();
         }
 
         if (\Request::segment(2) == 'homewear') {
             $siteType = 'homewear';
-        }elseif(\Request::segment(2) == 'bijoux'){
+        } elseif (\Request::segment(2) == 'bijoux') {
             $siteType = 'bijoux';
-        }else{
+        } else {
             $siteType = 'bijoux';
         }
 
@@ -139,15 +141,15 @@ class AppServiceProvider extends ServiceProvider
             $this->setUserId();
 
             if ($request->method() == 'GET') {
-                if(\Request::segment(1) == 'back'){
+                if (\Request::segment(1) == 'back') {
                     View::share('menu', Module::where('parent_id', 0)->orderBy('position')->get());
-                }else{
+                } else {
                     if ($siteType == 'homewear') {
                         $categoriesMenuLoungewear = ProductCategory::where('parent_id', 0)->where('active', 1)->where('homewear', 1)->orderBy('position', 'asc')->get();
                         $collectionsMenuLoungewear = Collection::where('active', 1)->orderBy('position', 'asc')->where('homewear', 1)->get();
                         View::share('categoriesMenuLoungewear', $categoriesMenuLoungewear);
                         View::share('collectionsMenuLoungewear', $collectionsMenuLoungewear);
-                    }else{
+                    } else {
                         $categoriesMenuJewelry = ProductCategory::where('parent_id', 0)->where('active', 1)->where('bijoux', 1)->orderBy('position', 'asc')->get();
                         $collectionsMenuJewelry = Collection::where('active', 1)->where('bijoux', 1)->orderBy('position', 'asc')->get();
                         View::share('categoriesMenuJewelry', $categoriesMenuJewelry);
@@ -174,14 +176,14 @@ class AppServiceProvider extends ServiceProvider
             }
 
 
-            Model::$lang        = $lang->id;
-            Model::$site        = $siteType;
-            Model::$currency    = $currency->id;
+            Model::$lang = $lang->id;
+            Model::$site = $siteType;
+            Model::$currency = $currency->id;
             Model::$mainCurrency = $mainCurrency->id;
-            Model::$warehouse   = $warehouse->id;
-            Model::$warehouseName   = $warehouse->name;
+            Model::$warehouse = $warehouse->id;
+            Model::$warehouseName = $warehouse->name;
 
-        }else{
+        } else {
             exit('language is not exists!');
         }
     }

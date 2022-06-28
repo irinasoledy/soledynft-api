@@ -14,22 +14,22 @@ class FrontUser extends Authenticatable
     protected $table = 'front_users';
 
     protected $fillable = [
-                    'lang_id',
-                    'country_id',
-                    'currency_id',
-                    'payment_id',
-                    'active_diller',
-                    'customer_type',
-                    'diller_group_id',
-                    'is_authorized',
-                    'google',
-                    'facebook',
-                    'name',
-                    'email',
-                    'phone',
-                    'company',
-                    'password',
-                    'remember_token',
+        'lang_id',
+        'country_id',
+        'currency_id',
+        'payment_id',
+        'active_diller',
+        'customer_type',
+        'diller_group_id',
+        'is_authorized',
+        'google',
+        'facebook',
+        'name',
+        'email',
+        'phone',
+        'company',
+        'password',
+        'remember_token',
     ];
 
     /**
