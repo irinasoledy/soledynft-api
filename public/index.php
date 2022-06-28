@@ -6,10 +6,6 @@
  * @author   Taylor Otwell <taylor@laravel.com>
  */
 
- // header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS');
- // header('Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token, X-CSRF-Token, x-requested-with');
-
-
  if (!defined('JSON_INVALID_UTF8_SUBSTITUTE')) {
     //PHP < 7.2 Define it as 0 so it does nothing
     define('JSON_INVALID_UTF8_SUBSTITUTE', 0);
