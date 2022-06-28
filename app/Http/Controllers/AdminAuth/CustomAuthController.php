@@ -32,19 +32,23 @@ class CustomAuthController extends Controller
             'password' => 'required|min:4',
         ]);
 
-        if (Auth::attempt(array('login' => $request->get('login'), 'password' => $request->get('password')))){
+        if (Auth::attempt(array('login' => $request->get('login'), 'password' => $request->get('password')))) {
             return redirect()->route('back');
         }
         return redirect()->back();
     }
 
-    public function register() { }
+    public function register()
+    {
+    }
 
-    public function checkRegister() { }
+    public function checkRegister()
+    {
+    }
 
     public function logout()
     {
         Auth::logout();
-        return redirect('/'.$this->lang.'/homewar');
+        return redirect('/' . $this->lang . '/homewar');
     }
 }
