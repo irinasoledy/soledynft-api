@@ -1,6 +1,6 @@
-@extends('admin::admin.app')
-@include('admin::admin.nav-bar')
-@include('admin::admin.left-menu')
+@extends('admin.app')
+@include('admin.nav-bar')
+@include('admin.left-menu')
 @section('content')
 
 <nav aria-label="breadcrumb">
@@ -12,14 +12,14 @@
 </nav>
 <div class="title-block">
     <h3 class="title"> Create Collection </h3>
-    @include('admin::admin.list-elements', [
+    @include('admin.list-elements', [
     'actions' => [
     trans('variables.add_element') => route('collections.create'),
     ]
     ])
 </div>
 
-@include('admin::admin.alerts')
+@include('admin.alerts')
 
 <div class="list-content">
     <form class="form-reg" role="form" method="POST" action="{{ route('collections.store') }}" id="add-form"
@@ -105,6 +105,6 @@
 @stop
 @section('footer')
 <footer>
-    @include('admin::admin.footer')
+    @include('admin.footer')
 </footer>
 @stop

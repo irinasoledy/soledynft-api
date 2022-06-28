@@ -1,15 +1,15 @@
-@extends('admin::admin.app')
+@extends('admin.app')
 
-@include('admin::admin.nav-bar')
+@include('admin.nav-bar')
 
-@include('admin::admin.left-menu')
+@include('admin.left-menu')
 
 @section('content')
 
-    @include('admin::admin.speedbar')
+    @include('admin.speedbar')
 
     @if($groupSubRelations->new == 1)
-        @include('admin::admin.list-elements', [
+        @include('admin.list-elements', [
             'actions' => [
                 trans('variables.elements_list') => urlForFunctionLanguage($lang, ''),
                 trans('variables.add_element') => urlForFunctionLanguage($lang, 'createGroup/createitem'),
@@ -17,7 +17,7 @@
             ]
         ])
     @else
-        @include('admin::admin.list-elements', [
+        @include('admin.list-elements', [
             'actions' => [
                 trans('variables.elements_list') => urlForFunctionLanguage($lang, ''),
                 trans('variables.elements_basket') => urlForFunctionLanguage($lang, 'groupCart/cartitems')
@@ -62,6 +62,6 @@
 
 @section('footer')
     <footer>
-        @include('admin::admin.footer')
+        @include('admin.footer')
     </footer>
 @stop

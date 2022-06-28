@@ -1,6 +1,6 @@
-@extends('admin::admin.app')
-@include('admin::admin.nav-bar')
-@include('admin::admin.left-menu')
+@extends('admin.app')
+@include('admin.nav-bar')
+@include('admin.left-menu')
 @section('content')
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
@@ -8,7 +8,7 @@
         <li class="breadcrumb-item active" aria-current="page">Contacts</li>
     </ol>
 </nav>
-@include('admin::admin.alerts')
+@include('admin.alerts')
 <div class="row">
     <div class="col-md-12">
         <div class="card">
@@ -521,6 +521,6 @@
 @stop
 @section('footer')
 <footer>
-    @include('admin::admin.footer')
+    @include('admin.footer')
 </footer>
 @stop

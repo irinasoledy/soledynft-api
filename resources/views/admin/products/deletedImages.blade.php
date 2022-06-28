@@ -1,6 +1,6 @@
-@extends('admin::admin.app')
-@include('admin::admin.nav-bar')
-@include('admin::admin.left-menu')
+@extends('admin.app')
+@include('admin.nav-bar')
+@include('admin.left-menu')
 @section('content')
 
 <nav aria-label="breadcrumb">
@@ -13,7 +13,7 @@
     <h3 class="title"> Deleted images
 
     </h3>
-    @include('admin::admin.list-elements', [
+    @include('admin.list-elements', [
     'actions' => [
         trans('variables.add_element') => route('products.create', ['category' => Request::segment(4)]),
         "Auto Upload" => route('quick-upload.index', ['category' => Request::segment(4)]),
@@ -59,6 +59,6 @@
 @stop
 @section('footer')
 <footer>
-    @include('admin::admin.footer')
+    @include('admin.footer')
 </footer>
 @stop

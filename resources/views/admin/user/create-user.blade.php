@@ -1,19 +1,19 @@
-@extends('admin::admin.app')
-@include('admin::admin.nav-bar')
-@include('admin::admin.left-menu')
+@extends('admin.app')
+@include('admin.nav-bar')
+@include('admin.left-menu')
 @section('content')
 
-@include('admin::admin.speedbar')
+@include('admin.speedbar')
 
 @if($groupSubRelations->new == 1)
-    @include('admin::admin.list-elements', [
+    @include('admin.list-elements', [
         'actions' => [
             trans('variables.elements_list') => urlForLanguage($lang, 'memberslist'),
             trans('variables.add_element') => urlForLanguage($lang, 'createuser'),
         ]
     ])
 @else
-    @include('admin::admin.list-elements', [
+    @include('admin.list-elements', [
         'actions' => [
             trans('variables.elements_list') => urlForLanguage($lang, 'memberslist'),
         ]
@@ -54,6 +54,6 @@
 
 @section('footer')
     <footer>
-        @include('admin::admin.footer')
+        @include('admin.footer')
     </footer>
 @stop

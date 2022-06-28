@@ -1,6 +1,6 @@
-@extends('admin::admin.app')
-@include('admin::admin.nav-bar')
-@include('admin::admin.left-menu')
+@extends('admin.app')
+@include('admin.nav-bar')
+@include('admin.left-menu')
 <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.min.js" integrity="sha512-GoORoNnxst42zE3rYPj4bNBm0Q6ZRXKNH2D9nEmNvVF/z24ywVnijAWVi/09iBiVDQVf3UlZHpzhAJIdd9BXqw==" crossorigin="anonymous"></script>
 
 @section('content')
@@ -15,13 +15,13 @@
 </nav>
 <div class="title-block">
     <h3 class="title"> Create Static Page </h3>
-    @include('admin::admin.list-elements', [
+    @include('admin.list-elements', [
     'actions' => [
             "Add new" => route('static-pages.create'),
         ]
     ])
 </div>
-@include('admin::admin.alerts')
+@include('admin.alerts')
 
 <div class="list-content">
     <div class="card">
@@ -84,6 +84,6 @@
 @stop
 @section('footer')
 <footer>
-    @include('admin::admin.footer')
+    @include('admin.footer')
 </footer>
 @stop

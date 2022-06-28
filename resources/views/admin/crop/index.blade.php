@@ -1,6 +1,6 @@
-@extends('admin::admin.app')
-@include('admin::admin.nav-bar')
-@include('admin::admin.left-menu')
+@extends('admin.app')
+@include('admin.nav-bar')
+@include('admin.left-menu')
 @section('content')
 
 <nav aria-label="breadcrumb">
@@ -15,7 +15,7 @@
 
 <div class="list-content">
   <div class="tab-area">
-      @include('admin::admin.alerts')
+      @include('admin.alerts')
   </div>
     <form class="form-reg" role="form" method="POST" action="{{ route('crop.update') }}">
         {{ csrf_field() }}
@@ -98,6 +98,6 @@
 @stop
 @section('footer')
 <footer>
-    @include('admin::admin.footer')
+    @include('admin.footer')
 </footer>
 @stop

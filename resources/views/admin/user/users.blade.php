@@ -1,9 +1,9 @@
-@extends('admin::admin.app')
-@include('admin::admin.nav-bar')
-@include('admin::admin.left-menu')
+@extends('admin.app')
+@include('admin.nav-bar')
+@include('admin.left-menu')
 @section('content')
 
-    @include('admin::admin.speedbar')
+    @include('admin.speedbar')
 
 
     @if(!$users->isEmpty())
@@ -46,6 +46,6 @@
 
 @section('footer')
     <footer>
-        @include('admin::admin.footer')
+        @include('admin.footer')
     </footer>
 @stop

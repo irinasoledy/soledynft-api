@@ -1,6 +1,6 @@
-@extends('admin::admin.app')
-@include('admin::admin.nav-bar')
-@include('admin::admin.left-menu')
+@extends('admin.app')
+@include('admin.nav-bar')
+@include('admin.left-menu')
 @section('content')
 
 
@@ -22,14 +22,14 @@
             @endif
         @endif
     </h3>
-    @include('admin::admin.list-elements', [
+    @include('admin.list-elements', [
     'actions' => [
     trans('variables.add_element') => route('products.create', ['category' => Request::get('category')]),
     ]
     ])
 </div>
 
-@include('admin::admin.alerts')
+@include('admin.alerts')
 
 <div class="list-content">
     <form class="form-reg" method="POST" action="{{ route('products.update', $product->id) }}" enctype="multipart/form-data">
@@ -244,7 +244,7 @@
         @endif
 
         <div class="part left-part">
-            {{-- @include('admin::admin.products.parameters', ['category' => $product->category]) --}}
+            {{-- @include('admin.products.parameters', ['category' => $product->category]) --}}
             <ul>
                 <li>
                     <label>Alias</label>
@@ -360,10 +360,10 @@
                         </div> --}}
                     </div>
                     <div class="row">
-                        {{-- @include('admin::admin.products.subproductsImages') --}}
+                        {{-- @include('admin.products.subproductsImages') --}}
                     </div>
                 </li>
-                {{-- @include('admin::admin.products.subproducts') --}}
+                {{-- @include('admin.products.subproducts') --}}
             </ul>
         </div>
 
@@ -374,7 +374,7 @@
               @php
                   $property = 0;
               @endphp
-              @include('admin::admin.products.editCategoriesTree')
+              @include('admin.products.editCategoriesTree')
             </li>
         </div> --}}
 
@@ -387,14 +387,14 @@
 
 
     {{-- gallery modal window --}}
-    {{-- @include('admin::admin.products.gallery') --}}
+    {{-- @include('admin.products.gallery') --}}
 
 </div>
 
 @stop
 @section('footer')
 <footer>
-    @include('admin::admin.footer')
+    @include('admin.footer')
     <script>
         $('button.tag').click(function(e) {
             e.preventDefault();

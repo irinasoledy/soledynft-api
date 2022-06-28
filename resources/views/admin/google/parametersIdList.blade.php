@@ -1,4 +1,4 @@
-@extends('admin::admin.google.app')
+@extends('admin.google.app')
 @section('content')
 
 <div class="wrapp">

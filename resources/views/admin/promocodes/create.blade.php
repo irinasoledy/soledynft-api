@@ -1,6 +1,6 @@
-@extends('admin::admin.app')
-@include('admin::admin.nav-bar')
-@include('admin::admin.left-menu')
+@extends('admin.app')
+@include('admin.nav-bar')
+@include('admin.left-menu')
 @section('content')
 
 <nav aria-label="breadcrumb">
@@ -12,14 +12,14 @@
 </nav>
 <div class="title-block">
     <h3 class="title"> Create Promo code </h3>
-    @include('admin::admin.list-elements', [
+    @include('admin.list-elements', [
     'actions' => [
     trans('variables.add_element') => route('promocodes.create'),
     ]
     ])
 </div>
 
-@include('admin::admin.alerts')
+@include('admin.alerts')
 
 <div class="list-content">
     <form class="form-reg" role="form" method="POST" action="{{ route('promocodes.store') }}" id="add-form"
@@ -44,9 +44,9 @@
                         </div>
                     </div>
                 </div>
-                <script src="{{asset('admin::admin/js/datepicker.js')}}"></script>
+                <script src="{{asset('admin/js/datepicker.js')}}"></script>
                 <div class="row response">
-                    @include('admin::admin.promocodes.promoTypeBlock')
+                    @include('admin.promocodes.promoTypeBlock')
                 </div>
             </div>
         </div>
@@ -64,6 +64,6 @@
 @stop
 @section('footer')
 <footer>
-    @include('admin::admin.footer')
+    @include('admin.footer')
 </footer>
 @stop

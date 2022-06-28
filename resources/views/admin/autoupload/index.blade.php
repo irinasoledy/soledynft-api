@@ -1,4 +1,4 @@
-@extends('admin::admin.app')
+@extends('admin.app')
 @section('content')
 
 <div id="cover">

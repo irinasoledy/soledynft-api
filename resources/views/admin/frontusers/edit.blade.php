@@ -1,6 +1,6 @@
-@extends('admin::admin.app')
-@include('admin::admin.nav-bar')
-@include('admin::admin.left-menu')
+@extends('admin.app')
+@include('admin.nav-bar')
+@include('admin.left-menu')
 @section('content')
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
@@ -11,7 +11,7 @@
 </nav>
 <div class="title-block">
     <h3 class="title"> Edit Front User </h3>
-    @include('admin::admin.list-elements', [
+    @include('admin.list-elements', [
     'actions' => [
             'Add new user' => route('frontusers.create'),
         ]
@@ -19,7 +19,7 @@
 </div>
 <div class="list-content">
     <div class="tab-area">
-        @include('admin::admin.alerts')
+        @include('admin.alerts')
     </div>
     <form class="form-reg" role="form" method="POST" action="{{ route('frontusers.update', $user->id) }}" enctype="multipart/form-data">
         {{ csrf_field() }}
@@ -91,9 +91,9 @@
             <div class="frAdr">
                 <div class="address">
                     @if (!is_null($user->address))
-                        @include('admin::admin.frontusers.editAddress', ['address' => $user->address])
+                        @include('admin.frontusers.editAddress', ['address' => $user->address])
                     @else
-                        @include('admin::admin.frontusers.address')
+                        @include('admin.frontusers.address')
                     @endif
                 </div>
             </div>
@@ -105,6 +105,6 @@
 @stop
 @section('footer')
 <footer>
-    @include('admin::admin.footer')
+    @include('admin.footer')
 </footer>
 @stop

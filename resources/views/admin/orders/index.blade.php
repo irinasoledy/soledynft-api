@@ -1,6 +1,6 @@
-@extends('admin::admin.app')
-@include('admin::admin.nav-bar')
-@include('admin::admin.left-menu')
+@extends('admin.app')
+@include('admin.nav-bar')
+@include('admin.left-menu')
 @section('content')
 
 <nav aria-label="breadcrumb">
@@ -12,7 +12,7 @@
 </nav>
 <div class="title-block">
     <h3 class="title"> Orders </h3>
-    @include('admin::admin.list-elements', [
+    @include('admin.list-elements', [
     'actions' => []
     ])
 </div>

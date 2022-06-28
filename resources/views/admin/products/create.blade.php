@@ -1,6 +1,6 @@
-@extends('admin::admin.app')
-@include('admin::admin.nav-bar')
-@include('admin::admin.left-menu')
+@extends('admin.app')
+@include('admin.nav-bar')
+@include('admin.left-menu')
 @section('content')
 
 <nav aria-label="breadcrumb">
@@ -18,14 +18,14 @@
             @endif
         @endif
     </h3>
-    @include('admin::admin.list-elements', [
+    @include('admin.list-elements', [
     'actions' => [
     trans('variables.add_element') => route('products.create', ['category' => Request::get('category')])
     ]
     ])
 </div>
 
-@include('admin::admin.alerts')
+@include('admin.alerts')
 
 <div class="list-content">
     <form class="form-reg" method="POST" action="{{ route('products.store') }}" enctype="multipart/form-data">
@@ -61,7 +61,7 @@
             </div>
         </div>
         <div class="tab-area">
-            @include('admin::admin.alerts')
+            @include('admin.alerts')
             <ul class="nav nav-tabs nav-tabs-bordered">
                 @if (!empty($langs))
                 @foreach ($langs as $key => $lang)
@@ -103,7 +103,7 @@
                             });
                         </script>
                     </li>
-                    @include('admin::admin.products.propertiesMultilang')
+                    @include('admin.products.propertiesMultilang')
                 </ul>
             </div>
             <div class="part right-part">
@@ -131,7 +131,7 @@
 
         <div class="part left-part">
             @if (!is_null($category))
-                @include('admin::admin.products.parametersCreate',  ['category' => $category])
+                @include('admin.products.parametersCreate',  ['category' => $category])
             @endif
         </div>
         <div class="part left-part">
@@ -203,7 +203,7 @@
 @stop
 @section('footer')
 <footer>
-    @include('admin::admin.footer')
+    @include('admin.footer')
 </footer>
 <script>
     function preview_image(){

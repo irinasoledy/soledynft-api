@@ -1,6 +1,6 @@
-@extends('admin::admin.app')
-@include('admin::admin.nav-bar')
-@include('admin::admin.left-menu')
+@extends('admin.app')
+@include('admin.nav-bar')
+@include('admin.left-menu')
 @section('content')
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
@@ -12,7 +12,7 @@
 <div class="title-block">
     <h3 class="title"> Edit Country </h3>
 </div>
-@include('admin::admin.alerts')
+@include('admin.alerts')
 <div class="list-content">
     <div class="card">
         <div class="card-block">
@@ -195,6 +195,6 @@
 @stop
 @section('footer')
 <footer>
-    @include('admin::admin.footer')
+    @include('admin.footer')
 </footer>
 @stop
