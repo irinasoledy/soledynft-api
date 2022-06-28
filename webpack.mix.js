@@ -11,16 +11,13 @@ let mix = require('laravel-mix');
  |
  */
 
- mix.js('resources/assets/js/app_mobile.js', 'public/fronts_mobile/js');
+mix.js('resources/assets/js/app_mobile.js', 'public/fronts_mobile/js');
 
- // mix.js('resources/assets/js/app_desktop.js', 'public/fronts/js');
-
- mix.js('resources/assets/js/app_admin.js', 'public/admin/js');
+mix.js('resources/assets/js/app_admin.js', 'public/admin/js');
 
 mix.sass('resources/assets/sass/app.scss', 'public/fronts_mobile/css');
 
 mix.sass('resources/assets/sass/app_mobile.scss', 'public/fronts_mobile/css');
-
 
 mix.sass('resources/assets/sass/bijoux-mobile.scss', 'public/fronts_mobile/css');
 mix.sass('resources/assets/sass/loungewear-mobile.scss', 'public/fronts_mobile/css');
