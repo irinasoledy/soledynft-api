@@ -41,8 +41,6 @@ $app->singleton(
     App\Exceptions\Handler::class
 );
 
-// require_once '../storage/app/public/cache.php';
-
 /*
 |--------------------------------------------------------------------------
 | Return The Application
