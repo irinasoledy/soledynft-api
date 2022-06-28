@@ -14,7 +14,7 @@ class GuestUserController extends Controller
   {
     $users = FrontUserUnlogged::orderBy('created_at', 'desc')->get();
 
-    return view('admin::admin.guestUsers.index', compact('users'));
+    return view('admin.guestUsers.index', compact('users'));
   }
 
   public function create()
@@ -24,7 +24,7 @@ class GuestUserController extends Controller
     $languages = Lang::where('active', 1)->get();
     $payments = Payment::get();
 
-    return view('admin::admin.frontusers.create', compact('countries', 'currencies', 'languages', 'payments'));
+    return view('admin.frontusers.create', compact('countries', 'currencies', 'languages', 'payments'));
   }
 
   public function store(Request $request)
@@ -80,7 +80,7 @@ class GuestUserController extends Controller
     $languages = Lang::where('active', 1)->get();
     $payments = Payment::get();
 
-    return view('admin::admin.frontusers.edit', compact('user', 'countries', 'currencies', 'languages', 'payments'));
+    return view('admin.frontusers.edit', compact('user', 'countries', 'currencies', 'languages', 'payments'));
   }
 
   public function update(Request $request, $id)
@@ -183,7 +183,7 @@ class GuestUserController extends Controller
   public function editPassword($id)
   {
     $user = FrontUser::findOrFail($id);
-    return view('admin::admin.frontusers.editPassword', compact('user'));
+    return view('admin.frontusers.editPassword', compact('user'));
   }
 
   public function updatePassword(Request $request, $id)

@@ -23,7 +23,7 @@ class CurrenciesController extends Controller
 
         $mainCurrency = Currency::where('type', 1)->first();
 
-        return view('admin::admin.currencies.index', compact('currencies', 'mainCurrency'));
+        return view('admin.currencies.index', compact('currencies', 'mainCurrency'));
     }
 
     public function edit($id)
@@ -32,7 +32,7 @@ class CurrenciesController extends Controller
 
         $mainCurrency = Currency::where('type', 1)->first();
 
-        return view('admin::admin.currencies.edit', compact('currency', 'mainCurrency'));
+        return view('admin.currencies.edit', compact('currency', 'mainCurrency'));
     }
 
     public function update(Request $request, $id)

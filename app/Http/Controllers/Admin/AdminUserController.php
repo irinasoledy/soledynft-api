@@ -16,14 +16,14 @@ class AdminUserController extends Controller
     {
         $users = User::all();
 
-        return view('admin::admin.user.index', compact('users'));
+        return view('admin.user.index', compact('users'));
     }
 
     public function edit($id)
     {
         $user = User::find($id);
 
-        return view('admin::admin.user.edit', compact('user'));
+        return view('admin.user.edit', compact('user'));
     }
 
     public function update(Request $request, $id)
@@ -50,7 +50,7 @@ class AdminUserController extends Controller
 
     public function create()
     {
-        return view('admin::admin.user.create');
+        return view('admin.user.create');
     }
 
     public function store(Request $request)

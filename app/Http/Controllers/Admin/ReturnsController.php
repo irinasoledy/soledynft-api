@@ -29,7 +29,7 @@ class ReturnsController extends Controller
     {
         $returns = Returns::get();
 
-        return view('admin::admin.returns.index', compact('returns'));
+        return view('admin.returns.index', compact('returns'));
     }
 
     public function selectOrderToReturn()
@@ -37,14 +37,14 @@ class ReturnsController extends Controller
         $userOrders = CRMOrders::where('guest_user_id', 0)->where('main_status', 'completed')->where('change_status_at', '>=', date('Y-m-d', strtotime('-14 days')))->get();
         $guestOrders = CRMOrders::where('user_id', 0)->where('main_status', 'completed')->where('change_status_at', '>=', date('Y-m-d', strtotime('-14 days')))->get();
 
-        return view('admin::admin.returns.selectOrder', compact('userOrders', 'guestOrders'));
+        return view('admin.returns.selectOrder', compact('userOrders', 'guestOrders'));
     }
 
     public function returnOrder($id)
     {
         $order = CRMOrders::find($id);
 
-        return view('admin::admin.returns.return', compact('order'));
+        return view('admin.returns.return', compact('order'));
     }
 
     public function store(Request $request)
@@ -102,6 +102,6 @@ class ReturnsController extends Controller
     {
         $retur = Returns::find($id);
 
-        return view('admin::admin.returns.show', compact('retur'));
+        return view('admin.returns.show', compact('retur'));
     }
 }

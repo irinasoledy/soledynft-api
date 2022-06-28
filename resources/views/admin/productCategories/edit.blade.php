@@ -1,6 +1,6 @@
-@extends('admin::admin.app')
-@include('admin::admin.nav-bar')
-@include('admin::admin.left-menu')
+@extends('admin.app')
+@include('admin.nav-bar')
+@include('admin.left-menu')
 @section('content')
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
@@ -21,7 +21,7 @@
             <form class="form-reg" method="post" action="{{ route('product-categories.update', $category->id) }}" enctype="multipart/form-data">
                 <div class="col-md-7">
                     <div class="tab-area">
-                        @include('admin::admin.alerts')
+                        @include('admin.alerts')
                         <ul class="nav nav-tabs nav-tabs-bordered">
                             @if (!empty($langs))
                             @foreach ($langs as $key => $lang)
@@ -267,7 +267,7 @@
                         @php
                              $property = 0;
                         @endphp
-                        @include('admin::admin.productCategories.propertiesTree')
+                        @include('admin.productCategories.propertiesTree')
 
                     </div>
                 </div>
@@ -286,6 +286,6 @@
 @stop
 @section('footer')
 <footer>
-    @include('admin::admin.footer')
+    @include('admin.footer')
 </footer>
 @stop

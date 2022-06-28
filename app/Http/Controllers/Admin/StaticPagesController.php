@@ -64,12 +64,12 @@ class StaticPagesController extends Controller
     {
         $pages = StaticPage::orderBy('created_at', 'desc')->get();
 
-        return view('admin::admin.static_pages.index', compact('pages'));
+        return view('admin.static_pages.index', compact('pages'));
     }
 
     public function create()
     {
-        return view('admin::admin.static_pages.create');
+        return view('admin.static_pages.create');
     }
 
     public function store(Request $request)
@@ -101,7 +101,7 @@ class StaticPagesController extends Controller
     {
         $page = StaticPage::findOrFail($id);
 
-        return view('admin::admin.static_pages.edit', compact('page'));
+        return view('admin.static_pages.edit', compact('page'));
     }
 
     public function update(Request $request, $id)

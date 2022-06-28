@@ -13,7 +13,7 @@ class ContactController extends Controller
     {
       $contacts = Contact::all();
 
-      return view('admin::admin.contacts.index', compact('contacts'));
+      return view('admin.contacts.index', compact('contacts'));
     }
 
     public function store(Request $request)

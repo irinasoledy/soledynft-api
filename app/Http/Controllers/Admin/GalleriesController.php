@@ -19,12 +19,12 @@ class GalleriesController extends Controller
     {
         $galleries = Gallery::get();
 
-        return view('admin::admin.galleries.index', compact('galleries'));
+        return view('admin.galleries.index', compact('galleries'));
     }
 
     public function create()
     {
-        return view('admin::admin.galleries.create');
+        return view('admin.galleries.create');
     }
 
     public function store(Request $request)
@@ -103,7 +103,7 @@ class GalleriesController extends Controller
         $imagesDesktop = GalleryImage::where('gallery_id', $id)->where('device', 'desktop')->get();
         $imagesMobile = GalleryImage::where('gallery_id', $id)->where('device', 'mobile')->get();
 
-        return view('admin::admin.galleries.edit', compact('gallery', 'imagesDesktop', 'imagesMobile'));
+        return view('admin.galleries.edit', compact('gallery', 'imagesDesktop', 'imagesMobile'));
     }
 
     public function update(Request $request, $id)

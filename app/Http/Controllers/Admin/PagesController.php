@@ -16,14 +16,14 @@ class PagesController extends Controller
     {
         $pages = Page::orderBy('position', 'asc')->orderBy('created_at', 'desc')->get();
 
-        return view('admin::admin.pages.index', compact('pages'));
+        return view('admin.pages.index', compact('pages'));
     }
 
     public function create()
     {
         $galleries = Gallery::get();
 
-        return view('admin::admin.pages.create', compact('galleries'));
+        return view('admin.pages.create', compact('galleries'));
     }
 
     public function store(Request $request)
@@ -83,7 +83,7 @@ class PagesController extends Controller
         $page = Page::with('translations')->findOrFail($id);
         $galleries = Gallery::get();
 
-        return view('admin::admin.pages.edit', compact('page', 'galleries'));
+        return view('admin.pages.edit', compact('page', 'galleries'));
     }
 
     public function update(Request $request, $id)

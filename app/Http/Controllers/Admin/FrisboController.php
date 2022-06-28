@@ -282,6 +282,6 @@ class FrisboController extends Controller
     {
         $products = Product::get();
 
-        return view('admin::admin.frisbo.getStocks', compact('products'));
+        return view('admin.frisbo.getStocks', compact('products'));
     }
 }

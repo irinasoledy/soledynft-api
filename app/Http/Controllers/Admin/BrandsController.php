@@ -23,7 +23,7 @@ class BrandsController extends Controller
     {
         $brands = Brand::orderBy('position', 'asc')->get();
 
-        return view('admin::admin.brands.index', compact('brands'));
+        return view('admin.brands.index', compact('brands'));
     }
 
     public function show($id)
@@ -33,7 +33,7 @@ class BrandsController extends Controller
 
     public function create()
     {
-        return view('admin::admin.brands.create');
+        return view('admin.brands.create');
     }
 
     public function store(Request $request)
@@ -94,7 +94,7 @@ class BrandsController extends Controller
     {
         $brand = Brand::with('translations')->findOrFail($id);
 
-        return view('admin::admin.brands.edit', compact('brand'));
+        return view('admin.brands.edit', compact('brand'));
     }
 
     public function update(Request $request, $id)

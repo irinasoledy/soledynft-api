@@ -22,7 +22,7 @@ class DillerController extends Controller
   {
     $users = FrontUser::orderBy('created_at', 'desc')->where('customer_type', 'diller')->get();
 
-    return view('admin::admin.dillers.index', compact('users'));
+    return view('admin.dillers.index', compact('users'));
   }
 
   public function create()
@@ -33,7 +33,7 @@ class DillerController extends Controller
     $payments = Payment::get();
     $dillerGroups = DillerGroup::get();
 
-    return view('admin::admin.dillers.create', compact('countries', 'currencies', 'languages', 'payments', 'dillerGroups'));
+    return view('admin.dillers.create', compact('countries', 'currencies', 'languages', 'payments', 'dillerGroups'));
   }
 
   public function store(Request $request)
@@ -94,7 +94,7 @@ class DillerController extends Controller
     $payments = Payment::get();
     $dillerGroups = DillerGroup::get();
 
-    return view('admin::admin.dillers.edit', compact('user', 'countries', 'currencies', 'languages', 'payments', 'dillerGroups'));
+    return view('admin.dillers.edit', compact('user', 'countries', 'currencies', 'languages', 'payments', 'dillerGroups'));
   }
 
   public function update(Request $request, $id)
@@ -202,7 +202,7 @@ class DillerController extends Controller
   public function editPassword($id)
   {
     $user = FrontUser::findOrFail($id);
-    return view('admin::admin.dillers.editPassword', compact('user'));
+    return view('admin.dillers.editPassword', compact('user'));
   }
 
   public function updatePassword(Request $request, $id)

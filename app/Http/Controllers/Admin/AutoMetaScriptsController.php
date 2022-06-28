@@ -18,7 +18,7 @@ class AutoMetaScriptsController extends Controller
     {
         $scripts = AutometaScript::get();
 
-        return view('admin::admin.autometaScripts.index', compact('scripts'));
+        return view('admin.autometaScripts.index', compact('scripts'));
     }
 
     public function show($id)
@@ -28,7 +28,7 @@ class AutoMetaScriptsController extends Controller
 
     public function create()
     {
-        return view('admin::admin.autometaScripts.create');
+        return view('admin.autometaScripts.create');
     }
 
     public function store(Request $request)
@@ -102,7 +102,7 @@ class AutoMetaScriptsController extends Controller
     {
         $script = AutometaScript::findOrFail($id);
 
-        return view('admin::admin.autometaScripts.edit', compact('script'));
+        return view('admin.autometaScripts.edit', compact('script'));
     }
 
     public function update(Request $request, $id)

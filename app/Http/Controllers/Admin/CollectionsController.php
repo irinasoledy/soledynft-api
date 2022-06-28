@@ -40,7 +40,7 @@ class CollectionsController extends Controller
                                 ->orderBy('created_at', 'desc')
                                 ->get();
 
-        return view('admin::admin.collections.home', compact('collections'));
+        return view('admin.collections.home', compact('collections'));
     }
 
 
@@ -287,14 +287,14 @@ class CollectionsController extends Controller
     // Restfull methods
     public function create()
     {
-        return view('admin::admin.collections.create');
+        return view('admin.collections.create');
     }
 
     public function edit($id)
     {
         $collection = Collection::findOrFail($id);
 
-        return view('admin::admin.collections.edit', compact('collection'));
+        return view('admin.collections.edit', compact('collection'));
     }
 
     public function update(Request $request, $id)

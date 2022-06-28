@@ -16,14 +16,14 @@ class LogsController extends Controller
     {
         $logs = Log::orderBy('id', 'desc')->get();
 
-        return view('admin::admin.logs.index', compact('logs'));
+        return view('admin.logs.index', compact('logs'));
     }
 
     public function edit($id)
     {
         $log = Log::findOrFail($id);
 
-        return view('admin::admin.logs.edit', compact('log'));
+        return view('admin.logs.edit', compact('log'));
     }
 
     public function destroy($id)

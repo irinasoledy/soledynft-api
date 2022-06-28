@@ -43,7 +43,7 @@ class PromocodesController extends Controller
 
         $promocodeTypes = Promocode::orderBy($sort['by'], 'desc')->groupBy('type_id')->get();
 
-        return view('admin::admin.promocodes.index', compact('promocodes', 'promocodeTypes'));
+        return view('admin.promocodes.index', compact('promocodes', 'promocodeTypes'));
     }
 
     public function updatePromocodesStatus($promocodes)
@@ -75,7 +75,7 @@ class PromocodesController extends Controller
         $date = date('d.m.Y');
         $users = FrontUser::get();
 
-        return view('admin::admin.promocodes.create', compact('types', 'promoType', 'date', 'users'));
+        return view('admin.promocodes.create', compact('types', 'promoType', 'date', 'users'));
     }
 
 
@@ -125,7 +125,7 @@ class PromocodesController extends Controller
         $date = date('d.m.Y');
         $users = FrontUser::get();
 
-        return view('admin::admin.promocodes.edit', compact('promocode', 'types', 'promoType', 'date', 'users'));
+        return view('admin.promocodes.edit', compact('promocode', 'types', 'promoType', 'date', 'users'));
     }
 
     public function update(Request $request, $id)

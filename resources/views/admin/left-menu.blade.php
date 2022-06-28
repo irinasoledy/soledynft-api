@@ -14,7 +14,7 @@
                         <i class="fa fa-dashboard"></i>Control Panel
                     </a>
                 </li>
-                @foreach($menu as $m) @if($m->src == 'products') @include('admin::admin.partials.productCategories') @else
+                @foreach($menu as $m) @if($m->src == 'products') @include('admin.partials.productCategories') @else
                 <li class="{{ request()->segment(2) == $m->src  ? 'active' : ''}}">
                     <a class="{{ count(hasSubmodule($m->id)) > 0 ? 'drop-down' : '' }}" href="/back/{{ $m->src }}">
                       <i class="fa {{ $m->icon }}"></i>

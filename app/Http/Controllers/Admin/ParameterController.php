@@ -22,7 +22,7 @@ class ParametersController extends Controller
     {
         $parameters = Parameter::orderBy('position', 'asc')->get();
 
-        return view('admin::admin.parameters.index', compact('parameters'));
+        return view('admin.parameters.index', compact('parameters'));
     }
 
     public function create()
@@ -30,7 +30,7 @@ class ParametersController extends Controller
         $categories = ProductCategory::with(['children.translation', 'translation'])->where('parent_id', 0)->get();
         $groups = ParameterGroup::get();
 
-        return view('admin::admin.parameters.create', compact('categories', 'groups'));
+        return view('admin.parameters.create', compact('categories', 'groups'));
     }
 
     public function store(Request $request)
@@ -281,7 +281,7 @@ class ParametersController extends Controller
 
         $groups = ParameterGroup::get();
 
-        return view('admin::admin.parameters.edit', compact('parameter', 'categories', 'groups', 'values'));
+        return view('admin.parameters.edit', compact('parameter', 'categories', 'groups', 'values'));
     }
 
     public function update(Request $request, $id)

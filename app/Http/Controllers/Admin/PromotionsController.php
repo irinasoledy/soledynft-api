@@ -30,12 +30,12 @@ class PromotionsController extends Controller
     {
         $promotions = Promotion::with('translation')->orderBy('position', 'asc')->get();
 
-        return view('admin::admin.promotions.index', compact('promotions'));
+        return view('admin.promotions.index', compact('promotions'));
     }
 
     public function create()
     {
-        return view('admin::admin.promotions.create');
+        return view('admin.promotions.create');
     }
 
     public function store(Request $request)
@@ -103,7 +103,7 @@ class PromotionsController extends Controller
     {
         $promotion = Promotion::with('translations')->findOrFail($id);
 
-        return view('admin::admin.promotions.edit', compact('promotion', 'translations'));
+        return view('admin.promotions.edit', compact('promotion', 'translations'));
     }
 
     public function update(Request $request, $id)

@@ -15,7 +15,7 @@ class TranslationsController extends Controller
 {
     public function index()
     {
-        return view('admin::admin.translations.index');
+        return view('admin.translations.index');
     }
 
     public function createTraslation()

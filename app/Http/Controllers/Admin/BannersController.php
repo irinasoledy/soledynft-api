@@ -16,7 +16,7 @@ class BannersController extends Controller
 
         $this->setBanners();
 
-        return view('admin::admin.banners.index', compact('banners'));
+        return view('admin.banners.index', compact('banners'));
     }
 
     public function show($id)
@@ -26,7 +26,7 @@ class BannersController extends Controller
 
     public function create()
     {
-        return view('admin::admin.banners.create');
+        return view('admin.banners.create');
     }
 
     public function store(Request $request)
@@ -67,7 +67,7 @@ class BannersController extends Controller
     {
         $banner = Banner::findOrFail($id);
 
-        return view('admin::admin.banners.edit', compact('banner'));
+        return view('admin.banners.edit', compact('banner'));
     }
 
     public function update(Request $request, $id)

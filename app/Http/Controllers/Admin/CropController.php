@@ -11,7 +11,7 @@ class CropController extends Controller
     {
       $crop = json_decode(file_get_contents(storage_path('globalsettings.json')), true)['crop'];
 
-      return view('admin::admin.crop.index', compact('crop'));
+      return view('admin.crop.index', compact('crop'));
     }
 
     public function update(Request $request)

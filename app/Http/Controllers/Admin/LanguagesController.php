@@ -39,12 +39,12 @@ class LanguagesController extends Controller
     {
         $languages = Lang::orderBy('default', 'desc')->get();
 
-        return view('admin::admin.languages.index', compact('languages'));
+        return view('admin.languages.index', compact('languages'));
     }
 
     public function create()
     {
-        return view('admin::admin.languages.create');
+        return view('admin.languages.create');
     }
 
     public function store(Request $request)

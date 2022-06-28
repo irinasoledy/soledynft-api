@@ -22,7 +22,7 @@ class ParameterGroupsController extends Controller
         $parameterGroups = ParameterGroup::orderBy('id', 'asc')->get();
         $translationKeys = TranslationGroup::get();
 
-        return view('admin::admin.parameterGroups.index', compact('parameterGroups', 'translationKeys'));
+        return view('admin.parameterGroups.index', compact('parameterGroups', 'translationKeys'));
     }
 
     public function create(){}
@@ -50,7 +50,7 @@ class ParameterGroupsController extends Controller
 
         $parameterGroup = ParameterGroup::findOrFail($id);
 
-        return view('admin::admin.parameterGroups.edit', compact('parameterGroup', 'translationKeys'));
+        return view('admin.parameterGroups.edit', compact('parameterGroup', 'translationKeys'));
     }
 
     public function update(Request $request, $id)

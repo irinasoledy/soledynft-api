@@ -21,7 +21,7 @@ class CountriesController extends Controller
     {
         $countries = Country::orderBy('active', 'desc')->orderBy('main', 'desc')->get();
 
-        return view('admin::admin.countries.index', compact('countries'));
+        return view('admin.countries.index', compact('countries'));
     }
 
     public function create()
@@ -30,7 +30,7 @@ class CountriesController extends Controller
         $deliveries = Delivery::get();
         $payments = Payment::get();
 
-        return view('admin::admin.countries.create', compact('currencies', 'deliveries', 'payments'));
+        return view('admin.countries.create', compact('currencies', 'deliveries', 'payments'));
     }
 
     public function edit($id)
@@ -41,7 +41,7 @@ class CountriesController extends Controller
         $payments = Payment::get();
         $warehouses = Warehouse::get();
 
-        return view('admin::admin.countries.edit', compact('country', 'currencies', 'deliveries', 'payments', 'warehouses'));
+        return view('admin.countries.edit', compact('country', 'currencies', 'deliveries', 'payments', 'warehouses'));
     }
 
     public function update(Request $request, $id)

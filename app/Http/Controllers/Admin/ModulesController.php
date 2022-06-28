@@ -18,7 +18,7 @@ class ModulesController extends Controller
     {
         $modules = Module::orderBy('position', 'asc')->where('parent_id', 0)->get();
 
-        return view('admin::admin.modules.index', compact('modules'));
+        return view('admin.modules.index', compact('modules'));
     }
 
     public function changePosition()
@@ -40,7 +40,7 @@ class ModulesController extends Controller
     {
         $allModules = Module::where('parent_id', 0)->get();
 
-        return view('admin::admin.modules.create', compact('allModules'));
+        return view('admin.modules.create', compact('allModules'));
     }
 
     public function edit($id)
@@ -48,7 +48,7 @@ class ModulesController extends Controller
         $module = Module::findOrFail($id);
         $allModules = Module::where('parent_id', 0)->get();
 
-        return view('admin::admin.modules.edit', compact('module', 'allModules'));
+        return view('admin.modules.edit', compact('module', 'allModules'));
     }
 
     public function store(Request $request)

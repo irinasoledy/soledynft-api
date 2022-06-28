@@ -24,7 +24,7 @@ class DillerGroupsController extends Controller
   {
     $groups = DillerGroup::orderBy('created_at', 'desc')->get();
 
-    return view('admin::admin.diller-groups.index', compact('groups'));
+    return view('admin.diller-groups.index', compact('groups'));
   }
 
 
@@ -41,7 +41,7 @@ class DillerGroupsController extends Controller
   {
     $currencies = Currency::where('active', 1)->get();
 
-    return view('admin::admin.diller-groups.create', compact('currencies'));
+    return view('admin.diller-groups.create', compact('currencies'));
   }
 
   public function store(Request $request)
@@ -77,7 +77,7 @@ class DillerGroupsController extends Controller
       $groupCurrencies = $group->groupCurencies->pluck('currency_id')->toArray();
       $currencies = Currency::where('active', 1)->get();
 
-      return view('admin::admin.diller-groups.edit', compact('group', 'currencies', 'groupCurrencies'));
+      return view('admin.diller-groups.edit', compact('group', 'currencies', 'groupCurrencies'));
   }
 
   public function update(Request $request, $id)

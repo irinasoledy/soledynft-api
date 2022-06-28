@@ -18,13 +18,13 @@ class PromocodeTypesController extends Controller
     {
         $promocodeTypes = PromocodeType::get();
 
-        return view('admin::admin.promocodeTypes.index', compact('promocodeTypes'));
+        return view('admin.promocodeTypes.index', compact('promocodeTypes'));
     }
 
 
     public function create()
     {
-        return view('admin::admin.promocodeTypes.create');
+        return view('admin.promocodeTypes.create');
     }
 
 
@@ -61,7 +61,7 @@ class PromocodeTypesController extends Controller
     {
         $promocode = PromocodeType::findOrFail($id);
 
-        return view('admin::admin.promocodeTypes.edit', compact('promocode'));
+        return view('admin.promocodeTypes.edit', compact('promocode'));
     }
 
 
@@ -105,7 +105,7 @@ class PromocodeTypesController extends Controller
 
         $date =  empty($request->get('date')) ? date('d.m.Y') : date('d.m.Y', strtotime($request->get('date')));
 
-        $data = view('admin::admin.promocodes.promoTypeBlock', compact('promoType', 'date'))->render();
+        $data = view('admin.promocodes.promoTypeBlock', compact('promoType', 'date'))->render();
 
         return json_encode($data);
     }

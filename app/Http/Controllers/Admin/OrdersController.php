@@ -26,7 +26,7 @@ class OrdersController extends Controller
     // get: create order page
     public function index()
     {
-        return view('admin::admin.orders.index');
+        return view('admin.orders.index');
     }
 
     // get: order lists
@@ -44,7 +44,7 @@ class OrdersController extends Controller
 
         $orders = CRMOrders::where('user_id', '!=', '0')->orderBy('id', 'desc')->get();
 
-        return view('admin::admin.orders.list', compact('orders'));
+        return view('admin.orders.list', compact('orders'));
     }
 
     // get: order lists
@@ -68,7 +68,7 @@ class OrdersController extends Controller
 
         $orders = CRMOrders::where('guest_user_id', '!=', '0')->orderBy('id', 'desc')->get();
 
-        return view('admin::admin.orders.list', compact('orders'));
+        return view('admin.orders.list', compact('orders'));
     }
 
     // get: order detail
@@ -92,7 +92,7 @@ class OrdersController extends Controller
                                     ->where('set_id', '!=', 0)
                                     ->get();
 
-        return view('admin::admin.orders.details', compact('order', 'orderProducts', 'orderSubproducts', 'orderSets'));
+        return view('admin.orders.details', compact('order', 'orderProducts', 'orderSubproducts', 'orderSets'));
     }
 
     // post: search users

@@ -21,13 +21,13 @@ class SetsController extends Controller
     {
         $sets = Set::orderBy('position', 'asc')->get();
 
-        return view('admin::admin.sets.index', compact('sets'));
+        return view('admin.sets.index', compact('sets'));
     }
 
     public function create()
     {
         $collections = Collection::orderBy('position', 'asc')->get();
-        return view('admin::admin.sets.create', compact('collections'));
+        return view('admin.sets.create', compact('collections'));
     }
 
     public function store(Request $request)
@@ -98,7 +98,7 @@ class SetsController extends Controller
 
         $collections = Collection::orderBy('position', 'asc')->get();
 
-        return view('admin::admin.sets.edit', compact('set', 'collections'));
+        return view('admin.sets.edit', compact('set', 'collections'));
     }
 
     public function update(Request $request, $id)
@@ -289,7 +289,7 @@ class SetsController extends Controller
         $sets = Set::where('collection_id', $collection_id)->orderBy('position', 'asc')->get();
         $collection = Collection::findOrFail($collection_id);
 
-        return view('admin::admin.sets.index', compact('sets', 'collection'));
+        return view('admin.sets.index', compact('sets', 'collection'));
     }
 
     public function destroy($id)

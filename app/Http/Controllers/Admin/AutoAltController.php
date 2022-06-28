@@ -19,7 +19,7 @@ class AutoAltController extends Controller
 {
     public function index()
     {
-      return view('admin::admin.autoalts.index');
+      return view('admin.admin.autoalts.index');
     }
 
     public function store(Request $request)

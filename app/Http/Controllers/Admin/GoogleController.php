@@ -83,13 +83,13 @@ class GoogleController extends Controller
         $countries = Country::where('active', 1)->get();
         $currencies = Currency::get();
 
-        return view('admin::admin.google.apiContent.index', compact('countries', 'currencies'));
+        return view('admin.google.apiContent.index', compact('countries', 'currencies'));
     }
 
     public function insertNewContent(Request $request)
     {
         $data = 'Content';
-        $view = view('admin::admin.google.progressBar', compact('data'));
+        $view = view('admin.google.progressBar', compact('data'));
         echo $view->render();
 
         $siteTypes = ['bijoux', 'homewear'];
@@ -307,11 +307,11 @@ class GoogleController extends Controller
                     Session::flash('prodIds', $insertedProducts);
                     // print_r($insertedProducts);
 
-                    $view = view('admin::admin.google.progressBarMercant', compact('siteType', 'currentLang', 'currency', 'country', 'insertedProducts', 'products'));
+                    $view = view('admin.google.progressBarMercant', compact('siteType', 'currentLang', 'currency', 'country', 'insertedProducts', 'products'));
                     echo $view->render();
                     return;
 
-                    // return view('admin::admin.google.progressBarMercant', compact('siteType', 'lang', 'currency', 'country'));
+                    // return view('admin.google.progressBarMercant', compact('siteType', 'lang', 'currency', 'country'));
                     // return redirect('/back/google-api-content/recursive-insert/'. $siteType .'/'. $lang .'/'. $currency .'/'. $country);
                 }
 
@@ -338,7 +338,7 @@ class GoogleController extends Controller
 
         $page = $request->get('page') ?? 0;
         $data = 'Content';
-        $view = view('admin::admin.google.progressBar', compact('data'));
+        $view = view('admin.google.progressBar', compact('data'));
         echo $view->render();
 
         $lang = Lang::where('lang', $request->get('lang'))->first();
@@ -449,13 +449,13 @@ class GoogleController extends Controller
 
     public function index()
     {
-        return view('admin::admin.google.index');
+        return view('admin.google.index');
     }
 
     public function getCategoriesId()
     {
         $categories = ProductCategory::orderBy('position', 'asc')->get();
-        return view('admin::admin.google.categoriesIdList', compact('categories'));
+        return view('admin.google.categoriesIdList', compact('categories'));
     }
 
     public function getTransData()
@@ -463,7 +463,7 @@ class GoogleController extends Controller
         ini_set('memory_limit', '-1');
         ini_set('max_execution_time', 900);
         $translationGroups = TranslationGroup::get();
-        return view('admin::admin.google.transData', compact('translationGroups'));
+        return view('admin.google.transData', compact('translationGroups'));
     }
 
     public function getBrands()
@@ -471,7 +471,7 @@ class GoogleController extends Controller
         ini_set('memory_limit', '-1');
         ini_set('max_execution_time', 900);
         $brands = Brand::get();
-        return view('admin::admin.google.brands', compact('brands'));
+        return view('admin.google.brands', compact('brands'));
     }
 
     public function setSiteType($siteType)
@@ -488,7 +488,7 @@ class GoogleController extends Controller
     public function uploadProducts()
     {
         $data = 'Products';
-        $view = view('admin::admin.google.progressBar', compact('data'));
+        $view = view('admin.google.progressBar', compact('data'));
         echo $view->render();
 
         $sheets = Sheets::spreadsheet(config('sheets.post_spreadsheet_id'))
@@ -611,7 +611,7 @@ class GoogleController extends Controller
     public function uploadParameters()
     {
         $data = 'Parameters';
-        $view = view('admin::admin.google.progressBar', compact('data'));
+        $view = view('admin.google.progressBar', compact('data'));
         echo $view->render();
 
         $sheets = Sheets::spreadsheet(config('sheets.post_spreadsheet_id'))
@@ -676,7 +676,7 @@ class GoogleController extends Controller
     public function uploadPrices()
     {
         $data = 'Prices';
-        $view = view('admin::admin.google.progressBar', compact('data'));
+        $view = view('admin.google.progressBar', compact('data'));
         echo $view->render();
 
         $sheets = Sheets::spreadsheet(config('sheets.post_spreadsheet_id'))
@@ -764,7 +764,7 @@ class GoogleController extends Controller
     public function uploadStocks()
     {
         $data = 'Stocks';
-        $view = view('admin::admin.google.progressBar', compact('data'));
+        $view = view('admin.google.progressBar', compact('data'));
         echo $view->render();
 
         $sheets = Sheets::spreadsheet(config('sheets.post_spreadsheet_id'))
@@ -807,7 +807,7 @@ class GoogleController extends Controller
     public function uploadCollections()
     {
         $data = 'Collections';
-        $view = view('admin::admin.google.progressBar', compact('data'));
+        $view = view('admin.google.progressBar', compact('data'));
         echo $view->render();
 
         $sheets = Sheets::spreadsheet(config('sheets.post_spreadsheet_id'))
@@ -874,7 +874,7 @@ class GoogleController extends Controller
     public function uploadSets()
     {
         $data = 'Sets';
-        $view = view('admin::admin.google.progressBar', compact('data'));
+        $view = view('admin.google.progressBar', compact('data'));
         echo $view->render();
 
         $sheets = Sheets::spreadsheet(config('sheets.post_spreadsheet_id'))
@@ -962,7 +962,7 @@ class GoogleController extends Controller
         ini_set('max_execution_time', 900);
 
         $data = 'Set Prods';
-        $view = view('admin::admin.google.progressBar', compact('data'));
+        $view = view('admin.google.progressBar', compact('data'));
         echo $view->render();
 
         $sheets = Sheets::spreadsheet(config('sheets.post_spreadsheet_id'))
@@ -1053,7 +1053,7 @@ class GoogleController extends Controller
     public function uploadPromotions()
     {
         $data = 'Promotions';
-        $view = view('admin::admin.google.progressBar', compact('data'));
+        $view = view('admin.google.progressBar', compact('data'));
         echo $view->render();
 
         $sheets = Sheets::spreadsheet(config('sheets.post_spreadsheet_id'))
@@ -1122,7 +1122,7 @@ class GoogleController extends Controller
     public function addProductsToPromos()
     {
         $data = 'Add products to Promotion';
-        $view = view('admin::admin.google.progressBar', compact('data'));
+        $view = view('admin.google.progressBar', compact('data'));
         echo $view->render();
 
         $sheets = Sheets::spreadsheet(config('sheets.post_spreadsheet_id'))
@@ -1157,7 +1157,7 @@ class GoogleController extends Controller
     public function addSetsToPromos()
     {
         $data = 'Add set to Promotion';
-        $view = view('admin::admin.google.progressBar', compact('data'));
+        $view = view('admin.google.progressBar', compact('data'));
         echo $view->render();
 
         $sheets = Sheets::spreadsheet(config('sheets.post_spreadsheet_id'))
@@ -1197,7 +1197,7 @@ class GoogleController extends Controller
     public function uploadTranslations()
     {
         $data = 'Translations';
-        $view = view('admin::admin.google.progressBar', compact('data'));
+        $view = view('admin.google.progressBar', compact('data'));
         echo $view->render();
 
 
@@ -1239,7 +1239,7 @@ class GoogleController extends Controller
     public function uploadImages()
     {
         $data = 'Images';
-        $view = view('admin::admin.google.progressBar', compact('data'));
+        $view = view('admin.google.progressBar', compact('data'));
         echo $view->render();
         $handeledImages = [];
 
@@ -1368,7 +1368,7 @@ class GoogleController extends Controller
     public function uploadImages_()
     {
         $data = 'Images';
-        $view = view('admin::admin.google.progressBar', compact('data'));
+        $view = view('admin.google.progressBar', compact('data'));
         echo $view->render();
 
         $sheets = Sheets::spreadsheet(config('sheets.post_spreadsheet_id'))
@@ -1556,14 +1556,14 @@ class GoogleController extends Controller
         $parameters = Parameter::orderBy('type', 'asc')->get();
         $promotions = Promotion::get();
 
-        return view('admin::admin.google.parametersIdList', compact('products', 'parameters', 'promotions'));
+        return view('admin.google.parametersIdList', compact('products', 'parameters', 'promotions'));
     }
 
     public function getSubproductsId()
     {
         $products = Product::get();
 
-        return view('admin::admin.google.subproductsIdList', compact('products'));
+        return view('admin.google.subproductsIdList', compact('products'));
     }
 
     public function parseSheet($sheets)
@@ -1627,6 +1627,6 @@ class GoogleController extends Controller
                        ->sheetById(config('sheets.post_sheet_id'))
                        ->all();
 
-        return view('admin::admin.google.progressBar');
+        return view('admin.google.progressBar');
     }
 }

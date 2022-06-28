@@ -18,7 +18,7 @@ class BlogController extends Controller
         $blogs = Blog::orderBy('position', 'asc')->get();
         $category = null;
 
-        return view('admin::admin.blogs.index', compact('blogs', 'category'));
+        return view('admin.blogs.index', compact('blogs', 'category'));
     }
 
     public function getByCategory($id)
@@ -26,7 +26,7 @@ class BlogController extends Controller
         $blogs = Blog::orderBy('position', 'asc')->where('category_id', $id)->get();
         $category = BlogCategory::findOrFail($id);
 
-        return view('admin::admin.blogs.index', compact('blogs', 'category'));
+        return view('admin.blogs.index', compact('blogs', 'category'));
     }
 
     public function show($id)
@@ -40,7 +40,7 @@ class BlogController extends Controller
         $categories = BlogCategory::whereNotIn('id', $allCategories)->orderBy('position', 'asc')->get();
         $galleries = Gallery::get();
 
-        return view('admin::admin.blogs.create', compact('categories', 'galleries'));
+        return view('admin.blogs.create', compact('categories', 'galleries'));
     }
 
     public function store(Request $request)
@@ -111,7 +111,7 @@ class BlogController extends Controller
         $categories = BlogCategory::whereNotIn('id', $allCategories)->orderBy('position', 'asc')->get();
         $galleries = Gallery::get();
 
-        return view('admin::admin.blogs.edit', compact('blog', 'categories', 'galleries'));
+        return view('admin.blogs.edit', compact('blog', 'categories', 'galleries'));
     }
 
     public function update(Request $request, $id)

@@ -14,7 +14,7 @@ class BlogCategoryController extends Controller
     {
         $categories = BlogCategory::where('parent_id', 0)->get();
 
-        return view('admin::admin.blogCategories.index', compact('categories'));
+        return view('admin.blogCategories.index', compact('categories'));
     }
 
     public function show()
@@ -197,7 +197,7 @@ class BlogCategoryController extends Controller
     {
         $category = BlogCategory::with('translations')->findOrFail($id);
 
-        return view('admin::admin.blogCategories.edit', compact('category'));
+        return view('admin.blogCategories.edit', compact('category'));
     }
 
     public function update(Request $request, $id)

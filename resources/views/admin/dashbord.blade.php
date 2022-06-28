@@ -1,8 +1,8 @@
-@extends('admin::admin.app')
-@include('admin::admin.nav-bar')
-@include('admin::admin.left-menu')
+@extends('admin.app')
+@include('admin.nav-bar')
+@include('admin.left-menu')
 @section('content')
-@include('admin::admin.alerts')
+@include('admin.alerts')
 
 <article class="dashboard-page">
     <section class="section">
@@ -138,7 +138,7 @@
 @stop
 @section('footer')
 <footer>
-    @include('admin::admin.footer')
+    @include('admin.footer')
 </footer>
 <style media="screen">
     .alert-block{

@@ -44,7 +44,7 @@ class AdminController extends Controller
             }
         }
 
-        return view('admin.admin.dashbord');
+        return view('admin.dashbord');
     }
 
     public function cleanTranslations()

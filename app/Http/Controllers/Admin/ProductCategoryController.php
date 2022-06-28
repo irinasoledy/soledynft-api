@@ -30,7 +30,7 @@ class ProductCategoryController extends Controller
     {
         $categories = ProductCategory::where('parent_id', 0)->get();
 
-        return view('admin::admin.productCategories.index', compact('categories'));
+        return view('admin.productCategories.index', compact('categories'));
     }
 
     public function show()
@@ -216,7 +216,7 @@ class ProductCategoryController extends Controller
         $parameters = Parameter::get();
         $groups = ParameterGroup::get();
 
-        return view('admin::admin.productCategories.edit', compact('category', 'parameters', 'groups'));
+        return view('admin.productCategories.edit', compact('category', 'parameters', 'groups'));
     }
 
     public function update(Request $request, $id)

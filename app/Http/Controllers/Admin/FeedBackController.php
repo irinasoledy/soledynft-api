@@ -18,14 +18,14 @@ class FeedBackController extends Controller
         $feedbacksProcesed = FeedBack::where('status', 'procesed')->get();
         $feedbacksCloose = FeedBack::where('status', 'cloose')->get();
 
-        return view('admin::admin.feedBack.index', compact('feedbacks', 'feedbacksNew', 'feedbacksProcesed', 'feedbacksCloose'));
+        return view('admin.feedBack.index', compact('feedbacks', 'feedbacksNew', 'feedbacksProcesed', 'feedbacksCloose'));
     }
 
     public function create()
     {
         $galleries = Gallery::get();
 
-        return view('admin::admin.pages.create', compact('galleries'));
+        return view('admin.pages.create', compact('galleries'));
     }
 
     public function store(Request $request)
@@ -71,7 +71,7 @@ class FeedBackController extends Controller
             $feedBack->save();
         }
 
-        return view('admin::admin.feedBack.edit', compact('feedBack'));
+        return view('admin.feedBack.edit', compact('feedBack'));
     }
 
     public function update(Request $request, $id)

@@ -12,7 +12,7 @@ class WarehousesController extends Controller
     {
         $warehouses = Warehouse::orderBy('default', 'desc')->get();
 
-        return view('admin::admin.warehouses.index', compact('warehouses'));
+        return view('admin.warehouses.index', compact('warehouses'));
     }
 
     public function show($id)
@@ -111,5 +111,4 @@ class WarehousesController extends Controller
         session()->flash('message', 'Item has been deleted!');
         return redirect()->route('warehouses.index');
     }
-
 }

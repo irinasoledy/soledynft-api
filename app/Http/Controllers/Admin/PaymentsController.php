@@ -12,14 +12,14 @@ class PaymentsController extends Controller
     {
         $payments = Payment::get();
 
-        return view('admin::admin.payments.index', compact('payments'));
+        return view('admin.payments.index', compact('payments'));
     }
 
     public function edit($id)
     {
         $payment = Payment::findOrFail($id);
 
-        return view('admin::admin.payments.edit', compact('payment'));
+        return view('admin.payments.edit', compact('payment'));
     }
 
     public function update(Request $request, $id)

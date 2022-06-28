@@ -15,7 +15,7 @@ class DeliveriesController extends Controller
         $deliveries = Delivery::get();
         $mainCurrency = Currency::where('type', 1)->first();
 
-        return view('admin::admin.deliveries.index', compact('deliveries', 'mainCurrency'));
+        return view('admin.deliveries.index', compact('deliveries', 'mainCurrency'));
     }
 
     public function edit($id)
@@ -23,7 +23,7 @@ class DeliveriesController extends Controller
         $delivery = Delivery::findOrFail($id);
         $mainCurrency = Currency::where('type', 1)->first();
 
-        return view('admin::admin.deliveries.edit', compact('delivery', 'mainCurrency'));
+        return view('admin.deliveries.edit', compact('delivery', 'mainCurrency'));
     }
 
     public function update(Request $request, $id)

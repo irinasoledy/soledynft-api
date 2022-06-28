@@ -100,7 +100,7 @@ class AutoUploadController extends Controller
         $sets = Set::with(['translation'])->get();
         $brands = Brand::with(['translation'])->get();
 
-        return view('admin::admin.autoupload.index', compact('categories', 'currentCategory', 'products', 'promotions', 'sets', 'collections', 'brands', 'dillerGroups'));
+        return view('admin.autoupload.index', compact('categories', 'currentCategory', 'products', 'promotions', 'sets', 'collections', 'brands', 'dillerGroups'));
     }
 
     public function getProducts(Request $request)

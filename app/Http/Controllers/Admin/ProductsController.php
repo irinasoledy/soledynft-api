@@ -47,7 +47,7 @@ class ProductsController extends Controller
 
         $category = null;
 
-        return view('admin::admin.products.index', compact('products', 'category'));
+        return view('admin.products.index', compact('products', 'category'));
     }
 
     /**
@@ -65,7 +65,7 @@ class ProductsController extends Controller
         $category           = ProductCategory::find($request->get('category'));
         $parameters     = $this->getProperties($productCategory);
 
-        return view('admin::admin.products.create', compact('categories', 'parameters', 'sets', 'category', 'promotions'));
+        return view('admin.products.create', compact('categories', 'parameters', 'sets', 'category', 'promotions'));
     }
 
     /**
@@ -87,7 +87,7 @@ class ProductsController extends Controller
         $images         = ProductImage::where('product_id', $id)->orderBy('main', 'desc')->orderBy('first', 'desc')->get();
         $category       = ProductCategory::with('translation')->find($request->get('category'));
 
-        return view('admin::admin.products.edit', compact('product', 'categories', 'parameters', 'images', 'sets', 'category', 'promotions', 'collections'));
+        return view('admin.products.edit', compact('product', 'categories', 'parameters', 'images', 'sets', 'category', 'promotions', 'collections'));
     }
 
     /**
@@ -831,14 +831,14 @@ class ProductsController extends Controller
         $products = Product::where('category_id', $categoryId)->with('translation')->orderBy('position', 'asc')->get();
         $category = ProductCategory::with('translation')->find($categoryId);
 
-        return view('admin::admin.products.index', compact('products', 'category'));
+        return view('admin.products.index', compact('products', 'category'));
     }
 
     public function getProductsBySet($setId)
     {
         $set = Set::find($setId);
 
-        return view('admin::admin.products.productsSets', compact('products', 'set'));
+        return view('admin.products.productsSets', compact('products', 'set'));
     }
 
     public function editProductImages(Request $request, $product)
