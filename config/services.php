@@ -36,15 +36,15 @@ return [
     ],
 
     'google' => [
-        'client_id' => env ( 'G_CLIENT_ID' ),
-        'client_secret' => env ( 'G_CLIENT_SECRET' ),
-        'redirect' => env ( 'G_REDIRECT' )
+        'client_id' => env('G_CLIENT_ID'),
+        'client_secret' => env('G_CLIENT_SECRET'),
+        'redirect' => env('G_REDIRECT')
     ],
 
     'facebook' => [
-        'client_id' => env ( 'FB_CLIENT_ID' ),
-        'client_secret' => env ( 'FB_CLIENT_SECRET' ),
-        'redirect' => env ( 'FB_REDIRECT' )
+        'client_id' => env('FB_CLIENT_ID'),
+        'client_secret' => env('FB_CLIENT_SECRET'),
+        'redirect' => env('FB_REDIRECT')
     ],
 
     'instagram' => [
@@ -54,8 +54,8 @@ return [
     ],
 
     'elastic_email' => [
-    	'key' => env('ELASTIC_KEY'),
-    	'account' => env('ELASTIC_ACCOUNT')
+        'key' => env('ELASTIC_KEY'),
+        'account' => env('ELASTIC_ACCOUNT')
     ],
     'sendgrid' => [
         'api_key' => env('SENDGRID_API_KEY'),

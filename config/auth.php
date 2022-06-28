@@ -47,9 +47,9 @@ return [
         ],
 
         'persons' => [
-           'driver'   => 'session',
-           'provider' => 'persons'
-       ],
+            'driver' => 'session',
+            'provider' => 'persons'
+        ],
     ],
 
     /*
@@ -81,9 +81,9 @@ return [
         // ],
 
         'persons' => [
-             'driver' => 'eloquent',
-             'model' => App\FrontUser::class,
-         ],
+            'driver' => 'eloquent',
+            'model' => App\FrontUser::class,
+        ],
     ],
 
     /*
