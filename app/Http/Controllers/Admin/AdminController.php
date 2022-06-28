@@ -1,6 +1,6 @@
 <?php
 
-namespace Admin\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Intervention\Image\ImageManagerStatic as Image;
@@ -31,9 +31,7 @@ class AdminController extends Controller
     public function index()
     {
         $langs = Lang::pluck('id')->toArray();
-
-        // $translations = TranslationLine::whereNotIn('lang_id', $langs)->delete();
-
+        
         $products = Product::get();
 
         if ($products->count() > 0) {
@@ -46,7 +44,7 @@ class AdminController extends Controller
             }
         }
 
-        return view('admin::admin.dashbord');
+        return view('admin.admin.dashbord');
     }
 
     public function cleanTranslations()
@@ -64,16 +62,16 @@ class AdminController extends Controller
      */
     public function upload(Request $request)
     {
-        if($request->hasFile('upload')) {
+        if ($request->hasFile('upload')) {
             $originName = $request->file('upload')->getClientOriginalName();
             $fileName = pathinfo($originName, PATHINFO_FILENAME);
             $extension = $request->file('upload')->getClientOriginalExtension();
-            $fileName = $fileName.'_'.time().'.'.$extension;
+            $fileName = $fileName . '_' . time() . '.' . $extension;
 
             $request->file('upload')->move(public_path('images/ckeditor'), $fileName);
 
             $CKEditorFuncNum = $request->input('CKEditorFuncNum');
-            $url = asset('images/ckeditor/'.$fileName);
+            $url = asset('images/ckeditor/' . $fileName);
             $msg = 'Image uploaded successfully';
             $response = "<script>window.parent.CKEDITOR.tools.callFunction($CKEditorFuncNum, '$url', '$msg')</script>";
 
@@ -171,9 +169,9 @@ class AdminController extends Controller
     {
         $command = 'convert '
             . $from
-            .' '
+            . ' '
             . '-sampling-factor 4:2:0 -strip -quality 65'
-            .' '
+            . ' '
             . $to;
         return `$command`;
     }
@@ -185,7 +183,7 @@ class AdminController extends Controller
         $url = "https://juliaallert.com";
         $i = 0;
 
-        $endpoint = $url."/api/get/translations/all";
+        $endpoint = $url . "/api/get/translations/all";
         $client = new \GuzzleHttp\Client();
 
         $response = $client->request('GET', $endpoint);
@@ -224,7 +222,7 @@ class AdminController extends Controller
         }
 
         foreach ($langs as $key => $lang) {
-            $endpoint = $url."/api/get/translations/".$lang->lang;
+            $endpoint = $url . "/api/get/translations/" . $lang->lang;
             $client = new \GuzzleHttp\Client();
 
             $response = $client->request('GET', $endpoint);
@@ -244,7 +242,7 @@ class AdminController extends Controller
             }
         }
 
-        echo "Success, was synchronize ". $i ." translations from ".$url;
+        echo "Success, was synchronize " . $i . " translations from " . $url;
     }
 
     public function cleanTranslation()
@@ -282,7 +280,7 @@ class AdminController extends Controller
                     'price' => $productPrice->old_price - ($productPrice->old_price * $productPrice->product->discount / 100),
                     'b2b_price' => $productPrice->b2b_old_price - ($productPrice->b2b_old_price * $productPrice->product->discount / 100),
                 ]);
-            }else{
+            } else {
                 $productPrice->delete();
             }
         }
@@ -293,16 +291,16 @@ class AdminController extends Controller
                 if (!is_null($productDillerPrice->dillerGroup)) {
                     if ($productDillerPrice->dillerGroup->discount > $productDillerPrice->product->discount) {
                         $discount = $productDillerPrice->dillerGroup->discount;
-                    }else{
+                    } else {
                         $discount = $productDillerPrice->product->discount;
                     }
                     $productDillerPrice->update([
                         'price' => $productDillerPrice->old_price - ($productDillerPrice->old_price * $discount / 100),
                     ]);
-                }else{
+                } else {
                     $productDillerPrice->delete();
                 }
-            }else{
+            } else {
                 $productDillerPrice->delete();
             }
         }
@@ -323,9 +321,9 @@ class AdminController extends Controller
                 foreach ($product->subproducts as $key => $subproduct) {
                     foreach ($warehouses as $key => $warehouse) {
                         $findSubproductWarehouse = WarehousesStock::where('product_id', $subproduct->product_id)
-                                                            ->where('subproduct_id', $subproduct->id)
-                                                            ->where('warehouse_id', $warehouse->id)
-                                                            ->first();
+                            ->where('subproduct_id', $subproduct->id)
+                            ->where('warehouse_id', $warehouse->id)
+                            ->first();
                         if (is_null($findSubproductWarehouse)) {
                             WarehousesStock::create([
                                 'product_id' => $subproduct->product_id,
@@ -336,13 +334,13 @@ class AdminController extends Controller
                         }
                     }
                 }
-            }else{
+            } else {
                 foreach ($warehouses as $key => $warehouse) {
 
                     $findProductWarehouse = WarehousesStock::where('product_id', $product->id)
-                                                        ->where('subproduct_id', null)
-                                                        ->where('warehouse_id', $warehouse->id)
-                                                        ->first();
+                        ->where('subproduct_id', null)
+                        ->where('warehouse_id', $warehouse->id)
+                        ->first();
                     if (is_null($findProductWarehouse)) {
                         WarehousesStock::create([
                             'product_id' => $product->id,
@@ -387,7 +385,7 @@ class AdminController extends Controller
                         }
                     }
                 }
-            }else{
+            } else {
                 foreach ($product->warehouses as $key => $warehouse) {
                     $warehouseName = strtolower($warehouse->warehouse->name);
                     if ($warehouse->stock > 0) {
@@ -424,10 +422,10 @@ class AdminController extends Controller
             $image_resize->save(public_path('images/collections/og/' . $fileName));
 
             $image_resize->resize(480, null, function ($constraint) {
-                            $constraint->aspectRatio();
-                        })->save('images/collections/sm/' . $fileName);
+                $constraint->aspectRatio();
+            })->save('images/collections/sm/' . $fileName);
 
-            echo $fileName.'<br>';
+            echo $fileName . '<br>';
         }
     }
 
@@ -449,14 +447,14 @@ class AdminController extends Controller
             $image_resize->save(public_path('images/products/og/' . $fileName));
 
             $image_resize->resize(960, null, function ($constraint) {
-                            $constraint->aspectRatio();
-                        })->save('images/products/md/' . $fileName);
+                $constraint->aspectRatio();
+            })->save('images/products/md/' . $fileName);
 
             $image_resize->resize(480, null, function ($constraint) {
-                            $constraint->aspectRatio();
-                        })->save('images/products/sm/' . $fileName);
+                $constraint->aspectRatio();
+            })->save('images/products/sm/' . $fileName);
 
-            echo $fileName.'<br>';
+            echo $fileName . '<br>';
         }
 
         $this->resetImagsesCache();
@@ -482,10 +480,10 @@ class AdminController extends Controller
             $image_resize->save(public_path('images/collections/' . $fileName));
 
             $image_resize->resize(480, null, function ($constraint) {
-                            $constraint->aspectRatio();
-                        })->save('images/collections/sm/' . $fileName);
+                $constraint->aspectRatio();
+            })->save('images/collections/sm/' . $fileName);
 
-            echo $fileName.'<br>';
+            echo $fileName . '<br>';
         }
     }
 
@@ -507,14 +505,14 @@ class AdminController extends Controller
             $image_resize->save(public_path('images/sets/og/' . $fileName));
 
             $image_resize->resize(960, null, function ($constraint) {
-                            $constraint->aspectRatio();
-                        })->save('images/sets/md/' . $fileName);
+                $constraint->aspectRatio();
+            })->save('images/sets/md/' . $fileName);
 
             $image_resize->resize(480, null, function ($constraint) {
-                            $constraint->aspectRatio();
-                        })->save('images/sets/sm/' . $fileName);
+                $constraint->aspectRatio();
+            })->save('images/sets/sm/' . $fileName);
 
-            echo $fileName.'<br>';
+            echo $fileName . '<br>';
         }
     }
 
@@ -534,7 +532,7 @@ class AdminController extends Controller
 
             $image_resize = Image::make($file->getRealPath());
             $image_resize->save(public_path('images/promotions/' . $fileName));
-            echo $fileName.'<br>';
+            echo $fileName . '<br>';
         }
     }
 
@@ -545,7 +543,7 @@ class AdminController extends Controller
         $uniqid = uniqid();
         foreach ($images as $key => $image) {
             if ($image->href) {
-                $image->update(['src' => $image->href.'?'.$uniqid]);
+                $image->update(['src' => $image->href . '?' . $uniqid]);
             }
         }
     }
@@ -573,7 +571,7 @@ class AdminController extends Controller
                         }
                     }
                 }
-            }else{
+            } else {
                 foreach ($warehouses as $key => $warehouse) {
                     $checkWareHouse = WarehousesStock::where('warehouse_id', $warehouse->id)->where('product_id', $product->id)->where('subproduct_id', null)->first();
                     if (is_null($checkWareHouse)) {
@@ -605,7 +603,7 @@ class AdminController extends Controller
                         foreach ($set->set->translations as $key => $trans) {
                             $data[$trans->lang_id]['set'] = $trans->name;
                         }
-                    }else{
+                    } else {
                         foreach ($this->langs as $key => $lang) {
                             $data[$lang->id]['set'] = "";
                         }
@@ -622,12 +620,12 @@ class AdminController extends Controller
                                     $data[$trans->lang_id]['collection'] = $trans->name;
                                 }
                             }
-                        }else{
+                        } else {
                             foreach ($this->langs as $key => $lang) {
                                 $data[$lang->id]['collection'] = "";
                             }
                         }
-                    }else{
+                    } else {
                         foreach ($this->langs as $key => $lang) {
                             $data[$lang->id]['collection'] = "";
                         }

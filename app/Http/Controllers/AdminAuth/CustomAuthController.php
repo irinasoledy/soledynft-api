@@ -22,7 +22,7 @@ class CustomAuthController extends Controller
             return redirect()->route('back');
         }
 
-        return view('admin::auth.login', get_defined_vars());
+        return view('admin.auth.login', get_defined_vars());
     }
 
     public function checkLogin(Request $request)

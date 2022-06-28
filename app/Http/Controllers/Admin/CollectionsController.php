@@ -1,7 +1,6 @@
 <?php
 
-namespace Admin\Http\Controllers;
-
+namespace App\Http\Controllers\Admin;
 use Intervention\Image\ImageManagerStatic as Image;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Session;

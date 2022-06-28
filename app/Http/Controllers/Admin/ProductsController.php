@@ -1,7 +1,6 @@
 <?php
 
-namespace Admin\Http\Controllers;
-
+namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Intervention\Image\ImageManagerStatic as Image;

@@ -1,14 +1,10 @@
 <?php
-\URL::forceScheme('https');
 $prefix = session('applocale');
 $types = ['homewear', 'bijoux'];
 
-Route::get('/', 'PagesController@index')->name('index');
-
-// test route
-Route::get('/paynet-test', 'Payments\Paynet@index');
-Route::any('/paynet-success-link/{id}', 'Payments\Paynet@successLink');
-Route::any('/paynet-cancel-link/{id}', 'Payments\Paynet@cancelLink');
+Route::get('/', function () {
+    return redirect('/auth/login');
+});
 
 Route::get('/generate_pdf', 'PaymentController@generatePdf');
 Route::get('/sitemap.xml', 'SitemapController@index');

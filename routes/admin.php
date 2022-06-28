@@ -8,7 +8,7 @@ Route::post('/auth/register', 'AdminAuth\CustomAuthController@checkRegister');
 Route::get('/auth/logout', 'AdminAuth\CustomAuthController@logout');
 
 Route::group(['middleware' => ['web']], function () {
-    $namespace = 'Admin\Http\Controllers';
+    $namespace = 'Admin';
 
     Route::group(['namespace' => $namespace, 'prefix' => 'back', 'middleware' => 'auth'], function () {
         // Dashboard

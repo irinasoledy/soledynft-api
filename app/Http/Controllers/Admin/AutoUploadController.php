@@ -1,6 +1,6 @@
 <?php
 
-namespace Admin\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use Intervention\Image\ImageManagerStatic as Image;
 use Illuminate\Http\Request;
@@ -69,32 +69,32 @@ class AutoUploadController extends Controller
         $dillerGroups = DillerGroup::get();
 
         $currentCategory = ProductCategory::with([
-                                            'translation',
-                                            'params.property.translation',
-                                            'params.property.parameterValues.translation',
-                                            'property.property.translation',
-                                            'property.property.parameterValues.translation'
-                                        ])->find($request->get('category'));
+            'translation',
+            'params.property.translation',
+            'params.property.parameterValues.translation',
+            'property.property.translation',
+            'property.property.parameterValues.translation'
+        ])->find($request->get('category'));
 
         $products = Product::with([
-                                'category.properties.property.parameterValues.translation',
-                                'images',
-                                'imagesFB',
-                                'prices.currency',
-                                'mainImage',
-                                'category.translation',
-                                'productCategories',
-                                'subproducts.prices.currency',
-                                'translation',
-                                'translations',
-                                'sets',
-                                'setImages',
-                                'similar',
-                                'collections',
-                                'brands',
-                            ])
-                           ->orderBy('id', 'desc')
-                           ->paginate(10);
+            'category.properties.property.parameterValues.translation',
+            'images',
+            'imagesFB',
+            'prices.currency',
+            'mainImage',
+            'category.translation',
+            'productCategories',
+            'subproducts.prices.currency',
+            'translation',
+            'translations',
+            'sets',
+            'setImages',
+            'similar',
+            'collections',
+            'brands',
+        ])
+            ->orderBy('id', 'desc')
+            ->paginate(10);
 
         $collections = Collection::with(['translation'])->get();
         $sets = Set::with(['translation'])->get();
@@ -106,35 +106,41 @@ class AutoUploadController extends Controller
     public function getProducts(Request $request)
     {
         $products = Product::with([
-                                'category.properties.property.parameterValues.translation',
-                                'images',
-                                'imagesFB',
-                                'prices.currency',
-                                'mainImage',
-                                'category.translation',
-                                'productCategories',
-                                'subproducts.prices.currency',
-                                'translation',
-                                'translations',
-                                'propertyValues.translations',
-                                'sets',
-                                'setImages',
-                                'similar',
-                                'collections',
-                                'brands',
-                            ])
-                           ->where('category_id', $request->get('category'))
-                           ->orderBy('id', 'desc')
-                           ->paginate(10);
+            'category.properties.property.parameterValues.translation',
+            'images',
+            'imagesFB',
+            'prices.currency',
+            'mainImage',
+            'category.translation',
+            'productCategories',
+            'subproducts.prices.currency',
+            'translation',
+            'translations',
+            'propertyValues.translations',
+            'sets',
+            'setImages',
+            'similar',
+            'collections',
+            'brands',
+        ])
+            ->where('category_id', $request->get('category'))
+            ->orderBy('id', 'desc')
+            ->paginate(10);
         return $products;
     }
 
     public function edit(Request $request)
     {
         $item = $request->get('product');
-        $props = array_filter($request->get('properties'), function($var){return !is_null($var);} );
-        $propsText = array_filter($request->get('propertiesText'), function($var){return !is_null($var);} );
-        $propsCheckbox = array_filter($request->get('propertiesCheckbox'), function($var){return !is_null($var);} );
+        $props = array_filter($request->get('properties'), function ($var) {
+            return !is_null($var);
+        });
+        $propsText = array_filter($request->get('propertiesText'), function ($var) {
+            return !is_null($var);
+        });
+        $propsCheckbox = array_filter($request->get('propertiesCheckbox'), function ($var) {
+            return !is_null($var);
+        });
 
         $findProduct = Product::find($item['id']);
 
@@ -162,7 +168,7 @@ class AutoUploadController extends Controller
                 ParameterValueProduct::where('product_id', $findProduct->id)->where('parameter_id', $key)->update([
                     'parameter_value_id' => $value,
                 ]);
-            }else{
+            } else {
                 ParameterValueProduct::create([
                     'product_id' => $findProduct->id,
                     'parameter_id' => $key,
@@ -186,29 +192,29 @@ class AutoUploadController extends Controller
         }
 
         foreach ($propsText as $key => $value) {
-                $value = (array) $value;
-                $findProp = ParameterValueProduct::where('product_id', $findProduct->id)->where('parameter_id', $key)->first();
+            $value = (array)$value;
+            $findProp = ParameterValueProduct::where('product_id', $findProduct->id)->where('parameter_id', $key)->first();
 
-                if (!is_null($findProp)) {
-                    $property = ParameterValueProduct::where('product_id', $findProduct->id)->where('parameter_id', $key)->update([
-                        'parameter_value_id' => 0,
-                    ]);
-                }else{
-                    $findProp = ParameterValueProduct::create([
-                        'product_id' => $findProduct->id,
-                        'parameter_id' => $key,
-                        'parameter_value_id' => 0,
-                    ]);
-                }
+            if (!is_null($findProp)) {
+                $property = ParameterValueProduct::where('product_id', $findProduct->id)->where('parameter_id', $key)->update([
+                    'parameter_value_id' => 0,
+                ]);
+            } else {
+                $findProp = ParameterValueProduct::create([
+                    'product_id' => $findProduct->id,
+                    'parameter_id' => $key,
+                    'parameter_value_id' => 0,
+                ]);
+            }
 
-                $findProp->translations()->delete();
-                foreach ($this->langs as $key => $languageItem) {
-                    ParameterValueProductTranslation::create([
-                        'lang_id' => $languageItem->id,
-                        'param_val_id' => $findProp->id,
-                        'value' => array_key_exists($key, $value) ? $value[$key] : $value[0]
-                    ]);
-                }
+            $findProp->translations()->delete();
+            foreach ($this->langs as $key => $languageItem) {
+                ParameterValueProductTranslation::create([
+                    'lang_id' => $languageItem->id,
+                    'param_val_id' => $findProp->id,
+                    'value' => array_key_exists($key, $value) ? $value[$key] : $value[0]
+                ]);
+            }
         }
     }
 
@@ -221,7 +227,7 @@ class AutoUploadController extends Controller
 
             foreach ($product->subproducts as $key => $subproduct) {
                 $subproduct->update([
-                    'code' => $product->code.$x,
+                    'code' => $product->code . $x,
                 ]);
                 $x++;
             }
@@ -232,7 +238,7 @@ class AutoUploadController extends Controller
     {
         $code = substr($product->category->translation->name, 0, 3);
         $code .= substr($product->category->translation->name, -3);
-        $code .= '-'.$product->category_id;
+        $code .= '-' . $product->category_id;
         $code .= $product->id;
 
         return $code;
@@ -241,9 +247,15 @@ class AutoUploadController extends Controller
     public function create(Request $request)
     {
         $item = $request->get('product');
-        $props = array_filter($request->get('properties'), function($var){return !is_null($var);} );
-        $propsText = array_filter($request->get('propertiesText'), function($var){return !is_null($var);} );
-        $propsCheckbox = array_filter($request->get('propertiesCheckbox'), function($var){return !is_null($var);} );
+        $props = array_filter($request->get('properties'), function ($var) {
+            return !is_null($var);
+        });
+        $propsText = array_filter($request->get('propertiesText'), function ($var) {
+            return !is_null($var);
+        });
+        $propsCheckbox = array_filter($request->get('propertiesCheckbox'), function ($var) {
+            return !is_null($var);
+        });
 
         $product = Product::create([
             'alias' => str_slug($item['name'][$this->lang->id]),
@@ -297,7 +309,7 @@ class AutoUploadController extends Controller
         }
 
         foreach ($propsText as $key => $value) {
-            $value = (array) $value;
+            $value = (array)$value;
             $findProp = ParameterValueProduct::create([
                 'product_id' => $product->id,
                 'parameter_id' => $key,
@@ -328,7 +340,7 @@ class AutoUploadController extends Controller
                     ]);
                 }
             }
-        }else{
+        } else {
             foreach ($warehouses as $key => $warehouse) {
                 WarehousesStock::create([
                     'warehouse_id' => $warehouse->id,
@@ -365,14 +377,14 @@ class AutoUploadController extends Controller
     {
         $product = $request->get('product_id');
 
-        if($files = $request->file('attachments')){
-            foreach($files as $key => $file){
+        if ($files = $request->file('attachments')) {
+            foreach ($files as $key => $file) {
                 $uniqueId = uniqid();
                 $clientOriginalName = str_replace(' ', '', $file->getClientOriginalName());
-                $name = pathinfo($clientOriginalName, PATHINFO_FILENAME).sha1($uniqueId).$clientOriginalName;
+                $name = pathinfo($clientOriginalName, PATHINFO_FILENAME) . sha1($uniqueId) . $clientOriginalName;
                 $image_resize = Image::make($file->getRealPath());
                 $product_image_size = json_decode(file_get_contents(storage_path('globalsettings.json')), true)['crop']['product'];
-                $image_resize->save(public_path('images/products/og/' .$name));
+                $image_resize->save(public_path('images/products/og/' . $name));
                 // $image_resize->resize(1000, 1000)->save(public_path('images/products/fbq/' .$name), 85);
 
                 // $nameFB = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME).$uniqueId.$file->getClientOriginalName();
@@ -383,30 +395,30 @@ class AutoUploadController extends Controller
                 //             })->save('images/products/og/' .$name, 85);
 
                 $image_resize->resize(960, null, function ($constraint) {
-                                $constraint->aspectRatio();
-                            })->save('images/products/md/' .$name);
+                    $constraint->aspectRatio();
+                })->save('images/products/md/' . $name);
 
                 $image_resize->resize(480, null, function ($constraint) {
-                                $constraint->aspectRatio();
-                            })->save('images/products/sm/' .$name);
+                    $constraint->aspectRatio();
+                })->save('images/products/sm/' . $name);
 
-               ini_set('memory_limit', '-1');
+                ini_set('memory_limit', '-1');
 
-               // $img = Image::make(public_path('images/background.png'));
-               // $img->insert(public_path('images/products/og/'.$name), 'center');
-               // $nameFB = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME).$uniqueId.$file->getClientOriginalName();
-               // $img->save(public_path('images/products/fbq/' .$nameFB), 75);
-               //
-               // $img = Image::make(public_path('images/products/fbq/' .$nameFB));
-               // $img->insert(public_path('images/ramka-1.png'), 'center');
-               // $nameFB = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME).$uniqueId.$file->getClientOriginalName();
-               // $img->save(public_path('images/products/fbq/' .$nameFB), 75);
+                // $img = Image::make(public_path('images/background.png'));
+                // $img->insert(public_path('images/products/og/'.$name), 'center');
+                // $nameFB = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME).$uniqueId.$file->getClientOriginalName();
+                // $img->save(public_path('images/products/fbq/' .$nameFB), 75);
+                //
+                // $img = Image::make(public_path('images/products/fbq/' .$nameFB));
+                // $img->insert(public_path('images/ramka-1.png'), 'center');
+                // $nameFB = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME).$uniqueId.$file->getClientOriginalName();
+                // $img->save(public_path('images/products/fbq/' .$nameFB), 75);
 
-               $images[] = $name;
+                $images[] = $name;
 
-                $image = ProductImage::create( [
-                    'product_id' =>  $product,
-                    'src' =>  $name,
+                $image = ProductImage::create([
+                    'product_id' => $product,
+                    'src' => $name,
                     'main' => 0,
                 ]);
 
@@ -424,36 +436,36 @@ class AutoUploadController extends Controller
                 //     ]);
                 // }
 
-                foreach ($this->langs as $lang){
-                  $category_id = Product::where('id', $product)->pluck('category_id');
-                  $autoAlt = AutoAlt::where('cat_id', $category_id)->where('lang_id', $lang->id)->pluck('keywords')->toArray();
+                foreach ($this->langs as $lang) {
+                    $category_id = Product::where('id', $product)->pluck('category_id');
+                    $autoAlt = AutoAlt::where('cat_id', $category_id)->where('lang_id', $lang->id)->pluck('keywords')->toArray();
 
-                  if(count($autoAlt) == 0) {
-                    ProductImageTranslation::create( [
-                        'product_image_id' => $image->id,
-                        'lang_id' =>  $lang->id,
-                        'alt' => $request->text[$lang->id][$key],
-                        'title' => $request->text[$lang->id][$key],
-                    ]);
-                  }
-
-                  if(count($autoAlt) > 0) {
-                    if (count($autoAlt) == 1) {
-                        ProductImageTranslation::create( [
+                    if (count($autoAlt) == 0) {
+                        ProductImageTranslation::create([
                             'product_image_id' => $image->id,
-                            'lang_id' =>  $lang->id,
-                            'alt' => $autoAlt[0],
-                            'title' => $autoAlt[0],
+                            'lang_id' => $lang->id,
+                            'alt' => $request->text[$lang->id][$key],
+                            'title' => $request->text[$lang->id][$key],
                         ]);
-                    } else {
-                      ProductImageTranslation::create( [
-                          'product_image_id' => $image->id,
-                          'lang_id' =>  $lang->id,
-                          'alt' => $autoAlt[array_rand($autoAlt)],
-                          'title' => $autoAlt[array_rand($autoAlt)],
-                      ]);
                     }
-                  }
+
+                    if (count($autoAlt) > 0) {
+                        if (count($autoAlt) == 1) {
+                            ProductImageTranslation::create([
+                                'product_image_id' => $image->id,
+                                'lang_id' => $lang->id,
+                                'alt' => $autoAlt[0],
+                                'title' => $autoAlt[0],
+                            ]);
+                        } else {
+                            ProductImageTranslation::create([
+                                'product_image_id' => $image->id,
+                                'lang_id' => $lang->id,
+                                'alt' => $autoAlt[array_rand($autoAlt)],
+                                'title' => $autoAlt[array_rand($autoAlt)],
+                            ]);
+                        }
+                    }
                 }
             }
         }
@@ -463,54 +475,54 @@ class AutoUploadController extends Controller
     {
         $product = $request->get('product_id');
 
-        if($files = $request->file('attachments')){
-            foreach($files as $key => $file){
+        if ($files = $request->file('attachments')) {
+            foreach ($files as $key => $file) {
                 $uniqueId = uniqid();
-                $name = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME).$uniqueId.$file->getClientOriginalName();
+                $name = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME) . $uniqueId . $file->getClientOriginalName();
                 $image_resize = Image::make($file->getRealPath());
                 $product_image_size = json_decode(file_get_contents(storage_path('globalsettings.json')), true)['crop']['product'];
 
-                $image_resize->save(public_path('images/products/fbq/' .$name), 75);
+                $image_resize->save(public_path('images/products/fbq/' . $name), 75);
 
                 $images[] = $name;
 
                 $image = ProductImage::create([
-                    'product_id' =>  $product,
-                    'src' =>  $name,
+                    'product_id' => $product,
+                    'src' => $name,
                     'main' => 0,
                     'type' => 'fb'
                 ]);
 
-                foreach ($this->langs as $lang){
-                  $category_id = Product::where('id', $product)->pluck('category_id');
-                  $autoAlt = AutoAlt::where('cat_id', $category_id)->where('lang_id', $lang->id)->pluck('keywords')->toArray();
+                foreach ($this->langs as $lang) {
+                    $category_id = Product::where('id', $product)->pluck('category_id');
+                    $autoAlt = AutoAlt::where('cat_id', $category_id)->where('lang_id', $lang->id)->pluck('keywords')->toArray();
 
-                  if(count($autoAlt) == 0) {
-                    ProductImageTranslation::create( [
-                        'product_image_id' => $image->id,
-                        'lang_id' =>  $lang->id,
-                        'alt' => $request->text[$lang->id][$key],
-                        'title' => $request->text[$lang->id][$key],
-                    ]);
-                  }
-
-                  if(count($autoAlt) > 0) {
-                    if (count($autoAlt) == 1) {
-                        ProductImageTranslation::create( [
+                    if (count($autoAlt) == 0) {
+                        ProductImageTranslation::create([
                             'product_image_id' => $image->id,
-                            'lang_id' =>  $lang->id,
-                            'alt' => $autoAlt[0],
-                            'title' => $autoAlt[0],
+                            'lang_id' => $lang->id,
+                            'alt' => $request->text[$lang->id][$key],
+                            'title' => $request->text[$lang->id][$key],
                         ]);
-                    } else {
-                      ProductImageTranslation::create( [
-                          'product_image_id' => $image->id,
-                          'lang_id' =>  $lang->id,
-                          'alt' => $autoAlt[array_rand($autoAlt)],
-                          'title' => $autoAlt[array_rand($autoAlt)],
-                      ]);
                     }
-                  }
+
+                    if (count($autoAlt) > 0) {
+                        if (count($autoAlt) == 1) {
+                            ProductImageTranslation::create([
+                                'product_image_id' => $image->id,
+                                'lang_id' => $lang->id,
+                                'alt' => $autoAlt[0],
+                                'title' => $autoAlt[0],
+                            ]);
+                        } else {
+                            ProductImageTranslation::create([
+                                'product_image_id' => $image->id,
+                                'lang_id' => $lang->id,
+                                'alt' => $autoAlt[array_rand($autoAlt)],
+                                'title' => $autoAlt[array_rand($autoAlt)],
+                            ]);
+                        }
+                    }
                 }
             }
         }
@@ -533,8 +545,8 @@ class AutoUploadController extends Controller
         ProductImage::where('id', $request->get('id'))->delete();
         ProductImageTranslation::where('product_image_id', $request->get('id'))->get();
 
-        @unlink(public_path('images/products/og/'.$image->src));
-        @unlink(public_path('images/products/sm/'.$image->src));
+        @unlink(public_path('images/products/og/' . $image->src));
+        @unlink(public_path('images/products/sm/' . $image->src));
 
         $images = ProductImage::where('product_id', $request->get('product_id'))->where('type', null)->orderBy('id', 'desc')->get();
         return $images;
@@ -547,7 +559,7 @@ class AutoUploadController extends Controller
         ProductImage::where('id', $request->get('id'))->delete();
         ProductImageTranslation::where('product_image_id', $request->get('id'))->get();
 
-        @unlink(public_path('images/products/fbq/'.$image->src));
+        @unlink(public_path('images/products/fbq/' . $image->src));
 
         $images = ProductImage::where('product_id', $request->get('product_id'))->where('type', 'fb')->orderBy('id', 'desc')->get();
         return $images;
@@ -598,42 +610,42 @@ class AutoUploadController extends Controller
         $subProductParameter = SubProductParameter::where('category_id', $category->id)->first();
         if (!is_null($subProductParameter)) {
 
-        $parameter = Parameter::find($subProductParameter->parameter_id);
-        $x = 'A';
+            $parameter = Parameter::find($subProductParameter->parameter_id);
+            $x = 'A';
 
-        if (!is_null($parameter)) {
-            if (count($parameter->parameterValues()->get())) {
-                foreach ($parameter->parameterValues()->get() as $key => $value) {
-                    $subproduct = SubProduct::where('product_id', $product->id)->where('parameter_id', $parameter->id)->where('value_id', $value->id)->first();
-                    $combinationJSON = [ $parameter->id => $value->id ];
-                    $x = $value->suffix;
+            if (!is_null($parameter)) {
+                if (count($parameter->parameterValues()->get())) {
+                    foreach ($parameter->parameterValues()->get() as $key => $value) {
+                        $subproduct = SubProduct::where('product_id', $product->id)->where('parameter_id', $parameter->id)->where('value_id', $value->id)->first();
+                        $combinationJSON = [$parameter->id => $value->id];
+                        $x = $value->suffix;
 
-                    if (is_null($subproduct)) {
-                        SubProduct::create([
-                            'product_id' => $product->id,
-                            'parameter_id' => $parameter->id,
-                            'value_id' => $value->id,
-                            'code' => $product->code.'-'.$x,
-                            'combination' => json_encode($combinationJSON),
-                            'price' => $product->price,
-                            'actual_price' => $product->actual_price,
-                            'discount' =>  $product->discount,
-                            'stoc' =>  $product->stock,
-                            'active' =>  1,
-                        ]);
-                    }else{
-                        SubProduct::where('id', $subproduct->id)->update([
-                            'product_id' => $product->id,
-                            'parameter_id' => $parameter->id,
-                            'value_id' => $value->id,
-                            'code' => $product->code.'-'.$x,
-                            'combination' => json_encode($combinationJSON),
-                        ]);
+                        if (is_null($subproduct)) {
+                            SubProduct::create([
+                                'product_id' => $product->id,
+                                'parameter_id' => $parameter->id,
+                                'value_id' => $value->id,
+                                'code' => $product->code . '-' . $x,
+                                'combination' => json_encode($combinationJSON),
+                                'price' => $product->price,
+                                'actual_price' => $product->actual_price,
+                                'discount' => $product->discount,
+                                'stoc' => $product->stock,
+                                'active' => 1,
+                            ]);
+                        } else {
+                            SubProduct::where('id', $subproduct->id)->update([
+                                'product_id' => $product->id,
+                                'parameter_id' => $parameter->id,
+                                'value_id' => $value->id,
+                                'code' => $product->code . '-' . $x,
+                                'combination' => json_encode($combinationJSON),
+                            ]);
+                        }
+                        $x++;
                     }
-                    $x++;
                 }
             }
-        }
 
             $parameterValuesId = $parameter->parameterValues()->get()->pluck('id')->toArray();
             SubProduct::where('product_id', $product->id)->whereNotIn('value_id', $parameterValuesId)->delete();
@@ -643,16 +655,30 @@ class AutoUploadController extends Controller
 
     public function editSubproducts(Request $request)
     {
-        $active = array_filter($request->get('subproducts')['active'], function($var){return !is_null($var);} );
-        $price = array_filter($request->get('subproducts')['price'], function($var){return !is_null($var);} );
-        $prices = array_filter($request->get('subproductPrices'), function($var){return !is_null($var);} );
-        $stocks = array_filter($request->get('subproducts')['stoc'], function($var){return !is_null($var);} );
-        $ean_code = array_filter($request->get('subproducts')['ean_code'], function($var){return !is_null($var);} );
-        $discount = array_filter($request->get('subproducts')['discount'], function($var){return !is_null($var);} );
+        $active = array_filter($request->get('subproducts')['active'], function ($var) {
+            return !is_null($var);
+        });
+        $price = array_filter($request->get('subproducts')['price'], function ($var) {
+            return !is_null($var);
+        });
+        $prices = array_filter($request->get('subproductPrices'), function ($var) {
+            return !is_null($var);
+        });
+        $stocks = array_filter($request->get('subproducts')['stoc'], function ($var) {
+            return !is_null($var);
+        });
+        $ean_code = array_filter($request->get('subproducts')['ean_code'], function ($var) {
+            return !is_null($var);
+        });
+        $discount = array_filter($request->get('subproducts')['discount'], function ($var) {
+            return !is_null($var);
+        });
 
         $productCode = $request->get('code');
         $productEanCode = $request->get('ean_code');
-        $productStocks = array_filter($request->get('stocks'), function($var){return !is_null($var);} );
+        $productStocks = array_filter($request->get('stocks'), function ($var) {
+            return !is_null($var);
+        });
 
         $product = Product::find($request->get('product_id'));
 
@@ -749,13 +775,13 @@ class AutoUploadController extends Controller
             }
         }
 
-        $data['warehouses']         = Warehouse::where('active', 1)->get();
-        $data['warehousesStocks']   = WarehousesStock::with(['warehouse'])
-                                                    ->where('product_id', $request->get('product_id'))
-                                                    ->where('subproduct_id', '!=', null)
-                                                    ->get();
+        $data['warehouses'] = Warehouse::where('active', 1)->get();
+        $data['warehousesStocks'] = WarehousesStock::with(['warehouse'])
+            ->where('product_id', $request->get('product_id'))
+            ->where('subproduct_id', '!=', null)
+            ->get();
 
-        $data['subproducts'] =  Subproduct::with('prices.currency')->where('product_id', $request->get('product_id'))->get();
+        $data['subproducts'] = Subproduct::with('prices.currency')->where('product_id', $request->get('product_id'))->get();
 
         return $data;
     }
@@ -767,23 +793,23 @@ class AutoUploadController extends Controller
         $finds = ProductTranslation::where('name', 'like', '%' . $search . '%')->pluck('product_id')->toArray();
 
         $products = Product::with([
-                                'category.properties.property.parameterValues.translation',
-                                'images',
-                                'imagesFB',
-                                'prices.currency',
-                                'mainImage',
-                                'category.translation',
-                                'productCategories',
-                                'subproducts.prices.currency',
-                                'translation',
-                                'translations',
-                                'propertyValues',
-                                'sets',
-                                'setImages',
-                                'similar',
-                                'collections',
-                                'brands',
-                            ])->whereIn('id', array_unique($finds))->get();
+            'category.properties.property.parameterValues.translation',
+            'images',
+            'imagesFB',
+            'prices.currency',
+            'mainImage',
+            'category.translation',
+            'productCategories',
+            'subproducts.prices.currency',
+            'translation',
+            'translations',
+            'propertyValues',
+            'sets',
+            'setImages',
+            'similar',
+            'collections',
+            'brands',
+        ])->whereIn('id', array_unique($finds))->get();
 
         return $products;
     }
@@ -791,16 +817,16 @@ class AutoUploadController extends Controller
     public function saveSets(Request $request)
     {
         $setProduct = SetProducts::where('product_id', $request->get('product_id'))
-                                    ->where('set_id', $request->get('set_id'))
-                                    ->first();
+            ->where('set_id', $request->get('set_id'))
+            ->first();
 
         if (!is_null($setProduct)) {
             $setProduct->delete();
-        }else{
+        } else {
             SetProducts::create([
-                    'set_id' => $request->get('set_id'),
-                    'product_id' => $request->get('product_id'),
-                ]);
+                'set_id' => $request->get('set_id'),
+                'product_id' => $request->get('product_id'),
+            ]);
         }
 
         $collections = new CollectionsController();
@@ -810,16 +836,16 @@ class AutoUploadController extends Controller
     public function saveCategs(Request $request)
     {
         $categProduct = ProductsCategories::where('product_id', $request->get('product_id'))
-                                    ->where('category_id', $request->get('categ_id'))
-                                    ->first();
+            ->where('category_id', $request->get('categ_id'))
+            ->first();
 
         if (!is_null($categProduct)) {
             $categProduct->delete();
-        }else{
+        } else {
             ProductsCategories::create([
-                    'category_id' => $request->get('categ_id'),
-                    'product_id' => $request->get('product_id'),
-                ]);
+                'category_id' => $request->get('categ_id'),
+                'product_id' => $request->get('product_id'),
+            ]);
         }
     }
 
@@ -828,25 +854,25 @@ class AutoUploadController extends Controller
         $product = $request->get('product_id');
         $set = $request->get('set_id');
 
-        if ($product){
+        if ($product) {
 
-            if($files = $request->file('attachments')){
+            if ($files = $request->file('attachments')) {
                 $issetImage = SetProductImage::where('product_id', $product)->where('set_id', $set)->first();
                 if (!is_null($issetImage)) {
                     @unlink(public_path('/images/products/set/' . $issetImage->image));
                     $issetImage->delete();
                 }
 
-                foreach($files as $key => $file){
+                foreach ($files as $key => $file) {
                     $uniqueId = uniqid();
-                    $name = $uniqueId.$file->getClientOriginalName();
+                    $name = $uniqueId . $file->getClientOriginalName();
                     $image_resize = Image::make($file->getRealPath());
-                    $image_resize->save(public_path('images/products/set/' .$name), 75);
+                    $image_resize->save(public_path('images/products/set/' . $name), 75);
 
-                    $image = SetProductImage::create( [
-                        'product_id' =>  $product,
-                        'set_id' =>  $set,
-                        'image' =>  $name,
+                    $image = SetProductImage::create([
+                        'product_id' => $product,
+                        'set_id' => $set,
+                        'image' => $name,
                         'main' => 0,
                     ]);
 
@@ -854,23 +880,23 @@ class AutoUploadController extends Controller
             }
 
             $data['product'] = Product::with([
-                                    'category.properties.property.parameterValues.translation',
-                                    'images',
-                                    'imagesFB',
-                                    'prices.currency',
-                                    'mainImage',
-                                    'category.translation',
-                                    'productCategories',
-                                    'subproducts.prices.currency',
-                                    'translation',
-                                    'translations',
-                                    'propertyValues',
-                                    'sets',
-                                    'setImages',
-                                    'similar',
-                                    'collections',
-                                    'brands',
-                                ])->where('id', $product)->first();
+                'category.properties.property.parameterValues.translation',
+                'images',
+                'imagesFB',
+                'prices.currency',
+                'mainImage',
+                'category.translation',
+                'productCategories',
+                'subproducts.prices.currency',
+                'translation',
+                'translations',
+                'propertyValues',
+                'sets',
+                'setImages',
+                'similar',
+                'collections',
+                'brands',
+            ])->where('id', $product)->first();
 
             $data['sets'] = Set::with(['translation'])->get();
 
@@ -886,7 +912,7 @@ class AutoUploadController extends Controller
         $collectionId = $request->get('collection_id');
         $issetCollection = $product->collections()->where('collection_id', $collectionId)->first();
 
-        if (is_null($issetCollection)){
+        if (is_null($issetCollection)) {
             ProductCollection::create(['collection_id' => $collectionId, 'product_id' => $product->id]);
 
             $set = new Set();
@@ -897,7 +923,7 @@ class AutoUploadController extends Controller
             $set->active = 1;
             $set->save();
 
-            $set->code = 'Set-'.$set->id;
+            $set->code = 'Set-' . $set->id;
             $set->save();
 
             foreach ($product->translations as $productRow):
@@ -922,8 +948,8 @@ class AutoUploadController extends Controller
                         'type' => 'photo',
                         'src' => $productImage->src
                     ]);
-                    $ogFile = copy(public_path('images/products/og/' .$productImage->src), public_path('images/sets/og/' .$productImage->src));
-                    $smFile = copy(public_path('images/products/sm/' .$productImage->src), public_path('images/sets/sm/' .$productImage->src));
+                    $ogFile = copy(public_path('images/products/og/' . $productImage->src), public_path('images/sets/og/' . $productImage->src));
+                    $smFile = copy(public_path('images/products/sm/' . $productImage->src), public_path('images/sets/sm/' . $productImage->src));
                 }
             }
 
@@ -936,7 +962,7 @@ class AutoUploadController extends Controller
                     'dependable' => $price->dependable,
                 ]);
             }
-        }else{
+        } else {
             Set::where('alias', $product->alias)->delete();
             ProductCollection::where('collection_id', $collectionId)->where('product_id', $product->id)->delete();
         }
@@ -950,7 +976,7 @@ class AutoUploadController extends Controller
 
         if (!is_null($similar)) {
             $similar->delete();
-        }else{
+        } else {
             ProductSimilar::create([
                 'product_id' => $request->get('product_id'),
                 'category_id' => $request->get('category_id'),
@@ -980,14 +1006,14 @@ class AutoUploadController extends Controller
         $product = Product::where('id', $request->get('product_id'))->first();
         $videoName = "";
 
-        if($files = $request->file('attachments')){
+        if ($files = $request->file('attachments')) {
             if (!is_null($product->video)) {
                 @unlink(public_path('/videos/' . $product->video));
             }
 
-            foreach($files as $key => $file){
-                $videoName = uniqid().$file->getClientOriginalName();
-                $path = public_path().'/videos/';
+            foreach ($files as $key => $file) {
+                $videoName = uniqid() . $file->getClientOriginalName();
+                $path = public_path() . '/videos/';
                 $file->move($path, $videoName);
 
                 Product::where('id', $product->id)->update([
@@ -1007,7 +1033,7 @@ class AutoUploadController extends Controller
             Product::where('id', $request->get('product_id'))->update([
                 'hit' => 1
             ]);
-        }else{
+        } else {
             Product::where('id', $request->get('product_id'))->update([
                 'hit' => 0
             ]);
@@ -1022,7 +1048,7 @@ class AutoUploadController extends Controller
             Product::where('id', $request->get('product_id'))->update([
                 'recomended' => 1
             ]);
-        }else{
+        } else {
             Product::where('id', $request->get('product_id'))->update([
                 'recomended' => 0
             ]);
@@ -1047,7 +1073,7 @@ class AutoUploadController extends Controller
         $product = $request->get('product_id');
         $set = $request->get('set_id');
 
-        if ($product){
+        if ($product) {
             $issetImage = SetProductImage::where('product_id', $product)->where('set_id', $set)->first();
 
             if (!is_null($issetImage)) {
@@ -1057,23 +1083,23 @@ class AutoUploadController extends Controller
             $issetImage->delete();
 
             $data['product'] = Product::with([
-                                    'category.properties.property.parameterValues.translation',
-                                    'images',
-                                    'imagesFB',
-                                    'prices.currency',
-                                    'mainImage',
-                                    'category.translation',
-                                    'productCategories',
-                                    'subproducts.prices.currency',
-                                    'translation',
-                                    'translations',
-                                    'propertyValues',
-                                    'sets',
-                                    'setImages',
-                                    'similar',
-                                    'collections',
-                                    'brands',
-                                ])->where('id', $product)->first();
+                'category.properties.property.parameterValues.translation',
+                'images',
+                'imagesFB',
+                'prices.currency',
+                'mainImage',
+                'category.translation',
+                'productCategories',
+                'subproducts.prices.currency',
+                'translation',
+                'translations',
+                'propertyValues',
+                'sets',
+                'setImages',
+                'similar',
+                'collections',
+                'brands',
+            ])->where('id', $product)->first();
 
             $data['sets'] = Set::with(['translation'])->get();
 
@@ -1086,17 +1112,17 @@ class AutoUploadController extends Controller
     public function addBrandToProduct(Request $request)
     {
         $product = Product::where('id', $request->get('product_id'))->first();
-        $brand = $product->brands()->where('brand_id',  $request->get('brand_id'))->first();
+        $brand = $product->brands()->where('brand_id', $request->get('brand_id'))->first();
 
         if (is_null($brand)) {
             ProductBrand::create([
                 'brand_id' => $request->get('brand_id'),
                 'product_id' => $request->get('product_id'),
             ]);
-        }else{
+        } else {
             ProductBrand::where('product_id', $request->get('product_id'))
-                        ->where('brand_id', $request->get('brand_id'))
-                        ->delete();
+                ->where('brand_id', $request->get('brand_id'))
+                ->delete();
         }
     }
 
@@ -1108,7 +1134,7 @@ class AutoUploadController extends Controller
             $product->update([
                 'dependable_price' => 0
             ]);
-        }else{
+        } else {
             $product->update([
                 'dependable_price' => 1
             ]);
@@ -1124,14 +1150,16 @@ class AutoUploadController extends Controller
     public function changeDependeblePriceSubproduct(Request $request)
     {
         $subProduct = SubProduct::findOrFail($request->get('subproduct_id'));
-        $prices = array_filter($request->get('subproductPrices'), function($var){return !is_null($var);} );
+        $prices = array_filter($request->get('subproductPrices'), function ($var) {
+            return !is_null($var);
+        });
 
         if ($subProduct->dependable_price == 1) {
             $subProduct->update([
                 'dependable_price' => 0
             ]);
             $this->setSubproductsPrices($prices, $request->get('product_id'));
-        }else{
+        } else {
             $subProduct->update([
                 'dependable_price' => 1
             ]);
@@ -1176,7 +1204,7 @@ class AutoUploadController extends Controller
                         // 'price' => $price->b2b_price - ($price->b2b_price * $dillerGroup->discount / 100),
                     ]);
                     $retPrices[$dillerGroup->id][$price->currency->abbr] = $price->b2b_old_price - ($price->b2b_old_price * $dillerGroup->discount / 100);
-                }else{
+                } else {
                     ProductDillerPrice::create([
                         'product_id' => $product->id,
                         'diller_group_id' => $dillerGroup->id,
@@ -1233,8 +1261,12 @@ class AutoUploadController extends Controller
     // Product Generate exchange Prices
     public function regeneratePricesStep1($request)
     {
-        $prices = array_filter($request->get('prices'), function($var){return !is_null($var);} );
-        $pricesB2B = array_filter($request->get('b2bPrices'), function($var){return !is_null($var);} );
+        $prices = array_filter($request->get('prices'), function ($var) {
+            return !is_null($var);
+        });
+        $pricesB2B = array_filter($request->get('b2bPrices'), function ($var) {
+            return !is_null($var);
+        });
         $product = Product::findOrFail($request->get('product_id'));
         $mainCurrency = Currency::where('type', 1)->first();
         $mainPrice = ProductPrice::where('currency_id', $mainCurrency->id)->where('product_id', $product->id)->first();
@@ -1285,19 +1317,19 @@ class AutoUploadController extends Controller
         return false;
         if ($currency->type != 1) {
             $mainProductPrice = ProductPrice::where('product_id', $product->id)->where('currency_id', $mainCurrency->id)->first();
-                if (!is_null($mainProductPrice)) {
-                    $exchange = (int)$mainProductPrice->old_price * (int)$currency->rate * (int)$currency->correction_factor;
-                    $exchangeB2B = (int)$mainProductPrice->b2b_old_price * (int)$currency->rate * (int)$currency->correction_factor;
+            if (!is_null($mainProductPrice)) {
+                $exchange = (int)$mainProductPrice->old_price * (int)$currency->rate * (int)$currency->correction_factor;
+                $exchangeB2B = (int)$mainProductPrice->b2b_old_price * (int)$currency->rate * (int)$currency->correction_factor;
 
-                    ProductPrice::where('product_id', $product->id)
-                                ->where('currency_id', $currency->id)
-                                ->update([
-                                    'old_price' => $exchange,
-                                    'price' => (int)$exchange - ((int)$exchange * $product->discount / 100),
-                                    'b2b_price' => $exchangeB2B,
-                                    'b2b_old_price' => (int)$exchangeB2B - ((int)$exchangeB2B * $product->discount / 100)
-                                ]);
-                }
+                ProductPrice::where('product_id', $product->id)
+                    ->where('currency_id', $currency->id)
+                    ->update([
+                        'old_price' => $exchange,
+                        'price' => (int)$exchange - ((int)$exchange * $product->discount / 100),
+                        'b2b_price' => $exchangeB2B,
+                        'b2b_old_price' => (int)$exchangeB2B - ((int)$exchangeB2B * $product->discount / 100)
+                    ]);
+            }
         }
     }
 
@@ -1322,7 +1354,7 @@ class AutoUploadController extends Controller
         if ($currencies->count() > 0) {
             foreach ($currencies as $key => $currency) {
                 // if ($subproduct->dependable_price == 0) {
-                    if ($currency->exchange_dependable == 1) {
+                if ($currency->exchange_dependable == 1) {
                     $this->countByRateSubProductsPrice($subproduct, $mainCurrency, $currency);
                 }
             }
@@ -1339,11 +1371,11 @@ class AutoUploadController extends Controller
                 $exchange = (int)$mainProductPrice->old_price * (int)$currency->rate;
 
                 SubproductPrice::where('subproduct_id', $subproduct->id)
-                            ->where('currency_id', $currency->id)
-                            ->update([
-                                'old_price' => $exchange,
-                                'price' => (int)$exchange - ((int)$exchange * (int)$subproduct->discount / 100),
-                            ]);
+                    ->where('currency_id', $currency->id)
+                    ->update([
+                        'old_price' => $exchange,
+                        'price' => (int)$exchange - ((int)$exchange * (int)$subproduct->discount / 100),
+                    ]);
             }
         }
     }
@@ -1372,14 +1404,14 @@ class AutoUploadController extends Controller
 
 
         // if (!is_null($productMaterialValue)) {
-            // $value = $productMaterialValue->parameter_value_id;
-            // $materialsId = ParameterValueProduct::where('parameter_id', '32')->where('parameter_value_id', $value)->pluck('product_id')->toArray();
-            // $materialsId = ParameterValueProduct::where('parameter_id', '32')->where('parameter_value_id', $value)->pluck('product_id')->toArray();
-            $data['materials'] = Product::with('translation')->where('category_id', 2)->where('id', '!=', $productId)->get();
+        // $value = $productMaterialValue->parameter_value_id;
+        // $materialsId = ParameterValueProduct::where('parameter_id', '32')->where('parameter_value_id', $value)->pluck('product_id')->toArray();
+        // $materialsId = ParameterValueProduct::where('parameter_id', '32')->where('parameter_value_id', $value)->pluck('product_id')->toArray();
+        $data['materials'] = Product::with('translation')->where('category_id', 2)->where('id', '!=', $productId)->get();
 
-            $data['checkedMaterials'] = ProductMaterial::where('product_id', $productId)->pluck('material_id')->toArray();
+        $data['checkedMaterials'] = ProductMaterial::where('product_id', $productId)->pluck('material_id')->toArray();
 
-            return $data;
+        return $data;
         // }
         // return $productMaterialValue;
 
@@ -1388,12 +1420,12 @@ class AutoUploadController extends Controller
     public function addMaterials(Request $request)
     {
         $check = ProductMaterial::where('product_id', $request->get('product_id'))
-                                ->where('material_id', $request->get('material_id'))
-                                ->first();
+            ->where('material_id', $request->get('material_id'))
+            ->first();
 
         if (!is_null($check)) {
             $check->delete();
-        }else{
+        } else {
             ProductMaterial::create([
                 'product_id' => $request->get('product_id'),
                 'material_id' => $request->get('material_id'),
@@ -1447,19 +1479,19 @@ class AutoUploadController extends Controller
     public function updateSubproducts(Request $request)
     {
         $data['product'] = Product::with(['subproducts.prices.currency'])
-                           ->where('id', $request->get('product_id'))
-                           ->first();
+            ->where('id', $request->get('product_id'))
+            ->first();
 
-        $data['warehouses']         = Warehouse::where('active', 1)->get();
-        $data['warehousesStocks']   = WarehousesStock::with(['warehouse'])
-                                                        ->where('product_id', $request->get('product_id'))
-                                                        ->where('subproduct_id', '!=', null)
-                                                        ->get();
+        $data['warehouses'] = Warehouse::where('active', 1)->get();
+        $data['warehousesStocks'] = WarehousesStock::with(['warehouse'])
+            ->where('product_id', $request->get('product_id'))
+            ->where('subproduct_id', '!=', null)
+            ->get();
 
         $data['warehousesProductStocks'] = WarehousesStock::with(['warehouse'])
-                                                        ->where('product_id', $request->get('product_id'))
-                                                        ->where('subproduct_id', null)
-                                                        ->get();
+            ->where('product_id', $request->get('product_id'))
+            ->where('subproduct_id', null)
+            ->get();
 
         return $data;
     }
@@ -1485,9 +1517,9 @@ class AutoUploadController extends Controller
                         $retPrices[$dillerGroup->id][$price->currency->abbr] = $price->old_price;
                     }
                 }
-            }else{
+            } else {
                 foreach ($currencies as $key => $currency) {
-                    $retPrices[$dillerGroup->id][$currency->abbr] =  0;
+                    $retPrices[$dillerGroup->id][$currency->abbr] = 0;
                 }
             }
         }

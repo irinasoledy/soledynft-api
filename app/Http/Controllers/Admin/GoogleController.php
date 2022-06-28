@@ -1,7 +1,6 @@
 <?php
 
-namespace Admin\Http\Controllers;
-
+namespace App\Http\Controllers\Admin;
 use App\Base as Model;
 use App\Http\Controllers\Controller;
 use Admin\Http\Controllers\AutoUploadController;
