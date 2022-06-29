@@ -157,7 +157,6 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
-        Barryvdh\DomPDF\ServiceProvider::class,
         Sichikawa\LaravelSendgridDriver\SendgridTransportServiceProvider::class,
         MOIREI\GoogleMerchantApi\GoogleMerchantApiServiceProvider::class,
     ],
@@ -210,7 +209,6 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'Image' => Intervention\Image\Facades\Image::class,
         'Socialite' => Laravel\Socialite\Facades\Socialite::class,
-        'PDF' => Barryvdh\DomPDF\Facade::class,
     ],
 
 ];
