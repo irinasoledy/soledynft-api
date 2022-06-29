@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Admin;
 use Intervention\Image\ImageManagerStatic as Image;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Admin\Http\Controllers\AdminController;
 use App\Models\ProductCategory;
 use App\Models\Product;
 use App\Models\ProductTranslation;
