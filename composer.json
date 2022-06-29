@@ -19,7 +19,6 @@
         "moirei/laravel-google-merchant-api": "^1.0",
         "paypal/rest-api-sdk-php": "^1.14",
         "phpunit/phpunit": "^9.5.10",
-        "renatomarinho/laravel-page-speed": "^1.8",
         "revolution/laravel-google-sheets": "^5.3",
         "s-ichikawa/laravel-sendgrid-driver": "^2.0",
         "spatie/laravel-image-optimizer": "^1.5",
