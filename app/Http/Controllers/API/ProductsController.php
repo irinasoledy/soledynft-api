@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Factories\ProductFactory;
+use App\Factories\ProductPropertiesFactory;
+use App\Factories\SimilarFactory;
 use App\Models\ProductCategory;
 use App\Models\Collection;
 use App\Models\Promotion;
@@ -9,13 +12,24 @@ use App\Models\Product;
 use App\Models\ProductPrice;
 use App\Models\ParameterValueProduct;
 use App\Models\ParameterValue;
-use App\Models\ProductSimilar;
 use App\Models\Brand;
 use Illuminate\Http\Request;
 
 
 class ProductsController extends ApiController
 {
+    private $productFactory;
+    private $similarFactory;
+    private $productPropertiesFactory;
+
+    public function __construct(ProductFactory $productFactory,
+                                SimilarFactory $similarFactory,
+                                ProductPropertiesFactory $productPropertiesFactory)
+    {
+        $this->productFactory = $productFactory;
+        $this->similarFactory = $similarFactory;
+        $this->productPropertiesFactory = $productPropertiesFactory;
+    }
 
     public function getCategories(Request $request)
     {
@@ -78,72 +92,19 @@ class ProductsController extends ApiController
             return $this->respondError("Language is not found", 500);
         }
 
-        $data['product'] = Product::with(
-            [
-                'category.properties.property.parameterValues.translation',
-                'category.translation',
-                'brand.translation',
-                'images',
-                'mainImage',
-                'setImage',
-                'mainPrice',
-                'personalPrice',
-                'subproducts.parameterValue.translation',
-                'subproducts.parameter.translation',
-                'subproducts.warehouse',
-                'warehouse',
-                'translation',
-            ])
-            ->where('alias', $request->get('alias'))
-            ->first();
+        $product = $this->productFactory->createByAlias($request->get('alias'));
 
-        $data['similars'] = $this->getSlidersProducts($data['product']);
+        $similarProducts = $this->similarFactory->getSimilarByProduct($product);
+
+        $properties = $this->productPropertiesFactory->createProductProperties($product);
+
+        $data = [
+            'product' => $product,
+            'similars' => $similarProducts,
+            'properties' => $properties,
+        ];
 
         return $this->respond($data);
-    }
-
-    private function getSlidersProducts($product)
-    {
-        $someColorProdIds = [];
-        $category = $product->category;
-
-        $similarsArr = ProductSimilar::select('category_id')
-            ->where('product_id', $product->id)
-            ->pluck('category_id')->toArray();
-
-        if (!count($similarsArr)) $similarsArr[] = $category->id;
-
-        $colorId = ParameterValueProduct::select('parameter_value_id')
-            ->where('product_id', $product->id)
-            ->where('parameter_id', 2)
-            ->first();
-        if (!is_null($colorId)) {
-            if ($colorId->parameter_value_id !== 0) {
-                $someColorProdIds = ParameterValueProduct::select('product_id')
-                    ->where('parameter_value_id', $colorId->parameter_value_id)
-                    ->where('parameter_id', 2)
-                    ->pluck('product_id')->toArray();
-            }
-        }
-        $products = Product::with([
-            'category.properties.property.parameterValues.translation',
-            'category.translation',
-            'images',
-            'mainImage',
-            'setImage',
-            'mainPrice',
-            'personalPrice',
-            'subproducts.parameterValue.translation',
-            'subproducts.parameter.translation',
-            'subproducts.warehouse',
-            'warehouse',
-            'translation'
-        ])
-            ->whereIn('category_id', $similarsArr)
-            ->where('id', '!=', $product->id)
-            ->where('active', 1)
-            ->get();
-        return $products;
     }
 
     public function getNewProducts(Request $request)
