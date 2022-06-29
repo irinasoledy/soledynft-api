@@ -3,13 +3,9 @@
 namespace App\Http\Controllers\AdminAuth;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Lang;
-use Illuminate\Support\Facades\Cookie;
 
 class CustomAuthController extends Controller
 {
@@ -27,7 +23,7 @@ class CustomAuthController extends Controller
 
     public function checkLogin(Request $request)
     {
-        $validation = Validator::make($request->all(), [
+        Validator::make($request->all(), [
             'login' => 'required|min:3',
             'password' => 'required|min:4',
         ]);
@@ -38,17 +34,9 @@ class CustomAuthController extends Controller
         return redirect()->back();
     }
 
-    public function register()
-    {
-    }
-
-    public function checkRegister()
-    {
-    }
-
     public function logout()
     {
         Auth::logout();
-        return redirect('/' . $this->lang . '/homewar');
+        return redirect('/');
     }
 }
