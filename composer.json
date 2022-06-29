@@ -6,9 +6,7 @@
     "type": "project",
     "require": {
         "php": "^7.2|^8.0",
-        "barryvdh/laravel-dompdf": "^0.8.3",
         "doctrine/dbal": "^2.5",
-        "edujugon/laravel-google-ads": "^2.1",
         "fideloper/proxy": "~4.0",
         "guzzlehttp/guzzle": "^6.3",
         "intervention/image": "^2.5",
@@ -18,8 +16,7 @@
         "laravel/tinker": "~1.0",
         "moirei/laravel-google-merchant-api": "^1.0",
         "paypal/rest-api-sdk-php": "^1.14",
-        "phpunit/phpunit": "~7.0",
-        "renatomarinho/laravel-page-speed": "^1.8",
+        "phpunit/phpunit": "^9.5.10",
         "revolution/laravel-google-sheets": "^5.3",
         "s-ichikawa/laravel-sendgrid-driver": "^2.0",
         "spatie/laravel-image-optimizer": "^1.5",
@@ -27,7 +24,6 @@
     },
     "require-dev": {
         "filp/whoops": "~2.0",
-        "fzaninotto/faker": "~1.4",
         "mockery/mockery": "~1.0",
         "symfony/thanks": "^1.0"
     },
@@ -67,6 +63,7 @@
         ]
     },
     "config": {
+        "platform-check": false,
         "preferred-install": "dist",
         "sort-packages": true,
         "optimize-autoloader": true,
