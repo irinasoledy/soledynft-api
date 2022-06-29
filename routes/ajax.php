@@ -3,9 +3,9 @@
 $prefix = session('applocale');
 $types = ['homewear', 'bijoux'];
 
-Route::group(['prefix' => $prefix], function() use ($types){
+Route::group(['prefix' => $prefix], function () use ($types) {
     foreach ($types as $key => $type) {
-        Route::group(['prefix' => $type], function(){
+        Route::group(['prefix' => $type], function () {
             // Home Routes
             Route::post('/get-category-home', 'ProductsController@getCategoriesOnHome');
             Route::post('/accept-cookie-policy', 'Controller@acceptCookiePolicy');
@@ -70,9 +70,9 @@ Route::group(['prefix' => $prefix], function() use ($types){
             Route::post('/auth-guest-login', 'AuthController@loginAsGuest');
             Route::post('/checkAuth', 'AuthController@checkAuth');
 
-            Route::post('/reset-password-send-email',   'AuthController@sendEmailCode');
-            Route::post('/reset-password-send-code',    'AuthController@confirmEmailCode');
-            Route::post('/reset-password-send-password','AuthController@changePassword');
+            Route::post('/reset-password-send-email', 'AuthController@sendEmailCode');
+            Route::post('/reset-password-send-code', 'AuthController@confirmEmailCode');
+            Route::post('/reset-password-send-password', 'AuthController@changePassword');
 
             // Wish
             Route::post('/moveProductToCart', 'WishListController@moveProductToCart');

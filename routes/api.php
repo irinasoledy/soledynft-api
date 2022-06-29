@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -20,12 +21,10 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 
-
 Route::patch('/api/cart', 'API\CheckoutController@changeQtyCart')->middleware('cors');
 Route::delete('/api/cart', 'API\CheckoutController@deleteCart')->middleware('cors');
 Route::delete('/api/carts', 'API\CheckoutController@deleteAllCarts')->middleware('cors');
 Route::post('/api/cart', 'API\CheckoutController@setCart');
-
 
 
 Route::post('/en/api/cart', 'API\CheckoutController@setCart');
@@ -34,8 +33,7 @@ Route::delete('/en/api/cart', 'API\CheckoutController@deleteCart');
 Route::delete('/en/api/carts', 'API\CheckoutController@deleteAllCarts');
 
 
-Route::group(['prefix' => 'api'], function()
-{
+Route::group(['prefix' => 'api'], function () {
     Route::get('settings', 'API\SettingsController@getSettings');
     Route::get('translations', 'API\SettingsController@getTranslations');
     Route::get('banners', 'API\SettingsController@getBanners');
@@ -68,8 +66,7 @@ Route::group(['prefix' => 'api'], function()
 });
 
 
-Route::group(['prefix' => 'api/v2', 'middleware' => 'cors'], function()
-{
+Route::group(['prefix' => 'api/v2', 'middleware' => 'cors'], function () {
     Route::get('categories', 'Api\ProductsController@getCategories');
 
     Route::get('data', 'Api\ServiceController@initData');

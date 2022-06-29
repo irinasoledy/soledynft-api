@@ -19,10 +19,10 @@ Route::any('/paynet/callback', 'PaymentController@paynetCallback');
 
 
 // Front routes
-Route::group(['prefix' => $prefix], function() use ($types)  {
+Route::group(['prefix' => $prefix], function () use ($types) {
     Route::get('/oops', 'PagesController@getOopsPage')->name('oops');
-    Route::get('/cart',  'CartController@index')->name('cart');
-    Route::get('/wish',  'WishListController@index');
+    Route::get('/cart', 'CartController@index')->name('cart');
+    Route::get('/wish', 'WishListController@index');
 
     // order
     Route::get('/order', 'CheckoutController@renderCheckoutShipping')->name('order');
@@ -38,9 +38,9 @@ Route::group(['prefix' => $prefix], function() use ($types)  {
     //guest user settings
     Route::post('set-user-settings', 'Controller@setUserSettings');
 
-    Route::get('/',     'PagesController@index')->name('home');
+    Route::get('/', 'PagesController@index')->name('home');
     Route::get('/home', 'PagesController@index')->name('home');
-    Route::get('/new',  'ProductsController@renderNewIn')->name('dynamic');
+    Route::get('/new', 'ProductsController@renderNewIn')->name('dynamic');
     Route::get('/sale', 'ProductsController@renderOutlet')->name('dynamic');
     Route::get('/promos', 'ProductsController@renderPromos')->name('dynamic');
     Route::get('/promos/prod/{id}', 'ProductsController@renderProductPromo')->name('dynamic');
@@ -49,8 +49,7 @@ Route::group(['prefix' => $prefix], function() use ($types)  {
     Route::get('/{pages}', 'PagesController@getPages')->name('pages');
 
     foreach ($types as $key => $type) {
-        Route::group(['prefix' => $type], function()
-        {
+        Route::group(['prefix' => $type], function () {
             Route::post('/contact-feed-back', 'FeedBackController@contactFeedBack');
             Route::post('/save-country-user', 'Controller@saveCountryUser');
 
@@ -73,7 +72,7 @@ Route::group(['prefix' => $prefix], function() use ($types)  {
 });
 
 // Personal Account routes
-Route::group(['prefix' => $prefix, 'middleware' => 'auth_front'], function() {
+Route::group(['prefix' => $prefix, 'middleware' => 'auth_front'], function () {
     Route::get('/account/personal-data', 'AccountController@index')->name('account');
     Route::get('/account/promocodes', 'AccountController@getPromocodes')->name('account-promocodes');
     Route::get('/account/cart', 'AccountController@getCart')->name('account-cart');
