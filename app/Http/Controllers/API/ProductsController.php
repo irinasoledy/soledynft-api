@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Factories\ProductFactory;
-use App\Factories\ProductPropertiesFactory;
+use App\Factories\ProductProperties\ProductPropertiesFactory;
 use App\Factories\SimilarFactory;
 use App\Models\ProductCategory;
 use App\Models\Collection;
@@ -19,16 +19,10 @@ use Illuminate\Http\Request;
 class ProductsController extends ApiController
 {
     private $productFactory;
-    private $similarFactory;
-    private $productPropertiesFactory;
 
-    public function __construct(ProductFactory $productFactory,
-                                SimilarFactory $similarFactory,
-                                ProductPropertiesFactory $productPropertiesFactory)
+    public function __construct(ProductFactory $productFactory)
     {
         $this->productFactory = $productFactory;
-        $this->similarFactory = $similarFactory;
-        $this->productPropertiesFactory = $productPropertiesFactory;
     }
 
     public function getCategories(Request $request)
@@ -89,22 +83,12 @@ class ProductsController extends ApiController
             $this->swithLang($request->get('lang'));
             $this->swithCurrency($request->get('currency'));
         } catch (\Exception $e) {
-            return $this->respondError("Language is not found", 500);
+            return $this->respondError("Language or currency is not found", 500);
         }
 
         $product = $this->productFactory->createByAlias($request->get('alias'));
 
-        $similarProducts = $this->similarFactory->getSimilarByProduct($product);
-
-        $properties = $this->productPropertiesFactory->createProductProperties($product);
-
-        $data = [
-            'product' => $product,
-            'similars' => $similarProducts,
-            'properties' => $properties,
-        ];
-
-        return $this->respond($data);
+        return $this->respond($product);
     }
 
     public function getNewProducts(Request $request)

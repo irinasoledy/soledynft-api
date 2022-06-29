@@ -10,21 +10,21 @@ class ProductCategory extends Model
     protected $table = 'product_categories';
 
     protected $fillable = [
-                        'parent_id',
-                        'alias',
-                        'number',
-                        'level',
-                        'position',
-                        'succesion',
-                        'on_home',
-                        'active',
-                        'icon',
-                        'banner_desktop',
-                        'banner_mobile',
-                        'product_type',
-                        'homewear',
-                        'bijoux'
-                    ];
+        'parent_id',
+        'alias',
+        'number',
+        'level',
+        'position',
+        'succesion',
+        'on_home',
+        'active',
+        'icon',
+        'banner_desktop',
+        'banner_mobile',
+        'product_type',
+        'homewear',
+        'bijoux'
+    ];
 
     protected $appends = ['type'];
 
@@ -32,7 +32,7 @@ class ProductCategory extends Model
     {
         if ($this->bijoux == 1) {
             return "bijoux";
-        }else{
+        } else {
             return "homewear";
         }
     }
@@ -52,11 +52,13 @@ class ProductCategory extends Model
         return $this->hasOne(ProductCategoryTranslation::class)->where('lang_id', $lang)->first();
     }
 
-    public function properties() {
+    public function properties()
+    {
         return $this->hasMany(SubProductParameter::class, 'category_id', 'id');
     }
 
-    public function property() {
+    public function property()
+    {
         return $this->hasOne(SubProductParameter::class, 'category_id', 'id');
     }
 
@@ -65,7 +67,8 @@ class ProductCategory extends Model
         return $this->hasOne(SubProductParameter::class, 'category_id', 'id');
     }
 
-    public function products() {
+    public function products()
+    {
         return $this->hasMany(Product::class, 'category_id', 'id')->where('active', 1)->orderBy('position', 'asc');
     }
 
@@ -76,7 +79,7 @@ class ProductCategory extends Model
 
     public function children()
     {
-        return $this->hasMany(ProductCategory::class, 'parent_id')->orderBy('position', 'asc') ->orderBy('created_at', 'desc');
+        return $this->hasMany(ProductCategory::class, 'parent_id')->orderBy('position', 'asc')->orderBy('created_at', 'desc');
     }
 
     public function params()
