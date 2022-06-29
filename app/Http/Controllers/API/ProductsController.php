@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers\API;
 
 use App\Models\ProductCategory;
@@ -25,16 +26,16 @@ class ProductsController extends ApiController
         }
 
         $categories = ProductCategory::with(
-                        [
-                            'translation',
-                            'children.translation',
-                            'products.translation',
-                            'products.mainImage',
-                        ])
-                        ->where('active', 1)
-                        ->where('parent_id', 0)
-                        ->orderby('position', 'asc')
-                        ->get();
+            [
+                'translation',
+                'children.translation',
+                'products.translation',
+                'products.mainImage',
+            ])
+            ->where('active', 1)
+            ->where('parent_id', 0)
+            ->orderby('position', 'asc')
+            ->get();
 
         return $this->respond($categories);
     }
@@ -50,20 +51,20 @@ class ProductsController extends ApiController
         }
 
         $category = ProductCategory::with(
-                        [
-                            'translation',
-                            'children.translation',
-                            'products.translation',
-                            'products.mainImage',
-                            'products.mainPrice',
-                            'products.personalPrice',
-                            'params.property.translation',
-                            'params.property.transData',
-                            'params.property.parameterValues.translation',
-                            'params.property.parameterValues.transData',
-                        ])
-                        ->where('alias', $request->get('alias'))
-                        ->first();
+            [
+                'translation',
+                'children.translation',
+                'products.translation',
+                'products.mainImage',
+                'products.mainPrice',
+                'products.personalPrice',
+                'params.property.translation',
+                'params.property.transData',
+                'params.property.parameterValues.translation',
+                'params.property.parameterValues.transData',
+            ])
+            ->where('alias', $request->get('alias'))
+            ->first();
 
         return $this->respond($category);
     }
@@ -78,23 +79,23 @@ class ProductsController extends ApiController
         }
 
         $data['product'] = Product::with(
-                        [
-                            'category.properties.property.parameterValues.translation',
-                            'category.translation',
-                            'brand.translation',
-                            'images',
-                            'mainImage',
-                            'setImage',
-                            'mainPrice',
-                            'personalPrice',
-                            'subproducts.parameterValue.translation',
-                            'subproducts.parameter.translation',
-                            'subproducts.warehouse',
-                            'warehouse',
-                            'translation',
-                        ])
-                        ->where('alias', $request->get('alias'))
-                        ->first();
+            [
+                'category.properties.property.parameterValues.translation',
+                'category.translation',
+                'brand.translation',
+                'images',
+                'mainImage',
+                'setImage',
+                'mainPrice',
+                'personalPrice',
+                'subproducts.parameterValue.translation',
+                'subproducts.parameter.translation',
+                'subproducts.warehouse',
+                'warehouse',
+                'translation',
+            ])
+            ->where('alias', $request->get('alias'))
+            ->first();
 
         $data['similars'] = $this->getSlidersProducts($data['product']);
 
@@ -107,41 +108,41 @@ class ProductsController extends ApiController
         $category = $product->category;
 
         $similarsArr = ProductSimilar::select('category_id')
-                                    ->where('product_id', $product->id)
-                                    ->pluck('category_id')->toArray();
+            ->where('product_id', $product->id)
+            ->pluck('category_id')->toArray();
 
         if (!count($similarsArr)) $similarsArr[] = $category->id;
 
         $colorId = ParameterValueProduct::select('parameter_value_id')
-                                    ->where('product_id', $product->id)
-                                    ->where('parameter_id', 2)
-                                    ->first();
+            ->where('product_id', $product->id)
+            ->where('parameter_id', 2)
+            ->first();
         if (!is_null($colorId)) {
             if ($colorId->parameter_value_id !== 0) {
                 $someColorProdIds = ParameterValueProduct::select('product_id')
-                                                    ->where('parameter_value_id', $colorId->parameter_value_id)
-                                                    ->where('parameter_id', 2)
-                                                    ->pluck('product_id')->toArray();
+                    ->where('parameter_value_id', $colorId->parameter_value_id)
+                    ->where('parameter_id', 2)
+                    ->pluck('product_id')->toArray();
             }
         }
         $products = Product::with([
-                                'category.properties.property.parameterValues.translation',
-                                'category.translation',
-                                'images',
-                                'mainImage',
-                                'setImage',
-                                'mainPrice',
-                                'personalPrice',
-                                'subproducts.parameterValue.translation',
-                                'subproducts.parameter.translation',
-                                'subproducts.warehouse',
-                                'warehouse',
-                                'translation'
-                            ])
-                                    ->whereIn('category_id', $similarsArr)
-                                    ->where('id', '!=', $product->id)
-                                    ->where('active', 1)
-                                    ->get();
+            'category.properties.property.parameterValues.translation',
+            'category.translation',
+            'images',
+            'mainImage',
+            'setImage',
+            'mainPrice',
+            'personalPrice',
+            'subproducts.parameterValue.translation',
+            'subproducts.parameter.translation',
+            'subproducts.warehouse',
+            'warehouse',
+            'translation'
+        ])
+            ->whereIn('category_id', $similarsArr)
+            ->where('id', '!=', $product->id)
+            ->where('active', 1)
+            ->get();
         return $products;
     }
 
@@ -155,25 +156,25 @@ class ProductsController extends ApiController
         }
 
         $products = Product::with(
-                        [
-                            'category.properties.property.parameterValues.translation',
-                            'category.translation',
-                            'images',
-                            'mainImage',
-                            'setImage',
-                            'mainPrice',
-                            'personalPrice',
-                            'subproducts.parameterValue.translation',
-                            'subproducts.parameter.translation',
-                            'subproducts.warehouse',
-                            'warehouse',
-                            'translation',
-                        ])
-                        ->where('discount', 0)
-                        ->where('active', 1)
-                        ->orderBy('position', 'asc')
-                        ->limit(40)
-                        ->get();
+            [
+                'category.properties.property.parameterValues.translation',
+                'category.translation',
+                'images',
+                'mainImage',
+                'setImage',
+                'mainPrice',
+                'personalPrice',
+                'subproducts.parameterValue.translation',
+                'subproducts.parameter.translation',
+                'subproducts.warehouse',
+                'warehouse',
+                'translation',
+            ])
+            ->where('discount', 0)
+            ->where('active', 1)
+            ->orderBy('position', 'asc')
+            ->limit(40)
+            ->get();
 
         return $this->respond($products);
     }
@@ -197,25 +198,25 @@ class ProductsController extends ApiController
         }
 
         $products = Product::with(
-                        [
-                            'category.properties.property.parameterValues.translation',
-                            'category.translation',
-                            'images',
-                            'mainImage',
-                            'setImage',
-                            'mainPrice',
-                            'personalPrice',
-                            'subproducts.parameterValue.translation',
-                            'subproducts.parameter.translation',
-                            'subproducts.warehouse',
-                            'warehouse',
-                            'translation',
-                        ])
-                        // ->where('active', 1)
-                        ->whereIn('id', $prodIds)
-                        ->orderBy('position', 'asc')
-                        // ->limit(40)
-                        ->get();
+            [
+                'category.properties.property.parameterValues.translation',
+                'category.translation',
+                'images',
+                'mainImage',
+                'setImage',
+                'mainPrice',
+                'personalPrice',
+                'subproducts.parameterValue.translation',
+                'subproducts.parameter.translation',
+                'subproducts.warehouse',
+                'warehouse',
+                'translation',
+            ])
+            // ->where('active', 1)
+            ->whereIn('id', $prodIds)
+            ->orderBy('position', 'asc')
+            // ->limit(40)
+            ->get();
 
         return $this->respond($products);
     }
@@ -231,23 +232,23 @@ class ProductsController extends ApiController
         }
 
         $products = Product::with(
-                        [
-                            'category.properties.property.parameterValues.translation',
-                            'category.translation',
-                            'images',
-                            'mainImage',
-                            'setImage',
-                            'mainPrice',
-                            'personalPrice',
-                            'subproducts.parameterValue.translation',
-                            'subproducts.parameter.translation',
-                            'subproducts.warehouse',
-                            'warehouse',
-                            'translation',
-                        ])
-                        ->where('active', 1)
-                        ->orderBy('position', 'asc')
-                        ->get();
+            [
+                'category.properties.property.parameterValues.translation',
+                'category.translation',
+                'images',
+                'mainImage',
+                'setImage',
+                'mainPrice',
+                'personalPrice',
+                'subproducts.parameterValue.translation',
+                'subproducts.parameter.translation',
+                'subproducts.warehouse',
+                'warehouse',
+                'translation',
+            ])
+            ->where('active', 1)
+            ->orderBy('position', 'asc')
+            ->get();
 
         return $this->respond($products);
     }
@@ -262,27 +263,27 @@ class ProductsController extends ApiController
         }
 
         $collection = Collection::with(
-                        [
-                            'translation',
-                            'sets.translation',
-                            'sets.personalPrice',
-                            'sets.photos',
-                            'sets.mainPhoto',
-                            'sets.collection.translation',
-                            'sets.setProducts.product.category',
-                            'sets.setProducts.product.translation',
-                            'sets.setProducts.product.warehouse',
-                            'sets.setProducts.product.mainPrice',
-                            'sets.setProducts.product.personalPrice',
-                            'sets.setProducts.product.mainImage',
-                            'sets.setProducts.product.setImages',
-                            'sets.setProducts.product.setImage',
-                            'sets.setProducts.product.subproducts.parameterValue.translation',
-                            'sets.setProducts.product.subproducts.parameter',
-                            'sets.setProducts.product.subproducts.warehouse',
-                        ])
-                        ->where('alias', $request->get('alias'))
-                        ->first();
+            [
+                'translation',
+                'sets.translation',
+                'sets.personalPrice',
+                'sets.photos',
+                'sets.mainPhoto',
+                'sets.collection.translation',
+                'sets.setProducts.product.category',
+                'sets.setProducts.product.translation',
+                'sets.setProducts.product.warehouse',
+                'sets.setProducts.product.mainPrice',
+                'sets.setProducts.product.personalPrice',
+                'sets.setProducts.product.mainImage',
+                'sets.setProducts.product.setImages',
+                'sets.setProducts.product.setImage',
+                'sets.setProducts.product.subproducts.parameterValue.translation',
+                'sets.setProducts.product.subproducts.parameter',
+                'sets.setProducts.product.subproducts.warehouse',
+            ])
+            ->where('alias', $request->get('alias'))
+            ->first();
 
         return $this->respond($collection);
     }
@@ -296,14 +297,14 @@ class ProductsController extends ApiController
         }
 
         $collection = Collection::with(
-                        [
-                            'translation',
-                            'sets.translation',
-                            'sets.mainPhoto',
-                        ])
-                        ->where('active', 1)
-                        ->orderby('position', 'asc')
-                        ->get();
+            [
+                'translation',
+                'sets.translation',
+                'sets.mainPhoto',
+            ])
+            ->where('active', 1)
+            ->orderby('position', 'asc')
+            ->get();
 
         return $this->respond($collection);
     }
@@ -318,16 +319,16 @@ class ProductsController extends ApiController
         }
 
         $promotions = Promotion::with([
-                                    'translation',
-                                    'products.translation',
-                                    'products.category',
-                                    'products.mainImage',
-                                    'products.mainPrice',
-                                    'products.personalPrice'
-                                ])
-                                ->where('active', 1)
-                                ->orderBy('position', 'asc')
-                                ->get();
+            'translation',
+            'products.translation',
+            'products.category',
+            'products.mainImage',
+            'products.mainPrice',
+            'products.personalPrice'
+        ])
+            ->where('active', 1)
+            ->orderBy('position', 'asc')
+            ->get();
 
         return $this->respond($promotions);
     }
@@ -341,36 +342,36 @@ class ProductsController extends ApiController
         }
 
         $data['services'] = BlogCategory::with(
-                        [
-                            'children.translation',
-                            'subcategories.translation',
-                            'services.translation',
-                            'services.children.translation',
-                            'translation'
-                        ])
-                            ->where('parent_id', 0)
-                            ->orderby('position', 'asc')
-                            ->get();
+            [
+                'children.translation',
+                'subcategories.translation',
+                'services.translation',
+                'services.children.translation',
+                'translation'
+            ])
+            ->where('parent_id', 0)
+            ->orderby('position', 'asc')
+            ->get();
 
         $data['servicesAll'] = BlogCategory::with(
-                            [
-                                'children.translation',
-                                'children.blogs.translation:blog_id,id,body,name',
-                                'translation',
-                                'blogs.translation:blog_id,id,body,name',
-                                'services.translation',
-                                'services.children.translation',
-                            ])
-                                ->orderby('position', 'asc')
-                                ->get();
+            [
+                'children.translation',
+                'children.blogs.translation:blog_id,id,body,name',
+                'translation',
+                'blogs.translation:blog_id,id,body,name',
+                'services.translation',
+                'services.children.translation',
+            ])
+            ->orderby('position', 'asc')
+            ->get();
 
         $data['banners'] = Banner::get();
 
 
         $data['promotions'] = Promotion::with(['translation', 'promoSections.translation'])
-                                ->where('active', 1)
-                                ->orderBy('id', 'desc')
-                                ->get();
+            ->where('active', 1)
+            ->orderBy('id', 'desc')
+            ->get();
 
         $data['pages'] = StaticPage::with(['translation'])->get();
 
@@ -392,23 +393,23 @@ class ProductsController extends ApiController
         }
 
         return Product::with([
-                            'category.properties.property.parameterValues.translation',
-                            'category.translation',
-                            'images',
-                            'mainImage',
-                            'setImage',
-                            'mainPrice',
-                            'personalPrice',
-                            'subproducts.parameterValue.translation',
-                            'subproducts.parameter.translation',
-                            'subproducts.warehouse',
-                            'warehouse',
-                            'translation',
-                        ])
-                        ->where('active', 1)
-                        ->where('category_id', $request->get('categoryId'))
-                        ->orderBy('actual_price', $sortDirection)
-                        ->get();
+            'category.properties.property.parameterValues.translation',
+            'category.translation',
+            'images',
+            'mainImage',
+            'setImage',
+            'mainPrice',
+            'personalPrice',
+            'subproducts.parameterValue.translation',
+            'subproducts.parameter.translation',
+            'subproducts.warehouse',
+            'warehouse',
+            'translation',
+        ])
+            ->where('active', 1)
+            ->where('category_id', $request->get('categoryId'))
+            ->orderBy('actual_price', $sortDirection)
+            ->get();
     }
 
     public function getFiltredProducts(Request $request)
@@ -436,12 +437,12 @@ class ProductsController extends ApiController
             $propIds = [];
             foreach ($values as $key => $value) {
                 $row = ParameterValueProduct::select('product_id')
-                                ->where('parameter_value_id', $value)
-                                ->where('parameter_id', $param)
-                                ->when(count($propsProducts) > 0, function($query) use ($propsProducts){
-                                    return $query->whereIn('product_id', $propsProducts);
-                                })
-                                ->pluck('product_id')->toArray();
+                    ->where('parameter_value_id', $value)
+                    ->where('parameter_id', $param)
+                    ->when(count($propsProducts) > 0, function ($query) use ($propsProducts) {
+                        return $query->whereIn('product_id', $propsProducts);
+                    })
+                    ->pluck('product_id')->toArray();
 
                 $propIds = array_merge($propIds, $row);
             }
@@ -451,27 +452,27 @@ class ProductsController extends ApiController
         if ((count($request->get('properties')) > 0) && (count($propsProducts) == 0)) $propsProducts = [0];
 
         return Product::with([
-                            'category.properties.property.parameterValues.translation',
-                            'category.translation',
-                            'images',
-                            'mainImage',
-                            'setImage',
-                            'mainPrice',
-                            'personalPrice',
-                            'subproducts.parameterValue.translation',
-                            'subproducts.parameter.translation',
-                            'subproducts.warehouse',
-                            'warehouse',
-                            'translation',
-                        ])
-                        ->where('active', 1)
-                        ->orderBy('position', 'asc')
-                        ->where('category_id', $request->get('categoryId'))
-                        ->whereBetween('actual_price', [$request->get('minPrice'), $request->get('maxPrice')])
-                        ->when(count($propsProducts) > 0, function($query) use ($propsProducts){
-                            return $query->whereIn('id', $propsProducts);
-                        })
-                        ->get();
+            'category.properties.property.parameterValues.translation',
+            'category.translation',
+            'images',
+            'mainImage',
+            'setImage',
+            'mainPrice',
+            'personalPrice',
+            'subproducts.parameterValue.translation',
+            'subproducts.parameter.translation',
+            'subproducts.warehouse',
+            'warehouse',
+            'translation',
+        ])
+            ->where('active', 1)
+            ->orderBy('position', 'asc')
+            ->where('category_id', $request->get('categoryId'))
+            ->whereBetween('actual_price', [$request->get('minPrice'), $request->get('maxPrice')])
+            ->when(count($propsProducts) > 0, function ($query) use ($propsProducts) {
+                return $query->whereIn('id', $propsProducts);
+            })
+            ->get();
 
     }
 
@@ -491,8 +492,8 @@ class ProductsController extends ApiController
         $data['parameters'] = $this->_getParametersList($allProducts, $request->get('categoryId'));
 
         $maxPrice = ProductPrice::where('currency_id', $this->currency->id)
-                                ->whereIn('product_id', $allProducts->pluck('id')->toArray())
-                                ->max('price');
+            ->whereIn('product_id', $allProducts->pluck('id')->toArray())
+            ->max('price');
 
         $data['prices']['min'] = 0;
         $data['prices']['max'] = $maxPrice;
@@ -542,20 +543,20 @@ class ProductsController extends ApiController
         }
 
         $brand = Brand::with([
-                'translation',
-                'products.category.properties.property.parameterValues.translation',
-                'products.category.translation',
-                'products.images',
-                'products.mainImage',
-                'products.setImage',
-                'products.mainPrice',
-                'products.personalPrice',
-                'products.subproducts.parameterValue.translation',
-                'products.subproducts.parameter.translation',
-                'products.subproducts.warehouse',
-                'products.warehouse',
-                'products.translation',
-            ])
+            'translation',
+            'products.category.properties.property.parameterValues.translation',
+            'products.category.translation',
+            'products.images',
+            'products.mainImage',
+            'products.setImage',
+            'products.mainPrice',
+            'products.personalPrice',
+            'products.subproducts.parameterValue.translation',
+            'products.subproducts.parameter.translation',
+            'products.subproducts.warehouse',
+            'products.warehouse',
+            'products.translation',
+        ])
             ->where('alias', $request->get('alias'))->first();
 
         return $this->respond($brand);
