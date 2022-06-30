@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Admin;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Controller;
@@ -14,11 +15,12 @@ class FeedBackController extends Controller
     public function index()
     {
         $feedbacks = FeedBack::get();
+        $feedbacksOffers = FeedBack::where('status', 'offer')->orderBy('id', 'desc')->get();
         $feedbacksNew = FeedBack::where('status', 'new')->get();
         $feedbacksProcesed = FeedBack::where('status', 'procesed')->get();
         $feedbacksCloose = FeedBack::where('status', 'cloose')->get();
 
-        return view('admin.feedBack.index', compact('feedbacks', 'feedbacksNew', 'feedbacksProcesed', 'feedbacksCloose'));
+        return view('admin.feedBack.index', compact('feedbacksOffers', 'feedbacks', 'feedbacksNew', 'feedbacksProcesed', 'feedbacksCloose'));
     }
 
     public function create()
@@ -31,9 +33,9 @@ class FeedBackController extends Controller
     public function store(Request $request)
     {
         $toValidate = [];
-        foreach ($this->langs as $lang){
-            $toValidate['title_'.$lang->lang] = 'required|max:255';
-            $toValidate['slug_'.$lang->lang] = 'required|unique:pages_translation,slug|max:255';
+        foreach ($this->langs as $lang) {
+            $toValidate['title_' . $lang->lang] = 'required|max:255';
+            $toValidate['slug_' . $lang->lang] = 'required|unique:pages_translation,slug|max:255';
         }
 
         $validator = $this->validate($request, $toValidate);
@@ -119,10 +121,6 @@ class FeedBackController extends Controller
         return redirect()->route('feedback.index');
     }
 
-    public function show()
-    {
-        // code...
-    }
 
     public function emitPreorder()
     {
@@ -136,10 +134,10 @@ class FeedBackController extends Controller
         if (count($orderProducts) > 0) {
             foreach ($orderProducts as $key => $product) {
                 $preOrder .= '<tr>';
-                $preOrder .= '<td>'. ($key + 1) .'</td>';
-                $preOrder .= '<td>'. $product->translation->name. '</td>';
-                $preOrder .= '<td>'. $product->code. '</td>';
-                $preOrder .= '<td>'. $product->price. '</td>';
+                $preOrder .= '<td>' . ($key + 1) . '</td>';
+                $preOrder .= '<td>' . $product->translation->name . '</td>';
+                $preOrder .= '<td>' . $product->code . '</td>';
+                $preOrder .= '<td>' . $product->price . '</td>';
                 $preOrder .= '</tr>';
 
                 $amount += $product->price;
@@ -156,7 +154,18 @@ class FeedBackController extends Controller
         $feedback->additional_1 = $amount;
 
         $feedback->save();
+    }
 
+    public function changeProductPrice($id)
+    {
+        $offer = Feedback::findOrFail($id);
+
+        $offer->product->mainPrice->update(['price' => $offer->additional_2]);
+
+        Feedback::where('additional_1', $offer->product->id)->update(['additional_3' => false]);
+        $offer->update(['additional_3' => true]);
+
+        return redirect()->back();
     }
 
 }

@@ -233,6 +233,7 @@ Route::group(['middleware' => ['web']], function () {
         Route::resource('/feedback', 'FeedBackController');
         Route::get('/feedback/clooseStatus/{id}/{status}', 'FeedBackController@changeStatus');
         Route::get('/feedback-emmit', 'FeedBackController@emitPreorder');
+        Route::get('/feedback/change-product-price/{id}', 'FeedBackController@changeProductPrice');
 
         // Pages
         Route::resource('/static-pages', 'StaticPagesController');

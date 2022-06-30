@@ -26,7 +26,6 @@ class OfferRequest extends FormRequest
         return [
             'userId' => 'required',
             'productId' => 'required|numeric',
-            'productName' => 'required',
             'price' => 'required|numeric'
         ];
     }

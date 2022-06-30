@@ -25,4 +25,9 @@ class FeedBack extends Model
         'pre_order'
     ];
 
+    public function product()
+    {
+        return $this->hasOne(Product::class, 'id', 'additional_1');
+    }
+
 }
