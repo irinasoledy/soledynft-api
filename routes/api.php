@@ -18,6 +18,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::get('/api/offers', 'API\OfferController@getOffers');
 Route::post('/api/offer', 'API\OfferController@createOffer');
 
 
