@@ -9,11 +9,15 @@ class ProductFactory
 {
     private $similarFactory;
     private $productPropertiesFactory;
+    private $productOffersFactory;
 
-    public function __construct(SimilarFactory $similarFactory, ProductPropertiesFactory $productPropertiesFactory)
+    public function __construct(SimilarFactory $similarFactory,
+                                ProductPropertiesFactory $productPropertiesFactory,
+                                ProductOffersFactory $productOffersFactory)
     {
         $this->similarFactory = $similarFactory;
         $this->productPropertiesFactory = $productPropertiesFactory;
+        $this->productOffersFactory = $productOffersFactory;
     }
 
     public function createByAlias($alias)
@@ -40,10 +44,13 @@ class ProductFactory
 
         $properties = $this->productPropertiesFactory->createProductProperties($product->id, $product->category_id);
 
+        $offers = $this->productOffersFactory->getProductOffers($product->id);
+
         return [
             'product' => $product,
             'similars' => $similarProducts,
             'properties' => $properties,
+            'offers' => $offers,
         ];
     }
 }
