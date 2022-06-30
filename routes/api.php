@@ -18,6 +18,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::post('/en/api/offer', 'API\OfferController@createOffer');
 
 Route::patch('/api/cart', 'API\CheckoutController@changeQtyCart')->middleware('cors');
 Route::delete('/api/cart', 'API\CheckoutController@deleteCart')->middleware('cors');
