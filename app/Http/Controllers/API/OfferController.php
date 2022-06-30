@@ -4,7 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Factories\ProductOffersFactory;
 use App\Http\Requests\OfferGetRequest;
-use App\Http\Requests\OfferRequest;
+use App\Http\Requests\OfferPostRequest;
 use App\Http\Resources\OfferResource;
 use App\Models\FeedBack;
 use App\Models\Product;
@@ -19,7 +19,7 @@ class OfferController extends ApiController
         $this->productOffersFactory = $productOffersFactory;
     }
 
-    public function createOffer(OfferRequest $request)
+    public function createOffer(OfferPostRequest $request)
     {
         try {
             $this->swithLang($request->get('lang'));
