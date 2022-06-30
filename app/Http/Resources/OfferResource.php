@@ -22,7 +22,8 @@ class OfferResource extends JsonResource
             'product_name' => (string)$this->subject,
             'price' => (int)$this->additional_2,
             'price_decimals' => (string)$this->additional_2,
-            'created_at' => (string)$this->created_at
+            'created_at' => (string)$this->created_at,
+            'accepted' => (bool)$this->additional_3
         ];
     }
 }
