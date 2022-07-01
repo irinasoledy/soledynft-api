@@ -11,9 +11,9 @@ class ProductFactory
     private $productPropertiesFactory;
     private $productOffersFactory;
 
-    public function __construct(SimilarFactory $similarFactory,
+    public function __construct(SimilarFactory           $similarFactory,
                                 ProductPropertiesFactory $productPropertiesFactory,
-                                ProductOffersFactory $productOffersFactory)
+                                ProductOffersFactory     $productOffersFactory)
     {
         $this->similarFactory = $similarFactory;
         $this->productPropertiesFactory = $productPropertiesFactory;
@@ -52,5 +52,33 @@ class ProductFactory
             'properties' => $properties,
             'offers' => $offers,
         ];
+    }
+
+    public function getByCategoryId($categoryId)
+    {
+        $data = [];
+
+        $products = Product::with(
+            [
+                'translation',
+                'brand.translation',
+                'images',
+                'mainImage',
+                'setImage',
+                'mainPrice',
+                'personalPrice'
+            ])
+            ->where('category_id', $categoryId)
+            ->where('active', 1)
+            ->get();
+
+        foreach ($products as $product) {
+            $data[] = [
+                'product' => $product,
+                'properties' => $this->productPropertiesFactory->createProductProperties($product->id, $product->category_id)
+            ];
+        }
+
+        return $data;
     }
 }
