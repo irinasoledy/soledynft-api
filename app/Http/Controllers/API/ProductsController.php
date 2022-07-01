@@ -423,6 +423,7 @@ class ProductsController extends ApiController
 
     public function getDefaultFilter(Request $request)
     {
+
         try {
             $this->swithLang($request->get('lang'));
             $this->swithCurrency($request->get('currency'));
@@ -435,8 +436,7 @@ class ProductsController extends ApiController
         $allProducts = Product::where('category_id', $request->get('categoryId'))->where('active', 1)->get(); // without pagination
 
         $data['parameters'] = $this->_getParametersList($allProducts, $request->get('categoryId'));
-
-        $maxPrice = ProductPrice::where('currency_id', $this->currency->id)
+        $maxPrice = ProductPrice::where('currency_id', $request->get('currency'))
             ->whereIn('product_id', $allProducts->pluck('id')->toArray())
             ->max('price');
 
