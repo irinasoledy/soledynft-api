@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Factories\CategoryFactory;
 use App\Factories\ProductFactory;
 use App\Factories\ProductProperties\ProductPropertiesFactory;
 use App\Factories\SimilarFactory;
@@ -19,10 +20,12 @@ use Illuminate\Http\Request;
 class ProductsController extends ApiController
 {
     private $productFactory;
+    private $categoryFactory;
 
-    public function __construct(ProductFactory $productFactory)
+    public function __construct(ProductFactory $productFactory, CategoryFactory $categoryFactory)
     {
         $this->productFactory = $productFactory;
+        $this->categoryFactory = $categoryFactory;
     }
 
     public function getCategories(Request $request)
@@ -48,6 +51,19 @@ class ProductsController extends ApiController
         return $this->respond($categories);
     }
 
+    public function getMarketplaceCategory(Request $request)
+    {
+        try {
+            $this->swithLang($request->get('lang'));
+            $this->swithCurrency($request->get('currency'));
+        } catch (\Exception $e) {
+            return $this->respondError("Language is not found", 500);
+        }
+
+        $category = $this->categoryFactory->createByAlias($request->get('alias'));
+
+        return $this->respond($category);
+    }
 
     public function getCategory(Request $request)
     {
@@ -435,8 +451,7 @@ class ProductsController extends ApiController
         $allProducts = Product::where('category_id', $request->get('categoryId'))->where('active', 1)->get(); // without pagination
 
         $data['parameters'] = $this->_getParametersList($allProducts, $request->get('categoryId'));
-
-        $maxPrice = ProductPrice::where('currency_id', $this->currency->id)
+        $maxPrice = ProductPrice::where('currency_id', $request->get('currency'))
             ->whereIn('product_id', $allProducts->pluck('id')->toArray())
             ->max('price');
 
