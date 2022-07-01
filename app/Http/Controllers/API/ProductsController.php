@@ -383,57 +383,62 @@ class ProductsController extends ApiController
         }
 
         $props = json_decode($request->get('properties'));
-
         $parameters = [];
         $propsProducts = [];
         $dependable = 0;
 
-        foreach ($props as $key => $param) {
-            if ($param->name != $dependable) {
-                $parameters[$param->name][] = $param->value;
+        if ($request->get('properties')) {
+            foreach ($props as $key => $param) {
+                if ($param->name != $dependable) {
+                    $parameters[$param->name][] = $param->value;
+                }
+            }
+
+            foreach ($parameters as $param => $values) {
+                $propIds = [];
+                foreach ($values as $key => $value) {
+                    $row = ParameterValueProduct::select('product_id')
+                        ->where('parameter_value_id', $value)
+                        ->where('parameter_id', $param)
+                        ->when(count($propsProducts) > 0, function ($query) use ($propsProducts) {
+                            return $query->whereIn('product_id', $propsProducts);
+                        })
+                        ->pluck('product_id')->toArray();
+
+                    $propIds = array_merge($propIds, $row);
+                }
+                $propsProducts = $propIds;
             }
         }
 
-        foreach ($parameters as $param => $values) {
-            $propIds = [];
-            foreach ($values as $key => $value) {
-                $row = ParameterValueProduct::select('product_id')
-                    ->where('parameter_value_id', $value)
-                    ->where('parameter_id', $param)
-                    ->when(count($propsProducts) > 0, function ($query) use ($propsProducts) {
-                        return $query->whereIn('product_id', $propsProducts);
-                    })
-                    ->pluck('product_id')->toArray();
+        if ((!$request->get('properties') > 0) && (count($propsProducts) == 0)) $propsProducts = [0];
 
-                $propIds = array_merge($propIds, $row);
-            }
-            $propsProducts = $propIds;
+        if ($request->get('categoryId') == 15) {
+            return $this->productFactory->getFiltredProducts($request->get('categoryId'), $request->get('minPrice'), $request->get('maxPrice'), $propsProducts);
+        } else {
+            return Product::with([
+                'category.properties.property.parameterValues.translation',
+                'category.translation',
+                'images',
+                'mainImage',
+                'setImage',
+                'mainPrice',
+                'personalPrice',
+                'subproducts.parameterValue.translation',
+                'subproducts.parameter.translation',
+                'subproducts.warehouse',
+                'warehouse',
+                'translation',
+            ])
+                ->where('active', 1)
+                ->orderBy('position', 'asc')
+                ->where('category_id', $request->get('categoryId'))
+                ->whereBetween('actual_price', [$request->get('minPrice'), $request->get('maxPrice')])
+                ->when(count($propsProducts) > 0, function ($query) use ($propsProducts) {
+                    return $query->whereIn('id', $propsProducts);
+                })
+                ->get();
         }
-
-        if ((count($request->get('properties')) > 0) && (count($propsProducts) == 0)) $propsProducts = [0];
-
-        return Product::with([
-            'category.properties.property.parameterValues.translation',
-            'category.translation',
-            'images',
-            'mainImage',
-            'setImage',
-            'mainPrice',
-            'personalPrice',
-            'subproducts.parameterValue.translation',
-            'subproducts.parameter.translation',
-            'subproducts.warehouse',
-            'warehouse',
-            'translation',
-        ])
-            ->where('active', 1)
-            ->orderBy('position', 'asc')
-            ->where('category_id', $request->get('categoryId'))
-            ->whereBetween('actual_price', [$request->get('minPrice'), $request->get('maxPrice')])
-            ->when(count($propsProducts) > 0, function ($query) use ($propsProducts) {
-                return $query->whereIn('id', $propsProducts);
-            })
-            ->get();
 
     }
 

@@ -81,4 +81,40 @@ class ProductFactory
 
         return $data;
     }
+
+    public function getFiltredProducts($categoryId, $minPrice, $maxPrice, $propsProducts)
+    {
+        $data = [];
+        $products = Product::with([
+            'category.properties.property.parameterValues.translation',
+            'category.translation',
+            'images',
+            'mainImage',
+            'setImage',
+            'mainPrice',
+            'personalPrice',
+            'subproducts.parameterValue.translation',
+            'subproducts.parameter.translation',
+            'subproducts.warehouse',
+            'warehouse',
+            'translation',
+        ])
+            ->where('active', 1)
+            ->orderBy('position', 'asc')
+            ->where('category_id', $categoryId)
+            ->whereBetween('actual_price', [$minPrice, $maxPrice])
+            ->when(count($propsProducts) > 0, function ($query) use ($propsProducts) {
+                return $query->whereIn('id', $propsProducts);
+            })
+            ->get();
+
+        foreach ($products as $product) {
+            $data[] = [
+                'product' => $product,
+                'properties' => $this->productPropertiesFactory->createProductProperties($product->id, $product->category_id)
+            ];
+        }
+
+        return $data;
+    }
 }
