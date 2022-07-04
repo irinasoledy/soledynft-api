@@ -117,4 +117,36 @@ class ProductFactory
 
         return $data;
     }
+
+    public function getSortedProducts($categoryId, $sortDirection)
+    {
+        $data = [];
+        return Product::with([
+            'category.properties.property.parameterValues.translation',
+            'category.translation',
+            'images',
+            'mainImage',
+            'setImage',
+            'mainPrice',
+            'personalPrice',
+            'subproducts.parameterValue.translation',
+            'subproducts.parameter.translation',
+            'subproducts.warehouse',
+            'warehouse',
+            'translation',
+        ])
+            ->where('active', 1)
+            ->where('category_id', $categoryId)
+            ->orderBy('actual_price', $sortDirection)
+            ->get();
+
+        foreach ($products as $product) {
+            $data[] = [
+                'product' => $product,
+                'properties' => $this->productPropertiesFactory->createProductProperties($product->id, $product->category_id)
+            ];
+        }
+
+        return $data;
+    }
 }

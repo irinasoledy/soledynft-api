@@ -353,24 +353,28 @@ class ProductsController extends ApiController
             $sortDirection = 'asc';
         }
 
-        return Product::with([
-            'category.properties.property.parameterValues.translation',
-            'category.translation',
-            'images',
-            'mainImage',
-            'setImage',
-            'mainPrice',
-            'personalPrice',
-            'subproducts.parameterValue.translation',
-            'subproducts.parameter.translation',
-            'subproducts.warehouse',
-            'warehouse',
-            'translation',
-        ])
-            ->where('active', 1)
-            ->where('category_id', $request->get('categoryId'))
-            ->orderBy('actual_price', $sortDirection)
-            ->get();
+        if ($request->get('categoryId') == 15) {
+            return $this->productFactory->getSortedProducts($request->get('categoryId'), $sortDirection);
+        } else {
+            return Product::with([
+                'category.properties.property.parameterValues.translation',
+                'category.translation',
+                'images',
+                'mainImage',
+                'setImage',
+                'mainPrice',
+                'personalPrice',
+                'subproducts.parameterValue.translation',
+                'subproducts.parameter.translation',
+                'subproducts.warehouse',
+                'warehouse',
+                'translation',
+            ])
+                ->where('active', 1)
+                ->where('category_id', $request->get('categoryId'))
+                ->orderBy('actual_price', $sortDirection)
+                ->get();
+        }
     }
 
     public function getFiltredProducts(Request $request)
@@ -439,7 +443,6 @@ class ProductsController extends ApiController
                 })
                 ->get();
         }
-
     }
 
     public function getDefaultFilter(Request $request)
