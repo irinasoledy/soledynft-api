@@ -354,7 +354,8 @@ class ProductsController extends ApiController
         }
 
         if ($request->get('categoryId') == 15) {
-            return $this->productFactory->getSortedProducts($request->get('categoryId'), $sortDirection);
+            $result = $this->productFactory->getSortedProducts($request->get('categoryId'), $sortDirection);
+            return $result; 
         } else {
             return Product::with([
                 'category.properties.property.parameterValues.translation',

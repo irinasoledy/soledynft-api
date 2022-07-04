@@ -121,7 +121,7 @@ class ProductFactory
     public function getSortedProducts($categoryId, $sortDirection)
     {
         $data = [];
-        return Product::with([
+        $products =  Product::with([
             'category.properties.property.parameterValues.translation',
             'category.translation',
             'images',
