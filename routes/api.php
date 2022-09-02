@@ -34,8 +34,11 @@ Route::delete('/en/api/cart', 'API\CheckoutController@deleteCart');
 Route::delete('/en/api/carts', 'API\CheckoutController@deleteAllCarts');
 
 
+Route::get('/api/settings', 'API\SettingsController@getSettings');
+
+
 Route::group(['prefix' => 'api'], function () {
-    Route::get('settings', 'API\SettingsController@getSettings');
+//    Route::get('settings', 'API\SettingsController@getSettings');
     Route::get('translations', 'API\SettingsController@getTranslations');
     Route::get('banners', 'API\SettingsController@getBanners');
     Route::get('static-pages', 'API\SettingsController@getStaticPages');
